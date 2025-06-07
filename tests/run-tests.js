@@ -11,17 +11,30 @@ function testProcessDisplayArgument() {
 }
 
 function testParser() {
+  const hasOutput = fs.existsSync('output.js');
+  const original = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
+
   execSync('node parser_v0.9.4.js');
   const output = fs.readFileSync('output.js', 'utf8');
+
   assert(
-    output.includes('alert("請先輸入內容");'),
+    output.includes('alert("請先輸入內容")'),
     'alert line should be parsed'
   );
   assert(
-    output.includes('document.querySelector("#結果區").style["backgroundColor"] = "red";'),
+    output.includes(
+      'document.querySelector("#結果區").style["backgroundColor"] = "red";'
+    ),
     'style line should be parsed with color keyword'
   );
+
+  if (hasOutput) {
+    fs.writeFileSync('output.js', original);
+  } else {
+    fs.unlinkSync('output.js');
+  }
 }
+
 
 try {
   testProcessDisplayArgument();
