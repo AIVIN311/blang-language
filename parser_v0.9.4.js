@@ -141,7 +141,7 @@ for (let i = 0; i < lines.length; i++) {
         if (/^[A-Za-z_]+Module\.\w+/.test(trimmed)) {
           return trimmed; // 直接保留
         }
-        return processDisplayArgument(trimmed);
+        return processDisplayArgument(trimmed, declaredVars);
       });
       output.push(
         ' '.repeat(indent) +
@@ -276,7 +276,8 @@ for (let i = 0; i < lines.length; i++) {
       const content = match[2].trim();
       autoDeclareVariablesFromCondition(condition);
       output.push(
-        ' '.repeat(indent) + `if (${condition}) alert(${processDisplayArgument(content)});`
+        ' '.repeat(indent) +
+          `if (${condition}) alert(${processDisplayArgument(content, declaredVars)});`
       );
       continue;
     }
@@ -303,7 +304,8 @@ for (let i = 0; i < lines.length; i++) {
       const content = match[2].trim();
       autoDeclareVariablesFromCondition(condition);
       output.push(
-        ' '.repeat(indent) + `if (${condition}) alert(${processDisplayArgument(content)});`
+        ' '.repeat(indent) +
+          `if (${condition}) alert(${processDisplayArgument(content, declaredVars)});`
       );
       continue;
     }
@@ -344,7 +346,7 @@ for (let i = 0; i < lines.length; i++) {
     const match = line.match(/等待[(（](\d+)毫秒[)）]後 顯示[(（](.*?)[)）]/);
     if (match) {
       const delay = match[1];
-      const parts = match[2].split(/\s*\+\s*/).map((p) => processDisplayArgument(p));
+      const parts = match[2].split(/\s*\+\s*/).map((p) => processDisplayArgument(p, declaredVars));
       output.push(' '.repeat(indent) + `setTimeout(() => {`);
       output.push(' '.repeat(indent + 4) + `alert(${parts.join(' + ')});`);
       output.push(' '.repeat(indent) + `}, ${delay});`);
@@ -356,7 +358,7 @@ for (let i = 0; i < lines.length; i++) {
     const match = line.match(/顯示第幾項[（(](.*?),\s*(\d+)[)）]/);
     if (match) {
       const arg = `顯示第幾項(${match[1].trim()}, ${match[2].trim()})`;
-      const js = processDisplayArgument(arg);
+      const js = processDisplayArgument(arg, declaredVars);
       output.push(' '.repeat(indent) + `alert('我最愛吃的水果是：' + ${js});`);
       continue;
     }
@@ -369,7 +371,7 @@ for (let i = 0; i < lines.length; i++) {
 
     const action = match[1];
     const rawArg = match[2].trim();
-    const arg = processDisplayArgument(rawArg);
+    const arg = processDisplayArgument(rawArg, declaredVars);
 
     if (action === '播放音效') {
       return ' '.repeat(indent) + `new Audio(${arg}).play();`;
@@ -403,7 +405,7 @@ for (let i = 0; i < lines.length; i++) {
         if (/^[A-Za-z_]+Module\.\w+/.test(trimmed)) {
           return trimmed;
         }
-        return processDisplayArgument(trimmed);
+        return processDisplayArgument(trimmed, declaredVars);
       });
 
       output.push(' '.repeat(indent) + `alert(${parts.join(' + ')});`);
@@ -422,7 +424,7 @@ for (let i = 0; i < lines.length; i++) {
       const funcName = match[1].trim();
       const params = match[2].trim();
       const rawCall = `${funcName}(${params})`;
-      output.push(' '.repeat(indent) + handleFunctionCall(funcName, params));
+      output.push(' '.repeat(indent) + handleFunctionCall(funcName, params, indent, declaredVars));
       continue;
     }
   }
