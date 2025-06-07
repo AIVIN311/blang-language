@@ -50,11 +50,11 @@ if (數量 > 2) {
         alert("隨機數：" + Math.floor(Math.random() * 10));
         alert("總分近似值：" + Math.round(分數));
         alert("平方值：" + Math.pow(年齡, 2));
-        let 人物 = { 名字: "小傑", 年齡: 25 };
+                let 人物 = { 名字: "小傑", 年齡: 25 };
         let key = '名字';
         alert("他的名字是：" + 人物["名字"]);
-        alert(人物["key"]);
+        alert(人物[key]);
                 alert("你好嗎?");
-        document.querySelector("#結果區").style["backgroundColor"] = "red";
-        document.querySelector("#歡迎區").style["fontSize"] = "24px";
+                document.querySelector("#結果區").style["backgroundColor"] = "red";
+                document.querySelector("#歡迎區").style["fontSize"] = "24px";
     }
