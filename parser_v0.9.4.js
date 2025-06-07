@@ -1,4 +1,4 @@
-// 🧠 Blang parser v0.9.3 - 自動補宣告 + 條件語句語意優化整合版
+// 🧠 Blang parser v0.9.4 - 自動補宣告 + 條件語句語意優化整合版
 const fs = require('fs');
 const {
   processDisplayArgument,
