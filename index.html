@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <title>🧠 Blang 語法測試平台</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        font-family: 'Noto Sans TC', sans-serif;
+        margin: 2em;
+        background: #fdfdfd;
+      }
+      input,
+      button {
+        font-size: 1.2em;
+        padding: 0.3em 0.6em;
+      }
+      #結果區 {
+        margin-top: 1.2em;
+        font-weight: bold;
+        color: #336699;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>🧪 Blang 中文互動語法測試</h2>
+    <p>請輸入名字：</p>
+    <input id="input" placeholder="例如：小明" />
+    <button id="submit">送出</button>
+
+    <div id="結果區"></div>
+    <div id="name_display"></div>
+
+    <!-- 模組載入順序建議：先載 array，再載核心邏輯 -->
+    <script src="blang-modules/array-loader.js"></script>
+    <script src="output.js"></script>
+  </body>
+</html>

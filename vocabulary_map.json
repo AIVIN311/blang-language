@@ -1,0 +1,46 @@
+{
+    "轉大寫": {
+        "module": "stringModule",
+        "js": "$1.toUpperCase()"
+    },
+    "包含": {
+        "module": "stringModule",
+        "js": "$1.includes($2)"
+    },
+    "隨機一個數": {
+        "module": "mathModule",
+        "js": "Math.floor(Math.random() * $1)"
+    },
+    "四捨五入": {
+        "module": "mathModule",
+        "js": "Math.round($1)"
+    },
+    "平方": {
+        "module": "mathModule",
+        "js": "Math.pow($1, 2)"
+    },
+    "建立人物": {
+        "module": "objectModule",
+        "js": "let 人物 = { 名字: \"$1\", 年齡: $2 }"
+    },
+    "取得屬性": {
+        "module": "objectModule",
+        "js": "$1[$2]"
+    },
+    "顯示訊息框": {
+        "module": "dialogModule",
+        "js": "alert($1)"
+    },
+    "使用者輸入": {
+        "module": "inputModule",
+        "js": "prompt($1)"
+    },
+    "設定樣式": {
+        "module": "styleModule",
+        "js": "styleModule.設定樣式($1, $2, $3)"
+    },
+    "建立物件": {
+        "module": "objectModule",
+        "js": "ObjectModule.建立物件($1, $2, $3, $4)"
+    }
+}
