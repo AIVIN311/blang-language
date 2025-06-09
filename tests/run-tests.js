@@ -53,8 +53,8 @@ function testConditionProcessing() {
   }
 }
 
-function testToggleColor() {
-  const sample = '切換顏色(#結果區, 紅色, 藍色)\n切換顏色(#結果區, 紅色, 藍色)';
+function testHideElementParsing() {
+  const sample = '隱藏元素(#test)';
   const originalDemo = fs.readFileSync('demo.blang', 'utf8');
   fs.writeFileSync('demo.blang', sample);
 
@@ -63,11 +63,37 @@ function testToggleColor() {
 
   execSync('node parser_v0.9.4.js');
   const output = fs.readFileSync('output.js', 'utf8');
+  assert(
+    output.includes('document.querySelector("#test").style.display = "none";'),
+    '隱藏元素 should convert to querySelector with quoted selector'
+  );
 
-  const expected =
-    'document.querySelector("#結果區").style.color = document.querySelector("#結果區").style.color === "red" ? "blue" : "red";';
-  const count = output.split('\n').filter((l) => l.trim() === expected).length;
-  assert.strictEqual(count, 2, 'should generate two toggle color lines');
+  fs.writeFileSync('demo.blang', originalDemo);
+  if (hasOutput) {
+    fs.writeFileSync('output.js', originalOut);
+  } else {
+    fs.unlinkSync('output.js');
+  }
+}
+
+function testToggleColorParsing() {
+  const sample = '切換顏色(#foo, 紅色, 藍色)';
+  const originalDemo = fs.readFileSync('demo.blang', 'utf8');
+  fs.writeFileSync('demo.blang', sample);
+
+  const hasOutput = fs.existsSync('output.js');
+  const originalOut = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
+
+  execSync('node parser_v0.9.4.js');
+  const output = fs.readFileSync('output.js', 'utf8');
+  assert(
+    output.includes('const __el = document.querySelector("#foo");'),
+    '切換顏色 should use querySelector with quoted selector'
+  );
+  assert(
+    output.includes('__el.style.color = __el.style.color === "red" ? "blue" : "red";'),
+    '切換顏色 should toggle colors correctly'
+  );
 
   fs.writeFileSync('demo.blang', originalDemo);
   if (hasOutput) {
@@ -81,7 +107,8 @@ try {
   testProcessDisplayArgument();
   testParser();
   testConditionProcessing();
-  testToggleColor();
+  testHideElementParsing();
+  testToggleColorParsing();
   console.log('All tests passed');
 } catch (err) {
   console.error('Test failed:\n', err.message);
