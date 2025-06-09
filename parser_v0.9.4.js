@@ -97,7 +97,10 @@ function autoDeclareVariablesFromCondition(condition) {
 }
 
 function processCondition(condition) {
-  return processConditionExpression(condition)
+  let result = condition
+    .replace(/判斷是否為空[（(](.*?)[)）]/g, (_, arg) => `${arg.trim()}.length === 0`);
+
+  result = processConditionExpression(result)
     .replace(/（/g, '(')
     .replace(/）/g, ')')
     .replace(/不為/g, '!==') // 補上與 semanticHandler.js 對齊
@@ -111,6 +114,8 @@ function processCondition(condition) {
     .replace(/小於/g, '<')
     .replace(/\.長度/g, '.length')
     .replace(/內容/g, 'value'); // 額外建議處理「內容」 ➝ input.value
+
+  return result;
 }
 
 for (let i = 0; i < lines.length; i++) {
@@ -360,6 +365,88 @@ for (let i = 0; i < lines.length; i++) {
       const arg = `顯示第幾項(${match[1].trim()}, ${match[2].trim()})`;
       const js = processDisplayArgument(arg, declaredVars);
       output.push(' '.repeat(indent) + `alert('我最愛吃的水果是：' + ${js});`);
+      continue;
+    }
+  }
+
+  if (line.startsWith('顯示清單長度') && line.match(/顯示清單長度[（(].*[)）]/)) {
+    const m = line.match(/顯示清單長度[（(](.*)[)）]/);
+    if (m) {
+      const listVar = m[1].trim();
+      output.push(' '.repeat(indent) + `alert(${listVar}.length);`);
+      continue;
+    }
+  }
+
+  if (line.startsWith('清空清單') && line.match(/清空清單[（(].*[)）]/)) {
+    const m = line.match(/清空清單[（(](.*)[)）]/);
+    if (m) {
+      const listVar = m[1].trim();
+      output.push(' '.repeat(indent) + `${listVar}.length = 0;`);
+      continue;
+    }
+  }
+
+  if (line.match(/^切換顏色[（(].*[)）]$/)) {
+    const m = line.match(/切換顏色[（(](.*?),\s*(.*?),\s*(.*)[)）]/);
+    if (m) {
+      const sel = processDisplayArgument(m[1].trim(), declaredVars);
+      const c1 = processDisplayArgument(m[2].trim(), declaredVars);
+      const c2 = processDisplayArgument(m[3].trim(), declaredVars);
+      output.push(' '.repeat(indent) + `const __el = document.querySelector(${sel});`);
+      output.push(' '.repeat(indent) + `__el.style.color = __el.style.color === ${c1} ? ${c2} : ${c1};`);
+      continue;
+    }
+  }
+
+  if (line.match(/^隱藏元素[（(].*[)）]$/)) {
+    const m = line.match(/隱藏元素[（(](.*)[)）]/);
+    if (m) {
+      const sel = processDisplayArgument(m[1].trim(), declaredVars);
+      output.push(' '.repeat(indent) + `document.querySelector(${sel}).style.display = "none";`);
+      continue;
+    }
+  }
+
+  if (line.match(/^播放影片[（(].*[)）]$/)) {
+    const m = line.match(/播放影片[（(](.*)[)）]/);
+    if (m) {
+      const target = processDisplayArgument(m[1].trim(), declaredVars);
+      output.push(' '.repeat(indent) + `document.querySelector(${target}).play();`);
+      continue;
+    }
+  }
+
+  if (line.match(/^暫停音效[（(].*[)）]$/)) {
+    const m = line.match(/暫停音效[（(](.*)[)）]/);
+    if (m) {
+      const target = processDisplayArgument(m[1].trim(), declaredVars);
+      output.push(' '.repeat(indent) + `document.querySelector(${target}).pause();`);
+      continue;
+    }
+  }
+
+  if (line.match(/^獲取現在時間[（(].*[)）]$/) || line.trim() === '獲取現在時間()') {
+    output.push(' '.repeat(indent) + 'Date.now();');
+    continue;
+  }
+
+  if (line.match(/^替換文字[（(].*[)）]$/)) {
+    const m = line.match(/替換文字[（(](.*?),\s*(.*?),\s*(.*)[)）]/);
+    if (m) {
+      const str = processDisplayArgument(m[1].trim(), declaredVars);
+      const from = processDisplayArgument(m[2].trim(), declaredVars);
+      const to = processDisplayArgument(m[3].trim(), declaredVars);
+      output.push(' '.repeat(indent) + `${str}.replace(${from}, ${to});`);
+      continue;
+    }
+  }
+
+  if (line.match(/^轉跳網頁[（(].*[)）]$/)) {
+    const m = line.match(/轉跳網頁[（(](.*)[)）]/);
+    if (m) {
+      const url = processDisplayArgument(m[1].trim(), declaredVars);
+      output.push(' '.repeat(indent) + `window.location.href = ${url};`);
       continue;
     }
   }
