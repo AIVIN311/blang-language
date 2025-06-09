@@ -107,21 +107,15 @@ function autoDeclareVariablesFromCondition(condition) {
 }
 
 function processCondition(condition) {
-  let result = condition
-    .replace(/（/g, '(')
-    .replace(/）/g, ')')
-    .replace(/不為/g, '!==') // 補上與 semanticHandler.js 對齊
-    .replace(/為/g, '===') // 類似「==」但嚴格等於
-    .replace(/不等於/g, '!=')
-    .replace(/＝{2,}/g, '==') // 多個等號變成雙等號
-    .replace(/＝/g, '==') // 單一等號轉雙等號
-    .replace(/大於等於/g, '>=')
-    .replace(/小於等於/g, '<=')
-    .replace(/大於/g, '>')
-    .replace(/小於/g, '<')
-    .replace(/\.長度/g, '.length')
-    .replace(/內容/g, 'value'); // 額外建議處理「內容」 ➝ input.value
+  // 先處理「判斷是否為空」以避免被其他替換拆解
+  let result = condition.replace(
+    /判斷是否為空\s*\(\s*(.*?)\s*\)/g,
+    (_, arg) => `${arg.trim()}.length === 0`
+  );
 
+  result = processConditionExpression(result)
+    // 補強未在 processConditionExpression 中處理的片段
+    .replace(/內容長度/g, 'value.length');
   return result;
 }
 
@@ -402,6 +396,8 @@ for (let i = 0; i < lines.length; i++) {
       const c1 = processDisplayArgument(m[2].trim(), declaredVars);
       const c2 = processDisplayArgument(m[3].trim(), declaredVars);
       output.push(' '.repeat(indent) + `const __el = document.querySelector(${sel});`);
+      output.push(' '.repeat(indent) + `const __el = document.querySelector(${sel});`);
+      output.push(' '.repeat(indent) + `__el.style.color = __el.style.color === ${c1} ? ${c2} : ${c1};`);
       continue;
     }
   }
