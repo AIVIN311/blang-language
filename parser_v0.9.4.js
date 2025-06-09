@@ -47,8 +47,10 @@ function closeBlocks(currentIndent, nextIndent, upcomingLine = '') {
   }
 }
 function processCondition(condition) {
-  let result = condition
-    .replace(/判斷是否為空[（(](.*?)?[)）]/g, (_, arg) => `${arg.trim()}.length === 0`);
+  let result = condition.replace(
+    /判斷是否為空[（(](.*?)?[)）]/g,
+    (_, arg) => `${arg.trim()}.length === 0`
+  );
 
   result = processConditionExpression(result);
 
@@ -105,6 +107,7 @@ function autoDeclareVariablesFromCondition(condition) {
 }
 
 function processCondition(condition) {
+  let result = condition
     .replace(/（/g, '(')
     .replace(/）/g, ')')
     .replace(/不為/g, '!==') // 補上與 semanticHandler.js 對齊
