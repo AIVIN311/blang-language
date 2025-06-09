@@ -1,4 +1,3 @@
-let 判斷是否 = 0; // ⛳ 自動補上未宣告變數
 let 人物 = {}; // ⛳ 自動補上 人物 變數
 let 空 = 0; // ⛳ 自動補上未宣告變數
 const 輸入框 = document.getElementById("input");
@@ -61,9 +60,11 @@ if (數量 > 2) {
                 document.querySelector("#歡迎區").style["fontSize"] = "24px";
         alert("水果數量：" + 水果們.length);
                 水果們.length = 0;
-    if (判斷是否===空(水果們)) {
+    if (水果們.length === 0) {
         alert("清單是空的");
         const __el = document.querySelector("#結果區");
+        const __el = document.querySelector("#結果區");
+        __el.style.color = __el.style.color === "red" ? "blue" : "red";
                 "#歡迎區".style.display = 'none';
                 影片播放器.play();
                 音效播放器.pause();
