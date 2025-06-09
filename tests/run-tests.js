@@ -53,10 +53,34 @@ function testConditionProcessing() {
   }
 }
 
+function testContentLengthCondition() {
+  const sample = '如果（字串.內容長度 > 3）：顯示("ok")';
+  const originalDemo = fs.readFileSync('demo.blang', 'utf8');
+  fs.writeFileSync('demo.blang', sample);
+
+  const hasOutput = fs.existsSync('output.js');
+  const originalOut = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
+
+  execSync('node parser_v0.9.4.js');
+  const output = fs.readFileSync('output.js', 'utf8');
+  assert(
+    output.includes('if (字串.value.length > 3)'),
+    '內容長度 should become value.length in condition'
+  );
+
+  fs.writeFileSync('demo.blang', originalDemo);
+  if (hasOutput) {
+    fs.writeFileSync('output.js', originalOut);
+  } else {
+    fs.unlinkSync('output.js');
+  }
+}
+
 try {
   testProcessDisplayArgument();
   testParser();
   testConditionProcessing();
+  testContentLengthCondition();
   console.log('All tests passed');
 } catch (err) {
   console.error('Test failed:\n', err.message);
