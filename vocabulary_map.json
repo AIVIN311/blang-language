@@ -42,5 +42,45 @@
     "建立物件": {
         "module": "objectModule",
         "js": "ObjectModule.建立物件($1, $2, $3, $4)"
+    },
+    "顯示清單長度": {
+        "module": "arrayModule",
+        "js": "$1.length"
+    },
+    "清空清單": {
+        "module": "arrayModule",
+        "js": "$1.length = 0"
+    },
+    "判斷是否為空": {
+        "module": "arrayModule",
+        "js": "$1.length === 0"
+    },
+    "切換顏色": {
+        "module": "styleModule",
+        "js": "$1.style.backgroundColor = ($1.style.backgroundColor === '$2' ? '$3' : '$2')"
+    },
+    "隱藏元素": {
+        "module": "styleModule",
+        "js": "$1.style.display = 'none'"
+    },
+    "播放影片": {
+        "module": "mediaModule",
+        "js": "$1.play()"
+    },
+    "暫停音效": {
+        "module": "mediaModule",
+        "js": "$1.pause()"
+    },
+    "獲取現在時間": {
+        "module": "timeModule",
+        "js": "new Date().toLocaleTimeString()"
+    },
+    "替換文字": {
+        "module": "stringModule",
+        "js": "$1.replace($2, $3)"
+    },
+    "轉跳網頁": {
+        "module": "core",
+        "js": "window.location.href = $1"
     }
 }
