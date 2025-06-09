@@ -90,7 +90,8 @@ const ignoreList = new Set([
   'length',
   'value',
   'key',
-  'style'
+  'style',
+  '空'
 ]);
 
 function autoDeclareVariablesFromCondition(condition) {
@@ -115,7 +116,8 @@ function processCondition(condition) {
 
   result = processConditionExpression(result)
     // 補強未在 processConditionExpression 中處理的片段
-    .replace(/內容長度/g, 'value.length');
+    .replace(/內容長度/g, 'value.length')
+    .replace(/(===|!==|==|!=)\s*空/g, '$1 ""');
   return result;
 }
 
