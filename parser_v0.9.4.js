@@ -113,9 +113,7 @@ function processCondition(condition) {
     (_, arg) => `${arg.trim()}.length === 0`
   );
 
-  result = processConditionExpression(result)
-    // 補強未在 processConditionExpression 中處理的片段
-    .replace(/內容長度/g, 'value.length');
+  result = processConditionExpression(result);
   return result;
 }
 

@@ -67,6 +67,7 @@ function processConditionExpression(str) {
     .replace(/（/g, '(')
     .replace(/）/g, ')')
     .replace(/。/g, '.') // 中文句號有時出現在成員存取
+    .replace(/內容長度/g, 'value.length')
     .replace(/長度/g, 'length')
     .replace(/內容/g, 'value')
     .replace(/大於等於/g, '>=')
