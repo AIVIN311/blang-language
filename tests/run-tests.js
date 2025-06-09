@@ -18,13 +18,11 @@ function testParser() {
   const output = fs.readFileSync('output.js', 'utf8');
 
   assert(
-    output.includes('alert("請先輸入內容")'),
+    output.includes('alert("請先輸入內容");'),
     'alert line should be parsed'
   );
   assert(
-    output.includes(
-      'document.querySelector("#結果區").style["backgroundColor"] = "red";'
-    ),
+    output.includes('document.querySelector("#結果區").style["backgroundColor"] = "red";'),
     'style line should be parsed with color keyword'
   );
 
@@ -35,10 +33,33 @@ function testParser() {
   }
 }
 
+function testConditionProcessing() {
+  const sample = '如果（判斷是否為空（水果們））：\n    顯示（"空"）';
+  const originalDemo = fs.readFileSync('demo.blang', 'utf8');
+  fs.writeFileSync('demo.blang', sample);
+
+  const hasOutput = fs.existsSync('output.js');
+  const originalOut = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
+
+  execSync('node parser_v0.9.4.js');
+  const output = fs.readFileSync('output.js', 'utf8');
+  assert(
+    output.includes('if (水果們.length === 0) {'),
+    'condition should translate 判斷是否為空 correctly'
+  );
+
+  fs.writeFileSync('demo.blang', originalDemo);
+  if (hasOutput) {
+    fs.writeFileSync('output.js', originalOut);
+  } else {
+    fs.unlinkSync('output.js');
+  }
+}
 
 try {
   testProcessDisplayArgument();
   testParser();
+  testConditionProcessing();
   console.log('All tests passed');
 } catch (err) {
   console.error('Test failed:\n', err.message);

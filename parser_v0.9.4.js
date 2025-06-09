@@ -46,6 +46,14 @@ function closeBlocks(currentIndent, nextIndent, upcomingLine = '') {
     output.push(' '.repeat(block.indent) + closing + ` // 👈 自動關閉 ${block.type} 區塊`);
   }
 }
+function processCondition(condition) {
+  let result = condition
+    .replace(/判斷是否為空[（(](.*?)?[)）]/g, (_, arg) => `${arg.trim()}.length === 0`);
+
+  result = processConditionExpression(result);
+
+  return result;
+}
 
 const ignoreList = new Set([
   'document',
@@ -97,8 +105,6 @@ function autoDeclareVariablesFromCondition(condition) {
 }
 
 function processCondition(condition) {
-  return processConditionExpression(condition)
-    .replace(/判斷是否為空[（(](.*?)[)）]/g, (_, arg) => `${arg.trim()}.length === 0`)
     .replace(/（/g, '(')
     .replace(/）/g, ')')
     .replace(/不為/g, '!==') // 補上與 semanticHandler.js 對齊
@@ -112,6 +118,8 @@ function processCondition(condition) {
     .replace(/小於/g, '<')
     .replace(/\.長度/g, '.length')
     .replace(/內容/g, 'value'); // 額外建議處理「內容」 ➝ input.value
+
+  return result;
 }
 
 for (let i = 0; i < lines.length; i++) {
@@ -391,9 +399,6 @@ for (let i = 0; i < lines.length; i++) {
       const c1 = processDisplayArgument(m[2].trim(), declaredVars);
       const c2 = processDisplayArgument(m[3].trim(), declaredVars);
       output.push(' '.repeat(indent) + `const __el = document.querySelector(${sel});`);
-      output.push(
-        ' '.repeat(indent) + `__el.style.color = __el.style.color === ${c1} ? ${c2} : ${c1};`
-      );
       continue;
     }
   }
