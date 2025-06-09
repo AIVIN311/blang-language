@@ -64,7 +64,6 @@ if (數量 > 2) {
     if (判斷是否===空(水果們)) {
         alert("清單是空的");
         const __el = document.querySelector("#結果區");
-        __el.style.color = __el.style.color === "red" ? "blue" : "red";
                 "#歡迎區".style.display = 'none';
                 影片播放器.play();
                 音效播放器.pause();
