@@ -117,6 +117,7 @@ function processCondition(condition) {
     (_, arg) => `${arg.trim()}.length === 0`
   );
 
+
   // 先處理內容長度，避免在 processConditionExpression 之後被拆解
   result = result.replace(/內容長度/g, 'value.length');
 
