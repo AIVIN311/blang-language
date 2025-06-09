@@ -86,14 +86,37 @@ function testToggleColorParsing() {
 
   execSync('node parser_v0.9.4.js');
   const output = fs.readFileSync('output.js', 'utf8');
-  assert(
-    output.includes('const __el = document.querySelector("#foo");'),
-    '切換顏色 should use querySelector with quoted selector'
-  );
-  assert(
-    output.includes('__el.style.color = __el.style.color === "red" ? "blue" : "red";'),
-    '切換顏色 should toggle colors correctly'
-  );
+  const match = output.match(/let (__toggleEl\d+) = document.querySelector\("#foo"\);\s*\1.style.color = \1.style.color === "red" \? "blue" : "red";/);
+  assert(match, '切換顏色 should toggle colors with a unique identifier');
+
+  fs.writeFileSync('demo.blang', originalDemo);
+  if (hasOutput) {
+    fs.writeFileSync('output.js', originalOut);
+  } else {
+    fs.unlinkSync('output.js');
+  }
+}
+
+function testMultipleToggleColor() {
+  const sample = '切換顏色(#foo, 紅色, 藍色)\n切換顏色(#bar, 綠色, 黃色)';
+  const originalDemo = fs.readFileSync('demo.blang', 'utf8');
+  fs.writeFileSync('demo.blang', sample);
+
+  const hasOutput = fs.existsSync('output.js');
+  const originalOut = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
+
+  execSync('node parser_v0.9.4.js');
+  const output = fs.readFileSync('output.js', 'utf8');
+  const varPattern = /let (__toggleEl\d+) = document.querySelector/g;
+  const vars = [];
+  let m;
+  while ((m = varPattern.exec(output)) !== null) vars.push(m[1]);
+  assert.strictEqual(vars.length, 2, 'should create two toggle variables');
+  assert.notStrictEqual(vars[0], vars[1], 'toggle identifiers must be unique');
+  const re1 = new RegExp(`${vars[0]}\\.style.color = ${vars[0]}\\.style.color === "red" \\? "blue" : "red";`);
+  const re2 = new RegExp(`${vars[1]}\\.style.color = ${vars[1]}\\.style.color === "green" \\? "yellow" : "green";`);
+  assert(re1.test(output), 'first toggle statement should be correct');
+  assert(re2.test(output), 'second toggle statement should be correct');
 
   fs.writeFileSync('demo.blang', originalDemo);
   if (hasOutput) {
@@ -109,6 +132,7 @@ try {
   testConditionProcessing();
   testHideElementParsing();
   testToggleColorParsing();
+  testMultipleToggleColor();
   console.log('All tests passed');
 } catch (err) {
   console.error('Test failed:\n', err.message);

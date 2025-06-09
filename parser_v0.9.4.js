@@ -16,6 +16,7 @@ const stack = [];
 const registeredEvents = new Set();
 const declaredVars = new Set();
 declaredVars.add('輸入框');
+let toggleColorCounter = 0;
 
 output.push('const 輸入框 = document.getElementById("input");');
 
@@ -397,10 +398,11 @@ for (let i = 0; i < lines.length; i++) {
       const sel = processDisplayArgument(m[1].trim(), declaredVars);
       const c1 = processDisplayArgument(m[2].trim(), declaredVars);
       const c2 = processDisplayArgument(m[3].trim(), declaredVars);
+      const elVar = `__toggleEl${toggleColorCounter++}`;
+      output.push(' '.repeat(indent) + `let ${elVar} = document.querySelector(${sel});`);
       output.push(
         ' '.repeat(indent) +
-          `document.querySelector(${sel}).style.color = ` +
-          `document.querySelector(${sel}).style.color === ${c1} ? ${c2} : ${c1};`
+          `${elVar}.style.color = ${elVar}.style.color === ${c1} ? ${c2} : ${c1};`
       );
       continue;
     }
