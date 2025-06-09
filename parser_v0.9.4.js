@@ -397,9 +397,11 @@ for (let i = 0; i < lines.length; i++) {
       const sel = processDisplayArgument(m[1].trim(), declaredVars);
       const c1 = processDisplayArgument(m[2].trim(), declaredVars);
       const c2 = processDisplayArgument(m[3].trim(), declaredVars);
-      output.push(' '.repeat(indent) + `const __el = document.querySelector(${sel});`);
-      output.push(' '.repeat(indent) + `const __el = document.querySelector(${sel});`);
-      output.push(' '.repeat(indent) + `__el.style.color = __el.style.color === ${c1} ? ${c2} : ${c1};`);
+      output.push(
+        ' '.repeat(indent) +
+          `document.querySelector(${sel}).style.color = ` +
+          `document.querySelector(${sel}).style.color === ${c1} ? ${c2} : ${c1};`
+      );
       continue;
     }
   }

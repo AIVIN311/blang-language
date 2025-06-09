@@ -53,8 +53,8 @@ function testConditionProcessing() {
   }
 }
 
-function testEmptyComparison() {
-  const sample = '如果（輸入框 為 空）：\n    顯示（"好"）';
+function testToggleColor() {
+  const sample = '切換顏色(#結果區, 紅色, 藍色)\n切換顏色(#結果區, 紅色, 藍色)';
   const originalDemo = fs.readFileSync('demo.blang', 'utf8');
   fs.writeFileSync('demo.blang', sample);
 
@@ -63,8 +63,11 @@ function testEmptyComparison() {
 
   execSync('node parser_v0.9.4.js');
   const output = fs.readFileSync('output.js', 'utf8');
-  assert(output.includes('if (輸入框 === "") {'), '空 should translate to empty string');
-  assert(!output.includes('let 空'), 'should not declare variable 空');
+
+  const expected =
+    'document.querySelector("#結果區").style.color = document.querySelector("#結果區").style.color === "red" ? "blue" : "red";';
+  const count = output.split('\n').filter((l) => l.trim() === expected).length;
+  assert.strictEqual(count, 2, 'should generate two toggle color lines');
 
   fs.writeFileSync('demo.blang', originalDemo);
   if (hasOutput) {
@@ -78,7 +81,7 @@ try {
   testProcessDisplayArgument();
   testParser();
   testConditionProcessing();
-  testEmptyComparison();
+  testToggleColor();
   console.log('All tests passed');
 } catch (err) {
   console.error('Test failed:\n', err.message);
