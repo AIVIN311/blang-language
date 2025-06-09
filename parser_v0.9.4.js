@@ -52,11 +52,10 @@ function processCondition(condition) {
     (_, arg) => `${arg.trim()}.length === 0`
   );
 
-  // 直接處理「為 空」情境
-  result = result.replace(/為\s*空/g, '=== 空');
+  // 先處理內容長度，以免在後續轉換時遺漏
+  result = result.replace(/內容長度/g, 'value.length');
 
-  result = processConditionExpression(result)
-    .replace(/(===|!==|==|!=)\s*空/g, '$1 ""');
+  result = processConditionExpression(result);
 
   return result;
 }
@@ -118,12 +117,12 @@ function processCondition(condition) {
     (_, arg) => `${arg.trim()}.length === 0`
   );
 
-  // 直接處理「為 空」情境
-  result = result.replace(/為\s*空/g, '=== 空');
+
+  // 先處理內容長度，避免在 processConditionExpression 之後被拆解
+  result = result.replace(/內容長度/g, 'value.length');
 
   result = processConditionExpression(result)
     // 補強未在 processConditionExpression 中處理的片段
-    .replace(/內容長度/g, 'value.length')
     .replace(/(===|!==|==|!=)\s*空/g, '$1 ""');
   return result;
 }

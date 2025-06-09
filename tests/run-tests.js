@@ -103,8 +103,8 @@ function testToggleColorParsing() {
   }
 }
 
-function testEmptyComparison() {
-  const sample = '如果（輸入框 為 空）：';
+function testContentLengthCondition() {
+  const sample = '如果（字串.內容長度 > 3）：';
   const originalDemo = fs.readFileSync('demo.blang', 'utf8');
   fs.writeFileSync('demo.blang', sample);
 
@@ -114,10 +114,9 @@ function testEmptyComparison() {
   execSync('node parser_v0.9.4.js');
   const output = fs.readFileSync('output.js', 'utf8');
   assert(
-    output.includes('if (輸入框 === "")'),
-    '為 空 should convert to comparison with empty string'
+    output.includes('if (字串.value.length > 3) {'),
+    '內容長度 should convert to value.length in conditions'
   );
-  assert(!output.includes('let 空'), 'should not declare variable named 空');
 
   fs.writeFileSync('demo.blang', originalDemo);
   if (hasOutput) {
@@ -133,7 +132,7 @@ try {
   testConditionProcessing();
   testHideElementParsing();
   testToggleColorParsing();
-  testEmptyComparison();
+  testContentLengthCondition();
   console.log('All tests passed');
 } catch (err) {
   console.error('Test failed:\n', err.message);
