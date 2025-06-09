@@ -90,7 +90,8 @@ const ignoreList = new Set([
   'length',
   'value',
   'key',
-  'style'
+  'style',
+  '空'
 ]);
 
 function autoDeclareVariablesFromCondition(condition) {
@@ -115,7 +116,8 @@ function processCondition(condition) {
 
   result = processConditionExpression(result)
     // 補強未在 processConditionExpression 中處理的片段
-    .replace(/內容長度/g, 'value.length');
+    .replace(/內容長度/g, 'value.length')
+    .replace(/(===|!==|==|!=)\s*空/g, '$1 ""');
   return result;
 }
 
@@ -395,9 +397,11 @@ for (let i = 0; i < lines.length; i++) {
       const sel = processDisplayArgument(m[1].trim(), declaredVars);
       const c1 = processDisplayArgument(m[2].trim(), declaredVars);
       const c2 = processDisplayArgument(m[3].trim(), declaredVars);
-      output.push(' '.repeat(indent) + `const __el = document.querySelector(${sel});`);
-      output.push(' '.repeat(indent) + `const __el = document.querySelector(${sel});`);
-      output.push(' '.repeat(indent) + `__el.style.color = __el.style.color === ${c1} ? ${c2} : ${c1};`);
+      output.push(
+        ' '.repeat(indent) +
+          `document.querySelector(${sel}).style.color = ` +
+          `document.querySelector(${sel}).style.color === ${c1} ? ${c2} : ${c1};`
+      );
       continue;
     }
   }
