@@ -1,8 +1,10 @@
+let 判斷是否 = 0; // ⛳ 自動補上未宣告變數
 let 人物 = {}; // ⛳ 自動補上 人物 變數
+let 空 = 0; // ⛳ 自動補上未宣告變數
 const 輸入框 = document.getElementById("input");
 
 document.getElementById("submit").addEventListener("click", () => {
-if (輸入框.value === "") {
+if (輸入框.value === 空) {
     alert("請先輸入內容");
 } else {
     alert("留言已送出：" + 輸入框.value);
@@ -50,11 +52,25 @@ if (數量 > 2) {
         alert("隨機數：" + Math.floor(Math.random() * 10));
         alert("總分近似值：" + Math.round(分數));
         alert("平方值：" + Math.pow(年齡, 2));
-        let 人物 = { 名字: "小傑", 年齡: 25 };
+                let 人物 = { 名字: "小傑", 年齡: 25 };
         let key = '名字';
         alert("他的名字是：" + 人物["名字"]);
-        alert(人物["key"]);
+        alert(人物[key]);
                 alert("你好嗎?");
-        document.querySelector("#結果區").style["backgroundColor"] = "red";
-        document.querySelector("#歡迎區").style["fontSize"] = "24px";
+                document.querySelector("#結果區").style["backgroundColor"] = "red";
+                document.querySelector("#歡迎區").style["fontSize"] = "24px";
+        alert("水果數量：" + 水果們.length);
+                水果們.length = 0;
+    if (判斷是否===空(水果們)) {
+        alert("清單是空的");
+        const __el = document.querySelector("#結果區");
+        __el.style.color = __el.style.color === "red" ? "blue" : "red";
+                "#歡迎區".style.display = 'none';
+                影片播放器.play();
+                音效播放器.pause();
+        alert("現在時間是：" + new Date().toLocaleTimeString());
+        let 原句 = '我喜歡貓';
+        alert(原句.replace(貓, 狗));
+        window.location.href = "https://example.com";
+    }
     }
