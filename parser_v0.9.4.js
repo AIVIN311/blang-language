@@ -251,8 +251,9 @@ for (let i = 0; i < lines.length; i++) {
     const match = line.match(/^如果[（(](.*?)\.內容 為 空[）)]：?/);
     if (match) {
       closeBlocks(indent, nextIndent, upcomingLine);
-      autoDeclareVariablesFromCondition(match[1]);
-      output.push(' '.repeat(indent) + `if (${match[1]}.value === "") {`);
+      const condition = processCondition(match[1] + '.內容 為 空');
+      autoDeclareVariablesFromCondition(condition);
+      output.push(' '.repeat(indent) + `if (${condition}) {`);
       stack.push({ indent, type: 'if' });
       continue;
     }
@@ -390,7 +391,9 @@ for (let i = 0; i < lines.length; i++) {
       const c1 = processDisplayArgument(m[2].trim(), declaredVars);
       const c2 = processDisplayArgument(m[3].trim(), declaredVars);
       output.push(' '.repeat(indent) + `const __el = document.querySelector(${sel});`);
-      output.push(' '.repeat(indent) + `__el.style.color = __el.style.color === ${c1} ? ${c2} : ${c1};`);
+      output.push(
+        ' '.repeat(indent) + `__el.style.color = __el.style.color === ${c1} ? ${c2} : ${c1};`
+      );
       continue;
     }
   }
