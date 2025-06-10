@@ -184,11 +184,6 @@ for (let i = 0; i < lines.length; i++) {
     if (match) {
       const funcName = match[1].trim();
       const params = match[2].trim();
-      if (funcName === '隱藏元素') {
-        const sel = processDisplayArgument(params, declaredVars);
-        output.push(' '.repeat(indent) + `document.querySelector(${sel}).style.display = "none";`);
-        continue;
-      }
       output.push(' '.repeat(indent) + handleFunctionCall(funcName, params, indent, declaredVars));
       continue;
     }
@@ -411,14 +406,7 @@ for (let i = 0; i < lines.length; i++) {
     }
   }
 
-  if (line.match(/^隱藏元素[（(].*[)）]$/)) {
-    const m = line.match(/隱藏元素[（(](.*)[)）]/);
-    if (m) {
-      const sel = processDisplayArgument(m[1].trim(), declaredVars);
-      output.push(' '.repeat(indent) + `document.querySelector(${sel}).style.display = "none";`);
-      continue;
-    }
-  }
+
 
 
   if (line.match(/^獲取現在時間[（(].*[)）]$/) || line.trim() === '獲取現在時間()') {
