@@ -79,7 +79,7 @@ node parser_v0.9.4.js
 blang/
 ├── demo.blang              # 中文語法輸入檔
 ├── parser_v0.9.4.js        # 模組化語法轉譯器（主力引擎）
-├── semanticHandler.js      # 語義轉換與情境邏輯處理器
+├── semanticHandler-v0.9.4.js      # 語義轉換與情境邏輯處理器
 ├── blang-modules/          # 陣列模組、播放模組、API 模組等
 │   └── array.js            # 清單操作模組（顯示第幾項、顯示全部）
 ├── output.js               # 自動產生的 JS 程式碼
