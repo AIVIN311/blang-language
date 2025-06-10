@@ -48,19 +48,6 @@ function closeBlocks(currentIndent, nextIndent, upcomingLine = '') {
     output.push(' '.repeat(block.indent) + closing + ` // 👈 自動關閉 ${block.type} 區塊`);
   }
 }
-function processCondition(condition) {
-  let result = condition.replace(
-    /判斷是否為空[（(](.*?)?[)）]/g,
-    (_, arg) => `${arg.trim()}.length === 0`
-  );
-
-  // 先處理內容長度，以免在後續轉換時遺漏
-  result = result.replace(/內容長度/g, 'value.length');
-
-  result = processConditionExpression(result);
-
-  return result;
-}
 
 const ignoreList = new Set([
   'document',
