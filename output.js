@@ -27,9 +27,6 @@ if (輸入框.value === "") {
     let 數量 = 3;
 if (數量 > 2) {
     alert("超過兩個！");
-}
-}
-});
     for (let i = 0; i < 3; i++) {
         alert("你好");
         let 分數 = 85;
@@ -71,3 +68,6 @@ if (數量 > 2) {
         window.location.href = "https://example.com";
     }
     }
+}
+}
+});

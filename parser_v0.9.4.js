@@ -26,11 +26,11 @@ function getIndentLevel(line) {
 
 function closeBlocks(currentIndent, nextIndent, upcomingLine = '') {
   const isTopLevel =
-    upcomingLine.startsWith('當(') ||
-    upcomingLine.startsWith('變數 ') ||
-    upcomingLine.startsWith('定義 ') ||
-    upcomingLine.startsWith('重複執行(') ||
-    upcomingLine === '';
+    currentIndent === 0 &&
+    (upcomingLine.startsWith('當(') ||
+      upcomingLine.startsWith('變數 ') ||
+      upcomingLine.startsWith('定義 ') ||
+      upcomingLine === '');
 
   if (isTopLevel) {
     while (stack.length > 0) {
