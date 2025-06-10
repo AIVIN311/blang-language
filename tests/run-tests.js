@@ -172,6 +172,26 @@ function testContentLengthCondition() {
   }
 }
 
+function testLogStatement() {
+  const sample = '說一句話（"這是測試"）';
+  const originalDemo = fs.readFileSync('demo.blang', 'utf8');
+  fs.writeFileSync('demo.blang', sample);
+
+  const hasOutput = fs.existsSync('output.js');
+  const originalOut = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
+
+  execSync('node parser_v0.9.4.js');
+  const output = fs.readFileSync('output.js', 'utf8');
+  assert(output.includes('console.log("這是測試")'), '應該能轉譯為 console.log');
+
+  fs.writeFileSync('demo.blang', originalDemo);
+  if (hasOutput) {
+    fs.writeFileSync('output.js', originalOut);
+  } else {
+    fs.unlinkSync('output.js');
+  }
+}
+
 try {
   testProcessDisplayArgument();
   testParser();
@@ -180,6 +200,7 @@ try {
   testToggleColorParsing();
   testMultipleToggleColor();
   testShowImageParsing();
+  testLogStatement();
   console.log('All tests passed');
 } catch (err) {
   console.error('Test failed:\n', err.message);
