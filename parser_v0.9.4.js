@@ -18,6 +18,8 @@ const declaredVars = new Set();
 declaredVars.add('輸入框');
 let toggleColorCounter = 0;
 
+output.push('let 人物 = {}; // ⛳ 自動補上 人物 變數');
+output.push('let 空 = 0; // ⛳ 自動補上未宣告變數');
 output.push('const 輸入框 = document.getElementById("input");');
 
 function getIndentLevel(line) {
@@ -29,7 +31,6 @@ function closeBlocks(currentIndent, nextIndent, upcomingLine = '') {
     upcomingLine.startsWith('當(') ||
     upcomingLine.startsWith('變數 ') ||
     upcomingLine.startsWith('定義 ') ||
-    upcomingLine.startsWith('重複執行(') ||
     upcomingLine === '';
 
   if (isTopLevel) {

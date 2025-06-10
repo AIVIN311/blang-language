@@ -1,3 +1,5 @@
+let 人物 = {}; // ⛳ 自動補上 人物 變數
+let 空 = 0; // ⛳ 自動補上未宣告變數
 const 輸入框 = document.getElementById("input");
 
 document.getElementById("submit").addEventListener("click", () => {
@@ -27,9 +29,6 @@ if (輸入框.value === "") {
     let 數量 = 3;
 if (數量 > 2) {
     alert("超過兩個！");
-}
-}
-});
     for (let i = 0; i < 3; i++) {
         alert("你好");
         let 分數 = 85;
@@ -71,3 +70,6 @@ if (數量 > 2) {
         window.location.href = "https://example.com";
     }
     }
+}
+}
+});
