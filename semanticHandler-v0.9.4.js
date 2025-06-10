@@ -31,7 +31,7 @@ const FUNC_MAP = {
   顯示第幾項: 'ArrayModule.顯示第幾項',
   'AI 回覆': 'DialogModule.AI回覆',
   顯示訊息框: 'DialogModule.顯示訊息框',
-  播放音效: 'DialogModule.播放音效',
+  播放音效: 'SoundModule.播放音效',
   設定樣式: 'StyleModule.設定樣式'
 };
 
@@ -197,9 +197,6 @@ function handleFunctionCall(funcName, params, indent = 0, declaredVars = new Set
   const space = ' '.repeat(indent);
   const fqName = FUNC_MAP[funcName] || funcName;
 
-  if (funcName === '播放音效') {
-    return `${space}new Audio(${processDisplayArgument(params, declaredVars)}).play();`;
-  }
 
   if (funcName === 'AI 回覆' || funcName === '呼叫 AI 回覆') {
     return `${space}呼叫AI回覆(${processDisplayArgument(params, declaredVars)}); // 🔮 AI`;

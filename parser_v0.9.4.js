@@ -48,19 +48,6 @@ function closeBlocks(currentIndent, nextIndent, upcomingLine = '') {
     output.push(' '.repeat(block.indent) + closing + ` // 👈 自動關閉 ${block.type} 區塊`);
   }
 }
-function processCondition(condition) {
-  let result = condition.replace(
-    /判斷是否為空[（(](.*?)?[)）]/g,
-    (_, arg) => `${arg.trim()}.length === 0`
-  );
-
-  // 先處理內容長度，以免在後續轉換時遺漏
-  result = result.replace(/內容長度/g, 'value.length');
-
-  result = processConditionExpression(result);
-
-  return result;
-}
 
 const ignoreList = new Set([
   'document',
@@ -138,12 +125,6 @@ for (let i = 0; i < lines.length; i++) {
 
   if (!line) continue;
 
-  // 🔊 支援播放音效 / 說出 / 朗讀
-  const speakLine = handlePlayOrSpeak(line, indent, declaredVars);
-  if (speakLine) {
-    output.push(speakLine);
-    continue;
-  }
 
   if (line.startsWith('顯示圖片(') && line.includes('在 #')) {
     const m = line.match(/顯示圖片[（(](.*?) 在 #(.*?)[)）]/);
@@ -465,29 +446,6 @@ for (let i = 0; i < lines.length; i++) {
     }
   }
 
-  function handlePlayOrSpeak(line, indent, declaredVars) {
-    // 統一格式化括號與引號
-    const match = line.match(/^(播放音效|說出|朗讀)[（(](.*?)[）)]$/);
-    if (!match) return null;
-
-    const action = match[1];
-    const rawArg = match[2].trim();
-    const arg = processDisplayArgument(rawArg, declaredVars);
-
-    if (action === '播放音效') {
-      return ' '.repeat(indent) + `new Audio(${arg}).play();`;
-    }
-
-    if (action === '說出') {
-      return ' '.repeat(indent) + `console.log(${arg});`;
-    }
-
-    if (action === '朗讀') {
-      return ' '.repeat(indent) + `speak(${arg}); // 🔊 TTS 語音播放`;
-    }
-
-    return null;
-  }
 
   if (line.startsWith('顯示(') || line.startsWith('顯示（')) {
     const match = line.match(/^顯示[（(](.*?)[）)]$/);
