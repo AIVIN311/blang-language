@@ -439,23 +439,6 @@ for (let i = 0; i < lines.length; i++) {
     }
   }
 
-  if (line.match(/^播放影片[（(].*[)）]$/)) {
-    const m = line.match(/播放影片[（(](.*)[)）]/);
-    if (m) {
-      const target = processDisplayArgument(m[1].trim(), declaredVars);
-      output.push(' '.repeat(indent) + `document.querySelector(${target}).play();`);
-      continue;
-    }
-  }
-
-  if (line.match(/^暫停音效[（(].*[)）]$/)) {
-    const m = line.match(/暫停音效[（(](.*)[)）]/);
-    if (m) {
-      const target = processDisplayArgument(m[1].trim(), declaredVars);
-      output.push(' '.repeat(indent) + `document.querySelector(${target}).pause();`);
-      continue;
-    }
-  }
 
   if (line.match(/^獲取現在時間[（(].*[)）]$/) || line.trim() === '獲取現在時間()') {
     output.push(' '.repeat(indent) + 'Date.now();');

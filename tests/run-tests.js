@@ -192,6 +192,52 @@ function testLogStatement() {
   }
 }
 
+function testPlayVideoParsing() {
+  const sample = '播放影片(#player)';
+  const originalDemo = fs.readFileSync('demo.blang', 'utf8');
+  fs.writeFileSync('demo.blang', sample);
+
+  const hasOutput = fs.existsSync('output.js');
+  const originalOut = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
+
+  execSync('node parser_v0.9.4.js');
+  const output = fs.readFileSync('output.js', 'utf8');
+  assert(
+    output.includes('document.querySelector("#player").play();'),
+    '播放影片 should translate to play() on selector'
+  );
+
+  fs.writeFileSync('demo.blang', originalDemo);
+  if (hasOutput) {
+    fs.writeFileSync('output.js', originalOut);
+  } else {
+    fs.unlinkSync('output.js');
+  }
+}
+
+function testPauseAudioParsing() {
+  const sample = '暫停音效(#audio)';
+  const originalDemo = fs.readFileSync('demo.blang', 'utf8');
+  fs.writeFileSync('demo.blang', sample);
+
+  const hasOutput = fs.existsSync('output.js');
+  const originalOut = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
+
+  execSync('node parser_v0.9.4.js');
+  const output = fs.readFileSync('output.js', 'utf8');
+  assert(
+    output.includes('document.querySelector("#audio").pause();'),
+    '暫停音效 should translate to pause() on selector'
+  );
+
+  fs.writeFileSync('demo.blang', originalDemo);
+  if (hasOutput) {
+    fs.writeFileSync('output.js', originalOut);
+  } else {
+    fs.unlinkSync('output.js');
+  }
+}
+
 try {
   testProcessDisplayArgument();
   testParser();
@@ -201,6 +247,8 @@ try {
   testMultipleToggleColor();
   testShowImageParsing();
   testLogStatement();
+  testPlayVideoParsing();
+  testPauseAudioParsing();
   console.log('All tests passed');
 } catch (err) {
   console.error('Test failed:\n', err.message);
