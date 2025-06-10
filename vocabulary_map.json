@@ -39,6 +39,10 @@
         "module": "styleModule",
         "js": "styleModule.設定樣式($1, $2, $3)"
     },
+    "設定背景色": {
+        "module": "styleModule",
+        "js": "styleModule.設定背景色($1, $2)"
+    },
     "建立物件": {
         "module": "objectModule",
         "js": "ObjectModule.建立物件($1, $2, $3, $4)"

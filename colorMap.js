@@ -6,5 +6,6 @@ module.exports = {
   白色: 'white',
   黃色: 'yellow',
   粉紅色: 'pink',
-  橘色: 'orange'
+  橘色: 'orange',
+  淡藍色: 'lightblue'
 };

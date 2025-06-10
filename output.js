@@ -73,6 +73,7 @@ if (數量 > 2) {
 new Audio("ding.mp3").play();
 document.querySelector("#警告區塊").style.display = "none";
 document.querySelector("#表單").style.display = "block";
+document.querySelector("#頁面").style.backgroundColor = "lightblue";
     }
     }
 }
