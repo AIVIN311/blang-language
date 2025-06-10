@@ -11,6 +11,7 @@ const logModule = require('./logModule.js');
 const mediaModule = require('./mediaModule.js');
 const soundModule = require('./soundModule.js');
 const timeModule = require('./timeModule.js');
+const textModule = require('./textModule.js');
 const vocabularyMap = require('./vocabulary_map.json');
 const colorMap = require('./colorMap.js');
 
@@ -25,7 +26,8 @@ const modules = {
   logModule,
   mediaModule,
   soundModule,
-  timeModule
+  timeModule,
+  textModule
 };
 /***** 中文函式 → FQN 對應 *****/
 const FUNC_MAP = {
