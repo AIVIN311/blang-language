@@ -87,6 +87,10 @@
         "module": "timeModule",
         "js": "new Date().toLocaleTimeString()"
     },
+    "顯示現在時間": {
+        "module": "timeModule",
+        "js": "alert(new Date().toLocaleString())"
+    },
     "替換文字": {
         "module": "stringModule",
         "js": "$1.replace($2, $3)"

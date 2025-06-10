@@ -20,6 +20,9 @@ if (輸入框.value === "") {
     setTimeout(() => {
         alert("這是延遲訊息");
     }, 3000);
+    setTimeout(() => {
+        alert("你好");
+    }, 3000);
     document.getElementById('name_display').innerText = "你的名字是：" + 輸入框.value;
     document.getElementById('結果區').innerText = "Blang 語法測試中";
         new Audio("ding.mp3").play();
@@ -65,6 +68,7 @@ if (數量 > 2) {
                 document.querySelector(影片播放器).play();
                 document.querySelector(音效播放器).pause();
         alert("現在時間是：" + new Date().toLocaleTimeString());
+        alert(new Date().toLocaleString());
         let 原句 = '我喜歡貓';
         alert(原句.replace("貓", "狗"));
         window.location.href = "https://example.com";
