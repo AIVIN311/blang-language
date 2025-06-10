@@ -449,7 +449,12 @@ for (let i = 0; i < lines.length; i++) {
 
 
   if (line.match(/^獲取現在時間[（(].*[)）]$/) || line.trim() === '獲取現在時間()') {
-    output.push(' '.repeat(indent) + 'Date.now();');
+    output.push(' '.repeat(indent) + 'new Date().toLocaleTimeString();');
+    continue;
+  }
+
+  if (line.trim() === '顯示現在時間') {
+    output.push(' '.repeat(indent) + 'alert(new Date().toLocaleString());');
     continue;
   }
 

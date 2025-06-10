@@ -68,6 +68,7 @@ if (數量 > 2) {
                 document.querySelector(影片播放器).play();
                 document.querySelector(音效播放器).pause();
         alert("現在時間是：" + new Date().toLocaleTimeString());
+        alert(new Date().toLocaleString());
         let 原句 = '我喜歡貓';
         alert(原句.replace("貓", "狗"));
         window.location.href = "https://example.com";
