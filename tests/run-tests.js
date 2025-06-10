@@ -126,6 +126,29 @@ function testMultipleToggleColor() {
   }
 }
 
+function testShowImageParsing() {
+  const sample = '顯示圖片("pic.png" 在 #foo)';
+  const originalDemo = fs.readFileSync('demo.blang', 'utf8');
+  fs.writeFileSync('demo.blang', sample);
+
+  const hasOutput = fs.existsSync('output.js');
+  const originalOut = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
+
+  execSync('node parser_v0.9.4.js');
+  const output = fs.readFileSync('output.js', 'utf8');
+  assert(
+    output.includes("document.querySelector(\"#foo\").appendChild(img);"),
+    '顯示圖片 should append img element to selector'
+  );
+
+  fs.writeFileSync('demo.blang', originalDemo);
+  if (hasOutput) {
+    fs.writeFileSync('output.js', originalOut);
+  } else {
+    fs.unlinkSync('output.js');
+  }
+}
+
 function testContentLengthCondition() {
   const sample = '如果（字串.內容長度 > 3）：';
   const originalDemo = fs.readFileSync('demo.blang', 'utf8');
@@ -156,6 +179,7 @@ try {
   testHideElementParsing();
   testToggleColorParsing();
   testMultipleToggleColor();
+  testShowImageParsing();
   console.log('All tests passed');
 } catch (err) {
   console.error('Test failed:\n', err.message);

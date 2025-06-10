@@ -145,6 +145,16 @@ for (let i = 0; i < lines.length; i++) {
     continue;
   }
 
+  if (line.startsWith('顯示圖片(') && line.includes('在 #')) {
+    const m = line.match(/顯示圖片[（(](.*?) 在 #(.*?)[)）]/);
+    if (m) {
+      const src = m[1].trim();
+      const target = `"#${m[2].trim()}"`;
+      output.push(' '.repeat(indent) + handleFunctionCall('顯示圖片', `${src}, ${target}`, indent, declaredVars));
+      continue;
+    }
+  }
+
   if (line.startsWith('顯示(') && line.includes('在 #')) {
     const match = line.match(/顯示\((.*?) 在 #(.*?)\)/); // ex: 顯示("你是：" + 名字 在 #name)
     if (match) {
