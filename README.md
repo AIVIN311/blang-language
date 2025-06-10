@@ -82,9 +82,18 @@ node parser_v0.9.4.js
 blang/
 ├── demo.blang              # 中文語法輸入檔
 ├── parser_v0.9.4.js        # 模組化語法轉譯器（主力引擎）
-├── semanticHandler-v0.9.4.js      # 語義轉換與情境邏輯處理器
-├── blang-modules/          # 陣列模組、播放模組、API 模組等
-│   └── array.js            # 清單操作模組（顯示第幾項、顯示全部）
+├── semanticHandler-v0.9.4.js # 語義轉換與情境邏輯處理器
+├── blang-modules/          # 內建支援模組
+│   ├── array.js            # 清單操作模組
+│   └── display.js          # DOM 顯示處理
+├── stringModule.js         # 字串處理工具
+├── mathModule.js           # 數學計算工具
+├── objectModule.js         # 物件處理工具
+├── dialogModule.js         # 對話框顯示
+├── inputModule.js          # 使用者輸入輔助
+├── styleModule.js          # 樣式設定工具
+├── colorMap.js             # 中文顏色對照表
+├── vocabulary_map.json     # 指令對應表
 ├── output.js               # 自動產生的 JS 程式碼
 ├── index.html              # 測試用 HTML 頁面（可與 output.js 搭配）
 └── grammar.md              # 中文語法對照與設計筆記
