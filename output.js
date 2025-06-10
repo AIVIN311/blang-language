@@ -62,7 +62,7 @@ if (數量 > 2) {
         alert("清單是空的");
         let __toggleEl0 = document.querySelector("#結果區");
         __toggleEl0.style.color = __toggleEl0.style.color === "red" ? "blue" : "red";
-                "#歡迎區".style.display = 'none';
+        document.querySelector("#歡迎區").style.display = "none";
                 影片播放器.play();
                 音效播放器.pause();
         alert("現在時間是：" + new Date().toLocaleTimeString());
