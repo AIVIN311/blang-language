@@ -71,6 +71,7 @@ if (數量 > 2) {
                 const img = document.createElement('img'); img.src = "圖.jpg"; document.querySelector("#區塊").appendChild(img);
                 console.log("你好世界");
 new Audio("ding.mp3").play();
+document.querySelector("#警告區塊").style.display = "none";
     }
     }
 }
