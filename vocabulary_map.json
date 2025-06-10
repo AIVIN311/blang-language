@@ -87,6 +87,10 @@
         "module": "imageModule",
         "js": "imageModule.顯示圖片($1, $2)"
     },
+    "播放音效": {
+        "module": "soundModule",
+        "js": "new Audio($1).play()"
+    },
     "說一句話": {
         "module": "logModule",
         "js": "logModule.說一句話($1)"
