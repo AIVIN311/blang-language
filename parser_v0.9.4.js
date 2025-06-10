@@ -18,6 +18,32 @@ const declaredVars = new Set();
 declaredVars.add('輸入框');
 let toggleColorCounter = 0;
 
+function chineseToNumber(text) {
+  const map = {
+    '零': 0,
+    '一': 1,
+    '二': 2,
+    '兩': 2,
+    '三': 3,
+    '四': 4,
+    '五': 5,
+    '六': 6,
+    '七': 7,
+    '八': 8,
+    '九': 9
+  };
+  if (/^\d+$/.test(text)) return parseInt(text, 10);
+  text = text.replace(/兩/g, '二');
+  if (text === '十') return 10;
+  if (text.includes('十')) {
+    const [t, o] = text.split('十');
+    const tens = t ? map[t] || 0 : 1;
+    const ones = o ? map[o] || 0 : 0;
+    return tens * 10 + ones;
+  }
+  return map[text] || 0;
+}
+
 output.push('let 人物 = {}; // ⛳ 自動補上 人物 變數');
 output.push('let 空 = 0; // ⛳ 自動補上未宣告變數');
 output.push('const 輸入框 = document.getElementById("input");');
@@ -355,6 +381,19 @@ for (let i = 0; i < lines.length; i++) {
     if (match) {
       const delay = match[1];
       const parts = match[2].split(/\s*\+\s*/).map((p) => processDisplayArgument(p, declaredVars));
+      output.push(' '.repeat(indent) + `setTimeout(() => {`);
+      output.push(' '.repeat(indent + 4) + `alert(${parts.join(' + ')});`);
+      output.push(' '.repeat(indent) + `}, ${delay});`);
+      continue;
+    }
+  }
+
+  if (/^等待\s*([\u4e00-\u9fa5\d]+)\s*秒後[:：]?\s*顯示[（(](.*)[)）]$/.test(line)) {
+    const m = line.match(/^等待\s*([\u4e00-\u9fa5\d]+)\s*秒後[:：]?\s*顯示[（(](.*)[)）]$/);
+    if (m) {
+      const sec = chineseToNumber(m[1].trim());
+      const delay = sec * 1000;
+      const parts = m[2].split(/\s*\+\s*/).map((p) => processDisplayArgument(p, declaredVars));
       output.push(' '.repeat(indent) + `setTimeout(() => {`);
       output.push(' '.repeat(indent + 4) + `alert(${parts.join(' + ')});`);
       output.push(' '.repeat(indent) + `}, ${delay});`);

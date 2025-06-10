@@ -20,6 +20,9 @@ if (輸入框.value === "") {
     setTimeout(() => {
         alert("這是延遲訊息");
     }, 3000);
+    setTimeout(() => {
+        alert("你好");
+    }, 3000);
     document.getElementById('name_display').innerText = "你的名字是：" + 輸入框.value;
     document.getElementById('結果區').innerText = "Blang 語法測試中";
         new Audio("ding.mp3").play();
