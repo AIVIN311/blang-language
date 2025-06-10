@@ -1,3 +1,5 @@
+let 人物 = {}; // ⛳ 自動補上 人物 變數
+let 空 = 0; // ⛳ 自動補上未宣告變數
 const 輸入框 = document.getElementById("input");
 
 document.getElementById("submit").addEventListener("click", () => {
