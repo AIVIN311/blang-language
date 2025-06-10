@@ -63,6 +63,10 @@
         "module": "styleModule",
         "js": "$1.style.display = 'none'"
     },
+    "隱藏": {
+        "module": "styleModule",
+        "js": "styleModule.隱藏($1)"
+    },
     "播放影片": {
         "module": "mediaModule",
         "js": "$1.play()"

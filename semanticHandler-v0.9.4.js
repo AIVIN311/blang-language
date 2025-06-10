@@ -261,7 +261,8 @@ module.exports = {
   extractArguments,
   processDisplayArgument,
   processConditionExpression,
-  handleFunctionCall
+  handleFunctionCall,
+  styleModule
 };
 // 這個模組的功能是將中文語句轉換為 JavaScript 語句，
 // 並且支援物件屬性和中文樣式屬性轉換。
