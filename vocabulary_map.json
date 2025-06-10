@@ -61,7 +61,7 @@
     },
     "隱藏元素": {
         "module": "styleModule",
-        "js": "$1.style.display = 'none'"
+        "js": "styleModule.隱藏元素($1)"
     },
     "隱藏": {
         "module": "styleModule",

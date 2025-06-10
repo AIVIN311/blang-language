@@ -14,6 +14,7 @@ module.exports = {
 
     return `document.querySelector(${selector}).style["${cleanProp}"] = "${cleanValue}"`;
   },
-  隱藏: selector =>
-    `document.querySelector(${selector}).style.display = "none"`
+  隱藏元素: (selector) => {
+    return `document.querySelector(${selector}).style.display = "none"`;
+  }
 };
