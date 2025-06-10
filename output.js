@@ -70,6 +70,7 @@ if (數量 > 2) {
         window.location.href = "https://example.com";
                 const img = document.createElement('img'); img.src = "圖.jpg"; document.querySelector("#區塊").appendChild(img);
                 console.log("你好世界");
+new Audio("ding.mp3").play();
     }
     }
 }
