@@ -78,6 +78,7 @@ new Audio("ding.mp3").play();
 document.querySelector("#警告區塊").style.display = "none";
 document.querySelector("#表單").style.display = "block";
 document.querySelector("#頁面").style.backgroundColor = "lightblue";
+document.querySelector("#狀態文字").textContent = "處理中...";
     }
     }
 }

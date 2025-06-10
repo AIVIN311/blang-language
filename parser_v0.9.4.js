@@ -509,6 +509,19 @@ for (let i = 0; i < lines.length; i++) {
     }
   }
 
+  if (line.match(/^設定[（(].*[)）]為\s*.+/)) {
+    const m = line.match(/^設定[（(](.*)[)）]為\s*(.+)$/);
+    if (m) {
+      const selector = m[1].trim();
+      const text = m[2].trim();
+      output.push(
+        ' '.repeat(indent) +
+          handleFunctionCall('設定文字內容', `${selector}, ${text}`, indent, declaredVars)
+      );
+      continue;
+    }
+  }
+
   // ✅ 一般函式語句處理：如 設定樣式(...)、轉大寫(...)、使用者輸入(...)
   if (
     (line.match(/^[\u4e00-\u9fa5\w]+[（(].*[）)]$/) || line.match(/^[\u4e00-\u9fa5\w]+\(.*\)$/)) &&
