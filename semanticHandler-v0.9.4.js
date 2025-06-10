@@ -216,6 +216,9 @@ function handleFunctionCall(funcName, params, indent = 0, declaredVars = new Set
       if (funcName === '設定樣式' && idx === 2 && colorMap[raw]) {
         return `"${colorMap[raw]}"`;
       }
+      if (funcName === '設定背景色' && idx === 1 && colorMap[raw]) {
+        return `"${colorMap[raw]}"`;
+      }
 
       // 支援物件屬性 ["key"]
       if (/^[\u4e00-\u9fa5\w]+\s*\[\s*["“”‘’'][^"'“”‘’]+["“”‘’']\s*\]$/.test(raw)) {

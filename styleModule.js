@@ -22,5 +22,9 @@ module.exports = {
   },
   顯示: (selector) => {
     return `document.querySelector(${selector}).style.display = "block"`;
+  },
+  設定背景色: (selector, color) => {
+    const cleanColor = color.replace(/^['"]|['"]$/g, '');
+    return `document.querySelector(${selector}).style.backgroundColor = "${cleanColor}"`;
   }
 };
