@@ -69,6 +69,7 @@ if (數量 > 2) {
         alert(原句.replace("貓", "狗"));
         window.location.href = "https://example.com";
                 const img = document.createElement('img'); img.src = "圖.jpg"; document.querySelector("#區塊").appendChild(img);
+                console.log("你好世界");
     }
     }
 }
