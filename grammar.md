@@ -22,6 +22,7 @@ Blang 是一種中文語場編程方式，用中文邏輯實現智慧語意互�
 |          | 顯示（"訊息" 在輸入框上）               | `輸入框.value = "訊息"`                         |
 |          | 顯示（"訊息" 在 #id）                   | `document.getElementById("id").innerText = ...` |
 | 延遲執行 | 等待（3000 毫秒）後 顯示（...）         | `setTimeout(() => alert(...), 3000)`            |
+|          | 等待 3 秒後：顯示（...）                | `setTimeout(() => alert(...), 3000)`            |
 | 清單操作 | 變數 A = 建立清單（）                   | `let A = ArrayModule.建立清單();`               |
 |          | 加入項目（A, "蘋果"）                   | `ArrayModule.加入項目(A, "蘋果");`              |
 |          | 顯示全部（A）                           | `alert(ArrayModule.顯示全部(A));`               |
