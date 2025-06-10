@@ -61,7 +61,7 @@ if (數量 > 2) {
         alert("清單是空的");
         let __toggleEl0 = document.querySelector("#結果區");
         __toggleEl0.style.color = __toggleEl0.style.color === "red" ? "blue" : "red";
-        document.querySelector("#歡迎區").style.display = "none";
+                document.querySelector("#歡迎區").style.display = "none";
                 document.querySelector(影片播放器).play();
                 document.querySelector(音效播放器).pause();
         alert("現在時間是：" + new Date().toLocaleTimeString());
@@ -71,7 +71,7 @@ if (數量 > 2) {
                 const img = document.createElement('img'); img.src = "圖.jpg"; document.querySelector("#區塊").appendChild(img);
                 console.log("你好世界");
 new Audio("ding.mp3").play();
-document.querySelector("#警告區塊").style.display = "none";
+styleModule.隱藏("#警告區塊");
     }
     }
 }
