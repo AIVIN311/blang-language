@@ -26,11 +26,31 @@ Blang 是一種中文語場編程方式，用中文邏輯實現智慧語意互�
 |          | 加入項目（A, "蘋果"）                   | `ArrayModule.加入項目(A, "蘋果");`              |
 |          | 顯示全部（A）                           | `alert(ArrayModule.顯示全部(A));`               |
 |          | 移除最後（A）                           | `ArrayModule.移除最後(A);`                      |
+|          | 顯示清單長度（A）                       | `A.length`                                       |
+|          | 清空清單（A）                           | `A.length = 0`                                   |
+|          | 判斷是否為空（A）                       | `A.length === 0`                                 |
 | 函數定義 | 定義 打招呼（名字）：                   | `function 打招呼(名字) {`                       |
 | 函數呼叫 | 呼叫 打招呼（"小明"）                   | `打招呼("小明");`                               |
 | 語音功能 | 播放音效（"ding.mp3"）                  | `new Audio("ding.mp3").play();`                 |
 |          | 說出（"內容"）                          | `console.log("內容");`                          |
 |          | 朗讀（"內容"）                          | `speak("內容");`                                |
+| 文字處理 | 轉大寫（文字）                          | `文字.toUpperCase()`                            |
+|          | 替換文字（句子, "舊", "新"）            | `句子.replace("舊", "新")`                     |
+|          | 包含（句子, "關鍵"）                    | `句子.includes("關鍵")`                         |
+| 數學運算 | 隨機一個數（10）                        | `Math.floor(Math.random() * 10)`                 |
+|          | 四捨五入（數值）                        | `Math.round(數值)`                               |
+|          | 平方（數值）                            | `Math.pow(數值, 2)`                              |
+| 物件操作 | 建立人物（"小傑", 25）                  | `let 人物 = { 名字: "小傑", 年齡: 25 }`          |
+|          | 取得屬性（人物, 名字）                  | `人物[名字]`                                    |
+| 輸入輸出 | 顯示訊息框（"內容"）                    | `alert("內容")`                                |
+|          | 使用者輸入（"問題？"）                  | `prompt("問題？")`                              |
+| 樣式控制 | 設定樣式（#id, 背景色, 紅色）           | `document.querySelector("#id").style["backgroundColor"] = "red"` |
+|          | 切換顏色（#id, 紅色, 藍色）             | `document.querySelector("#id").style.backgroundColor = (document.querySelector("#id").style.backgroundColor === 'red' ? 'blue' : 'red')` |
+|          | 隱藏元素（#id）                         | `document.querySelector("#id").style.display = 'none'` |
+| 媒體時間 | 播放影片（播放器）                      | `播放器.play()`                                 |
+|          | 暫停音效（播放器）                      | `播放器.pause()`                                |
+|          | 獲取現在時間（）                        | `new Date().toLocaleTimeString()`                |
+| 其他     | 轉跳網頁（"https://example.com"）        | `window.location.href = "https://example.com"`   |
 
 ---
 
@@ -41,7 +61,7 @@ Blang 是一種中文語場編程方式，用中文邏輯實現智慧語意互�
 | 自動補宣告     | 如果出現變數但未宣告，將自動補上 `let xxx = 0;`                          |
 | 條件式語意優化 | `為` → `===`，`不為` → `!==`，支援 `大於`、`小於`、`長度` 等中文語句轉譯 |
 | 語法容錯       | 支援全形/半形括號（（）/()），可忽略空格與語彙轉續差異                   |
-| 模組擴充設計   | `semanticHandler.js` 可自定義 AI、語音、UI 模組呼叫邏輯                  |
+| 模組擴充設計   | `semanticHandler-v0.9.4.js` 可自定義 AI、語音、UI 模組呼叫邏輯                  |
 
 ---
 
