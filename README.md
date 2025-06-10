@@ -41,6 +41,62 @@ node parser_v0.9.4.js
         朗讀（"正在啟動系統"）
 ```
 
+## 🧪 demo.blang → output.js 對照展示
+
+Blang 的中文語法可完整對應並轉譯為可執行的 JavaScript。
+以下為實際對照展示：
+
+---
+
+### 📄 原始中文語法（demo.blang）
+
+![demo-blang](./assets/demo-blang.png)
+
+這段語法表示：
+
+- 按下按鈕觸發事件
+- 如果輸入為空，提示使用者
+- 否則進行清單操作、顯示水果與訊息、播放音效與 AI 回覆
+
+---
+
+### 🔧 轉譯後的 JavaScript（output.js）
+
+![output-js](./assets/output-js.png)
+
+由 Blang 自動產生的 JavaScript：
+
+- 使用 `ArrayModule` 操作陣列資料
+- 使用 `alert()`、`innerText` 等標準 JS 方法完成顯示任務
+- 對應語音播放與語義行為也做出相應對應
+
+---
+
+### 對照語法摘要（文字版本）
+
+## demo.blang → output.js 對照展示
+
+### 📄 原始中文語法（demo.blang）
+
+````blang
+當（使用者.按下送出按鈕）時：
+    如果（輸入框.內容 為 空）：
+        顯示（"請先輸入內容"）
+    否則：
+        顯示（"留言已送出：" + 輸入框.內容）
+        顯示（"我最愛吃的水果是：" + 顯示第幾項（水果們, 2））
+        顯示（"所有水果：" + 顯示全部（水果們））
+
+### 轉譯後的 JavaScript（output.js）
+
+if (輸入框.value === "") {
+    alert("請先輸入內容");
+} else {
+    alert("留言已送出：" + 輸入框.value);
+    alert("我最愛吃的水果是：" + ArrayModule.顯示第幾項(水果們, 2));
+    alert("所有水果：" + ArrayModule.顯示全部(水果們));
+}
+
 ---
 
 ## 🧠 語義強化與模組支援（v0.9.4 新增）
@@ -97,29 +153,38 @@ blang/
 ├── output.js               # 自動產生的 JS 程式碼
 ├── index.html              # 測試用 HTML 頁面（可與 output.js 搭配）
 └── grammar.md              # 中文語法對照與設計筆記
-```
+````
 
 ## 🧪 測試與開發工具
 
 ### 執行測試
+
 使用 npm 內建腳本：
+
 ```bash
 npm test
 ```
+
 這會執行 `tests/run-tests.js`，確保轉譯功能運作正常。
 
 ### 格式化（選用）
+
 若要自動整理 `demo.blang`，可以執行：
+
 ```bash
 node blang-fmt.js
 ```
+
 輸出結果將產生在 `demo_formatted.blang`。
 
 ### 靜態檢查（選用）
+
 執行下列指令以檢查語法格式：
+
 ```bash
 node blang-lint.js
 ```
+
 預設會檢查 `demo.blang`，並於發現問題時顯示警告。
 
 ---
