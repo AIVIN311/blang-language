@@ -192,6 +192,11 @@ for (let i = 0; i < lines.length; i++) {
     if (match) {
       const funcName = match[1].trim();
       const params = match[2].trim();
+      if (funcName === '隱藏元素') {
+        const sel = processDisplayArgument(params, declaredVars);
+        output.push(' '.repeat(indent) + `document.querySelector(${sel}).style.display = "none";`);
+        continue;
+      }
       output.push(' '.repeat(indent) + handleFunctionCall(funcName, params, indent, declaredVars));
       continue;
     }
