@@ -238,6 +238,29 @@ function testPauseAudioParsing() {
   }
 }
 
+function testPlaySoundParsing() {
+  const sample = '播放音效("ding.mp3")';
+  const originalDemo = fs.readFileSync('demo.blang', 'utf8');
+  fs.writeFileSync('demo.blang', sample);
+
+  const hasOutput = fs.existsSync('output.js');
+  const originalOut = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
+
+  execSync('node parser_v0.9.4.js');
+  const output = fs.readFileSync('output.js', 'utf8');
+  assert(
+    output.includes('new Audio("ding.mp3").play();'),
+    '播放音效 should translate to new Audio().play()'
+  );
+
+  fs.writeFileSync('demo.blang', originalDemo);
+  if (hasOutput) {
+    fs.writeFileSync('output.js', originalOut);
+  } else {
+    fs.unlinkSync('output.js');
+  }
+}
+
 try {
   testProcessDisplayArgument();
   testParser();
@@ -249,6 +272,7 @@ try {
   testLogStatement();
   testPlayVideoParsing();
   testPauseAudioParsing();
+  testPlaySoundParsing();
   console.log('All tests passed');
 } catch (err) {
   console.error('Test failed:\n', err.message);

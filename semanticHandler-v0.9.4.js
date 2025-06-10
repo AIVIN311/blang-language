@@ -9,6 +9,7 @@ const styleModule = require('./styleModule.js');
 const imageModule = require('./imageModule.js');
 const logModule = require('./logModule.js');
 const mediaModule = require('./mediaModule.js');
+const soundModule = require('./soundModule.js');
 const vocabularyMap = require('./vocabulary_map.json');
 const colorMap = require('./colorMap.js');
 
@@ -21,7 +22,8 @@ const modules = {
   styleModule,
   imageModule,
   logModule,
-  mediaModule
+  mediaModule,
+  soundModule
 };
 /***** 中文函式 → FQN 對應 *****/
 const FUNC_MAP = {
@@ -31,7 +33,7 @@ const FUNC_MAP = {
   顯示第幾項: 'ArrayModule.顯示第幾項',
   'AI 回覆': 'DialogModule.AI回覆',
   顯示訊息框: 'DialogModule.顯示訊息框',
-  播放音效: 'SoundModule.播放音效',
+  播放音效: 'soundModule.播放音效',
   設定樣式: 'StyleModule.設定樣式'
 };
 
