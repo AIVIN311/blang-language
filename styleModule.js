@@ -13,5 +13,7 @@ module.exports = {
     const cleanValue = value.replace(/^["']|["']$/g, ''); // 🔥 去掉 value 最外層引號
 
     return `document.querySelector(${selector}).style["${cleanProp}"] = "${cleanValue}"`;
-  }
+  },
+  隱藏: selector =>
+    `document.querySelector(${selector}).style.display = "none"`
 };
