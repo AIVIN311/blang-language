@@ -12,6 +12,7 @@ const mediaModule = require('./mediaModule.js');
 const soundModule = require('./soundModule.js');
 const timeModule = require('./timeModule.js');
 const textModule = require('./textModule.js');
+const arrayModule = require('./arrayModule.js');
 const vocabularyMap = require('./vocabulary_map.json');
 const colorMap = require('./colorMap.js');
 
@@ -27,11 +28,13 @@ const modules = {
   mediaModule,
   soundModule,
   timeModule,
-  textModule
+  textModule,
+  arrayModule
 };
 /***** 中文函式 → FQN 對應 *****/
 const FUNC_MAP = {
   加入項目: 'ArrayModule.加入項目',
+  加入清單項目: 'ArrayModule.加入項目',
   移除最後: 'ArrayModule.移除最後',
   顯示全部: 'ArrayModule.顯示全部',
   顯示第幾項: 'ArrayModule.顯示第幾項',
