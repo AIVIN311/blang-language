@@ -1,4 +1,3 @@
-let 人物 = {}; // ⛳ 自動補上 人物 變數
 const 輸入框 = document.getElementById("input");
 
 document.getElementById("submit").addEventListener("click", () => {
@@ -50,7 +49,7 @@ if (數量 > 2) {
         alert("隨機數：" + Math.floor(Math.random() * 10));
         alert("總分近似值：" + Math.round(分數));
         alert("平方值：" + Math.pow(年齡, 2));
-                let 人物 = { 名字: "小傑", 年齡: 25 };
+                設定人物資料("小傑", 25);
         let key = '名字';
         alert("他的名字是：" + 人物["名字"]);
         alert(人物[key]);
@@ -61,7 +60,8 @@ if (數量 > 2) {
                 水果們.length = 0;
     if (水果們.length === 0) {
         alert("清單是空的");
-        document.querySelector("#結果區").style.color = document.querySelector("#結果區").style.color === "red" ? "blue" : "red";
+        let __toggleEl0 = document.querySelector("#結果區");
+        __toggleEl0.style.color = __toggleEl0.style.color === "red" ? "blue" : "red";
                 "#歡迎區".style.display = 'none';
                 影片播放器.play();
                 音效播放器.pause();
