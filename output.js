@@ -49,7 +49,7 @@ if (數量 > 2) {
         alert("隨機數：" + Math.floor(Math.random() * 10));
         alert("總分近似值：" + Math.round(分數));
         alert("平方值：" + Math.pow(年齡, 2));
-                設定人物資料("小傑", 25);
+                let 人物 = { 名字: "小傑", 年齡: 25 };
         let key = '名字';
         alert("他的名字是：" + 人物["名字"]);
         alert(人物[key]);
