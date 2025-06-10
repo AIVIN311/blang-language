@@ -86,5 +86,9 @@
     "顯示圖片": {
         "module": "imageModule",
         "js": "imageModule.顯示圖片($1, $2)"
+    },
+    "說一句話": {
+        "module": "logModule",
+        "js": "logModule.說一句話($1)"
     }
 }

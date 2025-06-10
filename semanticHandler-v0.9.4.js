@@ -7,6 +7,7 @@ const dialogModule = require('./dialogModule.js');
 const inputModule = require('./inputModule.js');
 const styleModule = require('./styleModule.js');
 const imageModule = require('./imageModule.js');
+const logModule = require('./logModule.js');
 const vocabularyMap = require('./vocabulary_map.json');
 const colorMap = require('./colorMap.js');
 
@@ -17,7 +18,8 @@ const modules = {
   dialogModule,
   inputModule,
   styleModule,
-  imageModule
+  imageModule,
+  logModule
 };
 /***** 中文函式 → FQN 對應 *****/
 const FUNC_MAP = {
