@@ -156,7 +156,13 @@ function processDisplayArgument(arg, declaredVars = new Set()) {
       const args = extractArguments(arg, phrase);
       if (!args) break;
       const cleanArgs = args.map((p) => {
-        const raw = p.trim().replace(/^"|"$/g, '');
+        const trimmed = p.trim();
+        const raw = trimmed.replace(/^\s*["“”'']|["“”'']\s*$/g, '');
+
+        if (phrase === '替換文字' && /^['"“”].*['"“”]$/.test(trimmed)) {
+          return `"${raw}"`;
+        }
+
         if (colorMap[raw]) {
           return `"${colorMap[raw]}"`;
         }

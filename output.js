@@ -67,7 +67,7 @@ if (數量 > 2) {
                 音效播放器.pause();
         alert("現在時間是：" + new Date().toLocaleTimeString());
         let 原句 = '我喜歡貓';
-        alert(原句.replace(貓, 狗));
+        alert(原句.replace("貓", "狗"));
         window.location.href = "https://example.com";
     }
     }
