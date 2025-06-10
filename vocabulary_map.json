@@ -82,5 +82,9 @@
     "轉跳網頁": {
         "module": "core",
         "js": "window.location.href = $1"
+    },
+    "顯示圖片": {
+        "module": "imageModule",
+        "js": "imageModule.顯示圖片($1, $2)"
     }
 }
