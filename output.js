@@ -11,8 +11,8 @@ if (輸入框.value === "") {
         ArrayModule.加入項目(水果們, "香蕉");
         ArrayModule.加入項目(水果們, "芒果");
     alert("所有水果：" + ArrayModule.顯示全部(水果們));
-    alert('我最愛吃的水果是：' + ArrayModule.顯示第幾項(水果們, 3));
-    alert('我最愛吃的水果是：' + ArrayModule.顯示第幾項(水果們, 2));
+    alert("最後一項：" + ArrayModule.顯示第幾項(水果們, 3));
+    alert("我最愛吃的水果是：" + ArrayModule.顯示第幾項(水果們, 2));
         ArrayModule.移除最後(水果們);
     alert("移除最後後：" + ArrayModule.顯示全部(水果們));
     setTimeout(() => {
