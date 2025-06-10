@@ -62,8 +62,8 @@ if (數量 > 2) {
         let __toggleEl0 = document.querySelector("#結果區");
         __toggleEl0.style.color = __toggleEl0.style.color === "red" ? "blue" : "red";
         document.querySelector("#歡迎區").style.display = "none";
-                影片播放器.play();
-                音效播放器.pause();
+                document.querySelector(影片播放器).play();
+                document.querySelector(音效播放器).pause();
         alert("現在時間是：" + new Date().toLocaleTimeString());
         let 原句 = '我喜歡貓';
         alert(原句.replace("貓", "狗"));
