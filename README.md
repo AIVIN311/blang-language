@@ -12,8 +12,8 @@
 ### 📦 安裝與轉譯
 
 ```bash
-git clone https://github.com/your-name/blang.git
-cd blang
+git clone https://github.com/AIVIN311/blang-language.git
+cd blang-language
 node parser_v0.9.4.js
 ```
 
@@ -115,9 +115,8 @@ Blang 不只是中文語法，它是一種「用語言創造智慧的方式」�
 
 ## ✍️ 作者與靈感
 
-本專案由 [陳信瑋｜大傑斯](mailto:your@email.com) 發想、設計與實作。
+本專案由 陳信瑋｜大傑斯 發想、設計與實作。
 靈感來自長期對「語場」、「語意演算」、「中文智慧結構」的探討與研究。
 
 > 📬 歡迎合作與交流
-> Email: [your@email.com](mailto:your@email.com)
-> Web: your-website
+> Web: https://aisia.world
