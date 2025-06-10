@@ -16,5 +16,11 @@ module.exports = {
   },
   隱藏元素: (selector) => {
     return `document.querySelector(${selector}).style.display = "none"`;
+  },
+  隱藏: (selector) => {
+    return `document.querySelector(${selector}).style.display = "none"`;
+  },
+  顯示: (selector) => {
+    return `document.querySelector(${selector}).style.display = "block"`;
   }
 };

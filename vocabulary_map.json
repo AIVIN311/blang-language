@@ -67,6 +67,10 @@
         "module": "styleModule",
         "js": "styleModule.隱藏($1)"
     },
+    "顯示": {
+        "module": "styleModule",
+        "js": "styleModule.顯示($1)"
+    },
     "播放影片": {
         "module": "mediaModule",
         "js": "$1.play()"

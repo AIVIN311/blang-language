@@ -440,6 +440,11 @@ for (let i = 0; i < lines.length; i++) {
     if (match) {
       let expr = normalizeParentheses(match[1].trim());
 
+      if (/^#/.test(expr)) {
+        output.push(' '.repeat(indent) + handleFunctionCall('顯示', expr, indent, declaredVars));
+        continue;
+      }
+
       expr = expr
         .replace(/顯示全部[（(](.*?)[）)]/g, (_, arg) => `ArrayModule.顯示全部(${arg.trim()})`)
         .replace(
