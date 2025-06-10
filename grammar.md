@@ -51,9 +51,18 @@ Blang 是一種中文語場編程方式，用中文邏輯實現智慧語意互�
 blang/
 ├── demo.blang              # 中文語法輸入檔案
 ├── parser_v0.9.4.js        # 語法轉譯核心（支援語意優化、區塊關閉、自動補宣告）
-├── semanticHandler.js      # 語意處理模組（顯示、語音、語義補齊）
+├── semanticHandler-v0.9.4.js # 語意處理模組（顯示、語音、語義補齊）
 ├── blang-modules/
-│   └── array.js            # 清單操作模組（支援 顯示全部、加入項目 等）
+│   ├── array.js            # 清單操作模組
+│   └── display.js          # DOM 顯示處理
+├── stringModule.js         # 字串處理工具
+├── mathModule.js           # 數學計算工具
+├── objectModule.js         # 物件處理工具
+├── dialogModule.js         # 對話框顯示
+├── inputModule.js          # 使用者輸入輔助
+├── styleModule.js          # 樣式設定工具
+├── colorMap.js             # 中文顏色對照表
+├── vocabulary_map.json     # 指令對應表
 ├── output.js               # 產出結果 JavaScript 執行檔
 ├── index.html              # 執行畫面測試用網頁
 └── grammar.md              # 語法與對照說明（本檔）
