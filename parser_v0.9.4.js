@@ -370,12 +370,12 @@ for (let i = 0; i < lines.length; i++) {
     }
   }
 
-  if (line.includes('顯示第幾項(') || line.includes('顯示第幾項（')) {
-    const match = line.match(/顯示第幾項[（(](.*?),\s*(\d+)[)）]/);
+  if (/^顯示第幾項[（(].*[)）]$/.test(line.trim())) {
+    const match = line.match(/^顯示第幾項[（(](.*?),\s*(.*)[)）]$/);
     if (match) {
       const arg = `顯示第幾項(${match[1].trim()}, ${match[2].trim()})`;
       const js = processDisplayArgument(arg, declaredVars);
-      output.push(' '.repeat(indent) + `alert('我最愛吃的水果是：' + ${js});`);
+      output.push(' '.repeat(indent) + `alert(${js});`);
       continue;
     }
   }
