@@ -74,8 +74,6 @@ Blang 的中文語法可完整對應並轉譯為可執行的 JavaScript。
 
 ### 對照語法摘要（文字版本）
 
-## demo.blang → output.js 對照展示
-
 ### 📄 原始中文語法（demo.blang）
 
 ````blang
