@@ -91,6 +91,14 @@
         "module": "timeModule",
         "js": "alert(new Date().toLocaleString())"
     },
+    "顯示今天是星期幾": {
+        "module": "timeModule",
+        "js": "alert(\"今天是星期\" + \"日一二三四五六\"[new Date().getDay()])"
+    },
+    "顯示現在是幾點幾分": {
+        "module": "timeModule",
+        "js": "alert(\"現在是\" + new Date().getHours() + \"點\" + new Date().getMinutes() + \"分\")"
+    },
     "替換文字": {
         "module": "stringModule",
         "js": "$1.replace($2, $3)"

@@ -458,6 +458,22 @@ for (let i = 0; i < lines.length; i++) {
     continue;
   }
 
+  if (line.trim() === '顯示今天是星期幾') {
+    output.push(
+      ' '.repeat(indent) +
+        'alert("今天是星期" + "日一二三四五六"[new Date().getDay()]);'
+    );
+    continue;
+  }
+
+  if (line.trim() === '顯示現在是幾點幾分') {
+    output.push(
+      ' '.repeat(indent) +
+        'alert("現在是" + new Date().getHours() + "點" + new Date().getMinutes() + "分");'
+    );
+    continue;
+  }
+
   if (line.match(/^替換文字[（(].*[)）]$/)) {
     const m = line.match(/替換文字[（(](.*?),\s*(.*?),\s*(.*)[)）]/);
     if (m) {
