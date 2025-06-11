@@ -284,6 +284,52 @@ function testPlaySoundParsing() {
   }
 }
 
+function testDisplayWeekday() {
+  const sample = '顯示今天是星期幾';
+  const originalDemo = fs.readFileSync('demo.blang', 'utf8');
+  fs.writeFileSync('demo.blang', sample);
+
+  const hasOutput = fs.existsSync('output.js');
+  const originalOut = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
+
+  execSync('node parser_v0.9.4.js');
+  const output = fs.readFileSync('output.js', 'utf8');
+  assert(
+    output.includes('今天是星期'),
+    '顯示今天是星期幾 should produce alert with weekday'
+  );
+
+  fs.writeFileSync('demo.blang', originalDemo);
+  if (hasOutput) {
+    fs.writeFileSync('output.js', originalOut);
+  } else {
+    fs.unlinkSync('output.js');
+  }
+}
+
+function testDisplayHourMinute() {
+  const sample = '顯示現在是幾點幾分';
+  const originalDemo = fs.readFileSync('demo.blang', 'utf8');
+  fs.writeFileSync('demo.blang', sample);
+
+  const hasOutput = fs.existsSync('output.js');
+  const originalOut = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
+
+  execSync('node parser_v0.9.4.js');
+  const output = fs.readFileSync('output.js', 'utf8');
+  assert(
+    output.includes('現在是'),
+    '顯示現在是幾點幾分 should produce alert with hour and minute'
+  );
+
+  fs.writeFileSync('demo.blang', originalDemo);
+  if (hasOutput) {
+    fs.writeFileSync('output.js', originalOut);
+  } else {
+    fs.unlinkSync('output.js');
+  }
+}
+
 try {
   testProcessDisplayArgument();
   testParser();
@@ -297,6 +343,8 @@ try {
   testPlayVideoParsing();
   testPauseAudioParsing();
   testPlaySoundParsing();
+  testDisplayWeekday();
+  testDisplayHourMinute();
   console.log('All tests passed');
 } catch (err) {
   console.error('Test failed:\n', err.message);
