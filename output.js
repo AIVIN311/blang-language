@@ -80,6 +80,8 @@ document.querySelector("#警告區塊").style.display = "none";
 document.querySelector("#表單").style.display = "block";
 document.querySelector("#頁面").style.backgroundColor = "lightblue";
 document.querySelector("#狀態文字").textContent = "處理中...";
+alert("今天是星期" + "日一二三四五六"[new Date().getDay()]);
+alert("現在是" + new Date().getHours() + "點" + new Date().getMinutes() + "分");
     }
     }
 }
