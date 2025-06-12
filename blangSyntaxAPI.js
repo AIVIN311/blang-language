@@ -12,17 +12,22 @@ registerPatterns(definePattern);
 
 function runBlangParser(lines) {
   const output = [];
+  const controlStack = [];
 
   for (let line of lines) {
     let matched = false;
 
     for (let { pattern, generator } of patternRegistry) {
-      const regex = buildRegexFromPattern(pattern);
+      const { regex, vars } = buildRegexFromPattern(pattern);
       const match = line.match(regex);
 
       if (match) {
         const args = match.slice(1); // 因為 match[0] 是整串
-        output.push(generator(...args));
+        const named = {};
+        vars.forEach((v, i) => {
+          named[v] = args[i];
+        });
+        output.push(generator(...args, named));
         matched = true;
         break;
       }
@@ -32,7 +37,14 @@ function runBlangParser(lines) {
       // 嘗試使用舊版條件判斷處理語句
       const legacy = legacyParse(line);
       output.push(legacy);
+      if (legacy.trim().startsWith('}') && controlStack.length > 0) {
+        controlStack.pop();
+      }
     }
+  }
+
+  while (controlStack.length > 0) {
+    output.push(controlStack.pop());
   }
 
   return output.join('\n');
@@ -65,10 +77,15 @@ function buildRegexFromPattern(pattern) {
     }
   }
   regexStr += '$';
-  return new RegExp(regexStr);
+  return { regex: new RegExp(regexStr), vars };
+}
+
+function getRegisteredPatterns() {
+  return patternRegistry;
 }
 
 module.exports = {
   definePattern,
-  runBlangParser
+  runBlangParser,
+  getRegisteredPatterns
 };
