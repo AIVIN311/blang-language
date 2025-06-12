@@ -83,7 +83,7 @@ document.querySelector("#狀態文字").textContent = "處理中...";
 alert("今天是星期" + "日一二三四五六"[new Date().getDay()]);
 alert("現在是" + new Date().getHours() + "點" + new Date().getMinutes() + "分");
 alert("你好世界");
-if (1 > 0) alert("大") 否則 顯示("小");
+if (1 > 0) { alert("大"); } else { alert("小"); }
     }
     }
 }
