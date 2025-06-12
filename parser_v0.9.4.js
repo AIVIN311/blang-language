@@ -345,6 +345,21 @@ for (let i = 0; i < lines.length; i++) {
     }
   }
 
+  if (line.match(/^若[（(](.*?)[）)]則 顯示[（(](.*?)[）)] 否則 顯示[（(](.*?)[）)]$/)) {
+    const match = line.match(/^若[（(](.*?)[）)]則 顯示[（(](.*?)[）)] 否則 顯示[（(](.*?)[）)]$/);
+    if (match) {
+      const condition = processCondition(match[1]);
+      const truthy = match[2].trim();
+      const falsy = match[3].trim();
+      autoDeclareVariablesFromCondition(condition);
+      output.push(
+        ' '.repeat(indent) +
+        `if (${condition}) { alert(${processDisplayArgument(truthy, declaredVars)}); } else { alert(${processDisplayArgument(falsy, declaredVars)}); }`
+      );
+      continue;
+    }
+  }
+
   if (line.match(/^顯示[（(]"(.*?)" 在輸入框上[）)]$/)) {
     const match = line.match(/^顯示[（(]"(.*?)" 在輸入框上[）)]$/);
     if (match) {
