@@ -146,6 +146,11 @@ if (輸入框.value === "") {
 | 等待（3000 毫秒）後 顯示（...）  | `setTimeout(() => alert(...), 3000)`            |
 | 等待 3 秒後：顯示（...）         | `setTimeout(() => alert(...), 3000)`            |
 | 重複執行（3）次：                | `for (let i = 0; i < 3; i++) { ... }`           |
+| 顯示圖片（"圖.jpg" 在 #區塊）    | `const img = document.createElement('img'); img.src = "圖.jpg"; document.querySelector("#區塊").appendChild(img);` |
+| 顯示現在時間                     | `alert(new Date().toLocaleString())` |
+| 顯示今天是星期幾                 | `alert("今天是星期" + "日一二三四五六"[new Date().getDay()])` |
+| 顯示現在是幾點幾分               | `alert("現在是" + new Date().getHours() + "點" + new Date().getMinutes() + "分")` |
+| 說一句話（"這是測試"）           | `console.log("這是測試")` |
 
 ---
 
@@ -159,16 +164,27 @@ blang/
 ├── blang-modules/          # 內建支援模組
 │   ├── array.js            # 清單操作模組
 │   └── display.js          # DOM 顯示處理
+├── arrayModule.js          # 陣列處理
 ├── stringModule.js         # 字串處理工具
 ├── mathModule.js           # 數學計算工具
 ├── objectModule.js         # 物件處理工具
 ├── dialogModule.js         # 對話框顯示
+├── imageModule.js          # 圖片處理
 ├── inputModule.js          # 使用者輸入輔助
+├── logModule.js            # 日誌輸出
+├── mediaModule.js          # 媒體控制
+├── soundModule.js          # 音效播放
 ├── styleModule.js          # 樣式設定工具
+├── textModule.js           # 文字處理
+├── timeModule.js           # 時間工具
+├── blangSyntaxAPI.js       # 自訂語法 API
+├── customBlangPatterns.js  # 擴充語法規則
 ├── colorMap.js             # 中文顏色對照表
 ├── vocabulary_map.json     # 指令對應表
 ├── output.js               # 自動產生的 JS 程式碼
-├── index.html              # 測試用 HTML 頁面（可與 output.js 搭配）
+├── index.html              # 測試用 HTML 頁面
+├── assets/                 # 說明用圖片
+├── tests/                  # 單元測試腳本
 └── grammar.md              # 中文語法對照與設計筆記
 ````
 

@@ -21,6 +21,7 @@ Blang 是一種中文語場編程方式，用中文邏輯實現智慧語意互�
 |          | 顯示（"訊息" + 顯示第幾項（清單, 數）） | `alert("訊息" + ArrayModule.顯示第幾項(...))`   |
 |          | 顯示（"訊息" 在輸入框上）               | `輸入框.value = "訊息"`                         |
 |          | 顯示（"訊息" 在 #id）                   | `document.getElementById("id").innerText = ...` |
+|          | 顯示圖片（"圖.jpg" 在 #區塊）          | `const img = document.createElement('img'); img.src = "圖.jpg"; document.querySelector("#區塊").appendChild(img);` |
 | 延遲執行 | 等待（3000 毫秒）後 顯示（...）         | `setTimeout(() => alert(...), 3000)`            |
 |          | 等待 3 秒後：顯示（...）                | `setTimeout(() => alert(...), 3000)`            |
 | 清單操作 | 變數 A = 建立清單（）                   | `let A = ArrayModule.建立清單();`               |
@@ -45,13 +46,18 @@ Blang 是一種中文語場編程方式，用中文邏輯實現智慧語意互�
 |          | 取得屬性（人物, 名字）                  | `人物[名字]`                                    |
 | 輸入輸出 | 顯示訊息框（"內容"）                    | `alert("內容")`                                |
 |          | 使用者輸入（"問題？"）                  | `prompt("問題？")`                              |
+|          | 設定文字內容（#id, "文字"）              | `document.querySelector("#id").textContent = "文字"` |
 | 樣式控制 | 設定樣式（#id, 背景色, 紅色）           | `document.querySelector("#id").style["backgroundColor"] = "red"` |
 |          | 切換顏色（#id, 紅色, 藍色）             | `document.querySelector("#id").style.backgroundColor = (document.querySelector("#id").style.backgroundColor === 'red' ? 'blue' : 'red')` |
 |          | 隱藏元素（#id）                         | `document.querySelector("#id").style.display = 'none'` |
 | 媒體時間 | 播放影片（播放器）                      | `播放器.play()`                                 |
 |          | 暫停音效（播放器）                      | `播放器.pause()`                                |
 |          | 獲取現在時間（）                        | `new Date().toLocaleTimeString()`                |
+|          | 顯示現在時間                           | `alert(new Date().toLocaleString())` |
+|          | 顯示今天是星期幾                       | `alert("今天是星期" + "日一二三四五六"[new Date().getDay()])` |
+|          | 顯示現在是幾點幾分                     | `alert("現在是" + new Date().getHours() + "點" + new Date().getMinutes() + "分")` |
 | 其他     | 轉跳網頁（"https://example.com"）        | `window.location.href = "https://example.com"`   |
+| 其他     | 說一句話（"內容"）                     | `console.log("內容")` |
 
 ## 📖 模組化語法規則
 
@@ -89,16 +95,27 @@ blang/
 ├── blang-modules/
 │   ├── array.js            # 清單操作模組
 │   └── display.js          # DOM 顯示處理
+├── arrayModule.js          # 陣列處理
 ├── stringModule.js         # 字串處理工具
 ├── mathModule.js           # 數學計算工具
 ├── objectModule.js         # 物件處理工具
 ├── dialogModule.js         # 對話框顯示
+├── imageModule.js          # 圖片處理
 ├── inputModule.js          # 使用者輸入輔助
+├── logModule.js            # 日誌輸出
+├── mediaModule.js          # 媒體控制
+├── soundModule.js          # 音效播放
 ├── styleModule.js          # 樣式設定工具
+├── textModule.js           # 文字處理
+├── timeModule.js           # 時間工具
+├── blangSyntaxAPI.js       # 自訂語法 API
+├── customBlangPatterns.js  # 擴充語法規則
 ├── colorMap.js             # 中文顏色對照表
 ├── vocabulary_map.json     # 指令對應表
 ├── output.js               # 產出結果 JavaScript 執行檔
 ├── index.html              # 執行畫面測試用網頁
+├── assets/                 # 範例圖片
+├── tests/                  # 單元測試腳本
 └── grammar.md              # 語法與對照說明（本檔）
 ```
 
