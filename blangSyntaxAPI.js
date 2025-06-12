@@ -3,8 +3,8 @@
 const registerPatterns = require('./customBlangPatterns.js');
 const patternRegistry = [];
 
-function definePattern(pattern, generator) {
-  patternRegistry.push({ pattern, generator });
+function definePattern(pattern, generator, options = {}) {
+  patternRegistry.push({ pattern, generator, ...options });
 }
 
 // 在解析器初始化前註冊自訂語法模式
