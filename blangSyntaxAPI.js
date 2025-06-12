@@ -3,8 +3,8 @@
 const registerPatterns = require('./customBlangPatterns.js');
 const patternRegistry = [];
 
-function definePattern(pattern, generator) {
-  patternRegistry.push({ pattern, generator });
+function definePattern(pattern, generator, options = {}) {
+  patternRegistry.push({ pattern, generator, options });
 }
 
 // 在解析器初始化前註冊自訂語法模式
@@ -12,6 +12,7 @@ registerPatterns(definePattern);
 
 function runBlangParser(lines) {
   const output = [];
+  const controlStack = [];
 
   for (let line of lines) {
     let matched = false;
@@ -36,7 +37,14 @@ function runBlangParser(lines) {
       // 嘗試使用舊版條件判斷處理語句
       const legacy = legacyParse(line);
       output.push(legacy);
+      if (legacy.trim().startsWith('}') && controlStack.length > 0) {
+        controlStack.pop();
+      }
     }
+  }
+
+  while (controlStack.length > 0) {
+    output.push(controlStack.pop());
   }
 
   return output.join('\n');
@@ -72,7 +80,12 @@ function buildRegexFromPattern(pattern) {
   return { regex: new RegExp(regexStr), vars };
 }
 
+function getRegisteredPatterns() {
+  return patternRegistry;
+}
+
 module.exports = {
   definePattern,
-  runBlangParser
+  runBlangParser,
+  getRegisteredPatterns
 };
