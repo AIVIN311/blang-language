@@ -17,12 +17,16 @@ function runBlangParser(lines) {
     let matched = false;
 
     for (let { pattern, generator } of patternRegistry) {
-      const regex = buildRegexFromPattern(pattern);
+      const { regex, vars } = buildRegexFromPattern(pattern);
       const match = line.match(regex);
 
       if (match) {
         const args = match.slice(1); // 因為 match[0] 是整串
-        output.push(generator(...args));
+        const named = {};
+        vars.forEach((v, i) => {
+          named[v] = args[i];
+        });
+        output.push(generator(...args, named));
         matched = true;
         break;
       }
@@ -65,7 +69,7 @@ function buildRegexFromPattern(pattern) {
     }
   }
   regexStr += '$';
-  return new RegExp(regexStr);
+  return { regex: new RegExp(regexStr), vars };
 }
 
 module.exports = {
