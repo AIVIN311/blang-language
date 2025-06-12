@@ -330,6 +330,17 @@ function testDisplayHourMinute() {
   }
 }
 
+function testIfElsePattern() {
+  const { runBlangParser } = require('../blangSyntaxAPI.js');
+  const lines = ['若 (1 > 0) 則 顯示 ("yes") 否則 顯示 ("no")'];
+  const result = runBlangParser(lines).trim();
+  assert.strictEqual(
+    result,
+    'if (1 > 0) { alert("yes"); } else { alert("no"); }',
+    'custom pattern should translate to if...else structure'
+  );
+}
+
 try {
   testProcessDisplayArgument();
   testParser();
@@ -345,6 +356,7 @@ try {
   testPlaySoundParsing();
   testDisplayWeekday();
   testDisplayHourMinute();
+  testIfElsePattern();
   console.log('All tests passed');
 } catch (err) {
   console.error('Test failed:\n', err.message);
