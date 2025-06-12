@@ -53,6 +53,19 @@ Blang 是一種中文語場編程方式，用中文邏輯實現智慧語意互�
 |          | 獲取現在時間（）                        | `new Date().toLocaleTimeString()`                |
 | 其他     | 轉跳網頁（"https://example.com"）        | `window.location.href = "https://example.com"`   |
 
+## 📖 模組化語法規則
+
+Blang 提供三大語法類型：**顯示**、**設定** 與 **控制結構**。自訂規則時，可在 `customBlangPatterns.js` 中使用 `$變數`、`$條件`、`$值` 佔位符，系統會自動補齊 if/else 區塊與大括號。
+
+```js
+// customBlangPatterns.js 範例
+definePattern("顯示 $內容", (內容) => `alert(${內容});`);
+definePattern(
+  "若 $條件 則 顯示 $當真 否則 顯示 $當假",
+  (條件, 當真, 當假) => `if (${條件}) { alert(${當真}); } else { alert(${當假}); }`
+);
+```
+
 ---
 
 ## 🧠 語義模組與自動宣告機制（v0.9.4）
