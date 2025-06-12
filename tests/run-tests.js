@@ -341,6 +341,17 @@ function testIfElsePattern() {
   );
 }
 
+function testIfElsePatternChinese() {
+  const { runBlangParser } = require('../blangSyntaxAPI.js');
+  const lines = ['若 (1 > 0) 則 顯示 ("大") 否則 顯示 ("小")'];
+  const result = runBlangParser(lines).trim();
+  assert.strictEqual(
+    result,
+    'if (1 > 0) { alert("大"); } else { alert("小"); }',
+    'custom pattern should translate to if...else structure with Chinese text'
+  );
+}
+
 try {
   testProcessDisplayArgument();
   testParser();
@@ -357,6 +368,7 @@ try {
   testDisplayWeekday();
   testDisplayHourMinute();
   testIfElsePattern();
+  testIfElsePatternChinese();
   console.log('All tests passed');
 } catch (err) {
   console.error('Test failed:\n', err.message);
