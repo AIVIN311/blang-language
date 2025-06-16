@@ -106,6 +106,11 @@ module.exports = function registerPatterns(definePattern) {
     { type: 'control', description: 'show current time' }
   );
   definePattern(
+    '顯示現在時間',
+    () => 'alert(new Date().toLocaleString());',
+    { type: 'time' }
+  );
+  definePattern(
     '等待 $毫秒 毫秒後 顯示 $訊息',
     (毫秒, 訊息) => `setTimeout(() => alert(${訊息}), ${毫秒});`,
     { type: 'control', description: 'delay message in ms' }
