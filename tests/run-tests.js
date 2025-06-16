@@ -2,6 +2,7 @@ const assert = require('assert');
 const fs = require('fs');
 const { execSync } = require('child_process');
 const { processDisplayArgument } = require('../semanticHandler-v0.9.4.js');
+const { testPatternSyntax } = require('./pattern-syntax.test');
 
 function testProcessDisplayArgument() {
   const declaredVars = new Set(['key']);
@@ -444,6 +445,7 @@ function testGetRegisteredPatterns() {
 }
 
 try {
+  testPatternSyntax();
   testProcessDisplayArgument();
   testParser();
   testConditionProcessing();
