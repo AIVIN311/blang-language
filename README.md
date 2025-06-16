@@ -45,7 +45,7 @@ definePattern(
 ```js
 const { getRegisteredPatterns } = require('./blangSyntaxAPI.js');
 console.log(getRegisteredPatterns());
-// 返回陣列列出每個 pattern 及其 {type}
+// 返回類似 [{ pattern, type, description }]
 ```
 
 執行轉譯：
