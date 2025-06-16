@@ -437,6 +437,9 @@ function testGetRegisteredPatterns() {
   });
   const ctrl = patterns.find(p => p.pattern === '若 $條件 則 顯示 $當真 否則 顯示 $當假');
   assert(ctrl && ctrl.type === 'control', 'pattern should expose type property');
+  patterns.forEach(p => {
+    assert('description' in p, 'returned pattern objects should include description property');
+  });
 }
 
 try {
