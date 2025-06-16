@@ -13,10 +13,18 @@ module.exports = function registerPatterns(definePattern) {
   });
 
   // 💬 變數設定
+  // 將 cookie 設定語法放在一般變數設定之前，
+  // 以免被較寬鬆的模式攔截
   definePattern(
     '設定 cookie $名稱 為 $值',
     (名稱, 值) => `document.cookie = ${名稱} + '=' + ${值};`,
     { type: 'data', description: 'set browser cookie' }
+  );
+  definePattern(
+    '顯示 cookie $名稱 的值',
+    (名稱) =>
+      `alert(document.cookie.split('; ').find(c => c.startsWith(${名稱} + '='))?.split('=')[1]);`,
+    { type: 'data', description: 'get cookie value' }
   );
   definePattern('設定 $變數 為 $值', (變數, 值) => `let ${變數} = ${值};`, {
     description: '宣告或重新賦值變數',
@@ -202,12 +210,6 @@ module.exports = function registerPatterns(definePattern) {
     '在控制台輸出 $內容',
     (內容) => `console.log(${內容});`,
     { type: 'log', description: 'console output' }
-  );
-  definePattern(
-    '顯示 cookie $名稱 的值',
-    (名稱) =>
-      `alert(document.cookie.split('; ').find(c => c.startsWith(${名稱} + '='))?.split('=')[1]);`,
-    { type: 'data', description: 'get cookie value' }
   );
   definePattern(
     '顯示隨機整數至 $最大值',
