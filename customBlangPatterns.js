@@ -23,5 +23,16 @@ module.exports = function registerPatterns(definePattern) {
     (條件, 語句1, 語句2) => `if (${條件}) {\n  alert(${語句1});\n} else {\n  alert(${語句2});\n}`,
     { type: 'control' }
   );
+  definePattern(
+    '等待 $秒數 秒後 顯示 $訊息',
+    (秒數, 訊息) =>
+      `setTimeout(() => alert(${訊息}), ${秒數} * 1000);`,
+    { type: 'control' }
+  );
+  definePattern(
+    '隱藏 $元素',
+    (元素) => `document.querySelector(${元素}).style.display = "none";`,
+    { type: 'ui' }
+  );
   // 更多擴充語法可加入這裡
 };
