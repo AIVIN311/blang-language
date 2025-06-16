@@ -2,6 +2,7 @@
   "name": "blang-language",
   "version": "1.0.0",
   "scripts": {
-    "test": "node tests/run-tests.js"
+    "test": "node tests/run-tests.js",
+    "build-doc": "node buildGrammarDoc.js"
   }
 }
