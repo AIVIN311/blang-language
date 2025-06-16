@@ -24,10 +24,13 @@ node parser_v0.9.4.js
 Blang 允許使用 `definePattern()` 擴充新的中文語法，建議將規則集中於 `customBlangPatterns.js` 中：
 
 ```js
-definePattern("顯示 $內容", (內容) => `alert(${內容});`);
+definePattern('顯示 $內容', (內容) => `alert(${內容});`, {
+  description: '彈出警示框顯示指定內容'
+});
 definePattern(
-  "若 $條件 則 顯示 $當真 否則 顯示 $當假",
-  (條件, 當真, 當假) => `if (${條件}) { alert(${當真}); } else { alert(${當假}); }`
+  '若 $條件 則 顯示 $當真 否則 顯示 $當假',
+  (條件, 當真, 當假) => `if (${條件}) { alert(${當真}); } else { alert(${當假}); }`,
+  { type: 'control', description: '根據條件顯示不同內容' }
 );
 ```
 
@@ -46,7 +49,7 @@ definePattern(
 ```js
 const { getRegisteredPatterns } = require('./blangSyntaxAPI.js');
 console.log(getRegisteredPatterns());
-// 返回陣列列出每個 pattern 及其 {type}
+// 返回陣列列出每個 pattern 及其 {type, description}
 ```
 >>>>>>> main
 

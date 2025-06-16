@@ -5,7 +5,10 @@ const patternRegistry = [];
 const patternGroups = {};
 
 function definePattern(pattern, generator, options = {}) {
-  const entry = { pattern, generator, ...options };
+  const entry = { pattern, generator };
+  if (options.description) entry.description = options.description;
+  if (Array.isArray(options.hints)) entry.hints = options.hints;
+  if (options.type) entry.type = options.type;
   patternRegistry.push(entry);
   if (entry.type) {
     if (!patternGroups[entry.type]) {

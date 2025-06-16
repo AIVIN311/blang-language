@@ -437,6 +437,10 @@ function testGetRegisteredPatterns() {
   });
   const ctrl = patterns.find(p => p.pattern === '若 $條件 則 顯示 $當真 否則 顯示 $當假');
   assert(ctrl && ctrl.type === 'control', 'pattern should expose type property');
+  const show = patterns.find(p => p.pattern === '顯示 $內容');
+  assert(show && typeof show.description === 'string', 'pattern should have description');
+  const wait = patterns.find(p => p.pattern === '等待 $秒數 秒後 顯示 $訊息');
+  assert(Array.isArray(wait.hints), 'pattern should expose parameter hints');
 }
 
 try {
