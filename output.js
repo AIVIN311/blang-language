@@ -89,26 +89,26 @@ if (數量 > 2) {
         setTimeout(() => {
             alert("完成");
         }, 2000);
-        // 未翻譯：顯示今天日期（無匹配的語法規則）
-        // 未翻譯：替換所有 "貓" 為 "狗" 在 原句（無匹配的語法規則）
+        alert(new Date().toLocaleDateString());
+        alert(原句.replaceAll("貓", "狗"));
                 切換顯示隱藏(#詳細);
-        // 未翻譯：增加透明度動畫到 #方塊（無匹配的語法規則）
-        // 未翻譯：顯示 數量 的絕對值（無匹配的語法規則）
-        // 未翻譯：遍歷 水果們 並顯示每項（無匹配的語法規則）
-        // 未翻譯：停止所有音效（無匹配的語法規則）
-        // 未翻譯：顯示目前瀏覽器語系（無匹配的語法規則）
-        // 未翻譯：顯示 JSON 格式化 使用者（無匹配的語法規則）
-        // 未翻譯：新增元素 div 到 #容器（無匹配的語法規則）
-        // 未翻譯：清空 #結果區 的內容（無匹配的語法規則）
-        // 未翻譯：設定文字於 #狀態 為 "完成"（無匹配的語法規則）
-        // 未翻譯：在控制台輸出 "測試中"（無匹配的語法規則）
-        // 未翻譯：設定 cookie token 為 "123"（無匹配的語法規則）
-        // 未翻譯：顯示 cookie token 的值（無匹配的語法規則）
-        // 未翻譯：顯示隨機整數至 10（無匹配的語法規則）
-        // 未翻譯：反轉 水果們（無匹配的語法規則）
-        // 未翻譯：顯示網址參數 id（無匹配的語法規則）
+        document.querySelector(#方塊).style.transition = 'opacity 0.5s';
+        alert(數量 的絕對值);
+        水果們.forEach(item => alert(item));
+        document.querySelectorAll('audio').forEach(a => a.pause());
+        alert(navigator.language);
+        alert(JSON 格式化 使用者);
+        document.querySelector(#容器).appendChild(document.createElement(div));
+        document.querySelector(#結果區).innerHTML = '';
+        document.querySelector(#狀態).textContent = "完成";
+        console.log("測試中");
+        let cookie token = "123";
+        alert(cookie token 的值);
+        alert(Math.floor(Math.random() * 10));
+        水果們.reverse();
+        alert(new URLSearchParams(location.search).get(id));
                 循環播放音樂("bg.mp3");
-        // 未翻譯：開新視窗到 "https://example.com"（無匹配的語法規則）
+        window.open("https://example.com", '_blank');
     }
     }
 }
