@@ -97,12 +97,12 @@ if (數量 > 2) {
         水果們.forEach(item => alert(item));
         document.querySelectorAll('audio').forEach(a => a.pause());
         alert(navigator.language);
-        alert(JSON 格式化 使用者);
+        alert(JSON.stringify(使用者, null, 2));
         document.querySelector(#容器).appendChild(document.createElement(div));
         document.querySelector(#結果區).innerHTML = '';
         document.querySelector(#狀態).textContent = "完成";
         console.log("測試中");
-        let cookie token = "123";
+        document.cookie = token + '=' + "123";
         alert(cookie token 的值);
         alert(Math.floor(Math.random() * 10));
         水果們.reverse();

@@ -311,6 +311,29 @@ function testSetSelectorContent() {
   }
 }
 
+function testCookieSetting() {
+  const sample = '設定 cookie token 為 "123"';
+  const originalDemo = fs.readFileSync('demo.blang', 'utf8');
+  fs.writeFileSync('demo.blang', sample);
+
+  const hasOutput = fs.existsSync('output.js');
+  const originalOut = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
+
+  execSync('node parser_v0.9.4.js');
+  const output = fs.readFileSync('output.js', 'utf8');
+  assert(
+    output.includes("document.cookie = token + '=' + \"123\";"),
+    '設定 cookie 應產生正確的 cookie 指令'
+  );
+
+  fs.writeFileSync('demo.blang', originalDemo);
+  if (hasOutput) {
+    fs.writeFileSync('output.js', originalOut);
+  } else {
+    fs.unlinkSync('output.js');
+  }
+}
+
 function testLogStatement() {
   const sample = '說一句話（"這是測試"）';
   const originalDemo = fs.readFileSync('demo.blang', 'utf8');
@@ -551,6 +574,7 @@ try {
   testAddElementParsing();
   testFadeAnimationParsing();
   testSetSelectorContent();
+  testCookieSetting();
   testLogStatement();
   testPlayVideoParsing();
   testPauseAudioParsing();

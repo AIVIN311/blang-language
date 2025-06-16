@@ -52,6 +52,14 @@ console.log(getRegisteredPatterns());
 
 ```
 
+> **注意**：在語句中使用 CSS 選擇器或字串常值時，除非該 pattern 會自動補上引號，否則請自行在值兩側加上引號。例如：
+>
+> ```blang
+> 新增元素 "div" 到 "#容器"
+> ```
+>
+> 若 pattern 已內建字串包裝，才可寫成 `新增元素 div 到 #容器`。
+
 執行轉譯：
 
 ```bash

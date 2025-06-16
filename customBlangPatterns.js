@@ -2,12 +2,30 @@ const { handleFunctionCall, processDisplayArgument } = require('./semanticHandle
 module.exports = function registerPatterns(definePattern) {
   let toggleId = 0;
   // 💬 基本輸出語法
+  definePattern(
+    '顯示 JSON 格式化 $物件',
+    (物件) => `alert(JSON.stringify(${物件}, null, 2));`,
+    { type: 'data', description: 'display object as JSON' }
+  );
   definePattern('顯示 $內容', (內容) => `alert(${內容});`, {
     description: '彈出警示框顯示指定內容',
     hints: ['內容']
   });
 
   // 💬 變數設定
+  // 將 cookie 設定語法放在一般變數設定之前，
+  // 以免被較寬鬆的模式攔截
+  definePattern(
+    '設定 cookie $名稱 為 $值',
+    (名稱, 值) => `document.cookie = ${名稱} + '=' + ${值};`,
+    { type: 'data', description: 'set browser cookie' }
+  );
+  definePattern(
+    '顯示 cookie $名稱 的值',
+    (名稱) =>
+      `alert(document.cookie.split('; ').find(c => c.startsWith(${名稱} + '='))?.split('=')[1]);`,
+    { type: 'data', description: 'get cookie value' }
+  );
   definePattern('設定 $變數 為 $值', (變數, 值) => `let ${變數} = ${值};`, {
     description: '宣告或重新賦值變數',
     hints: ['變數', '值']
@@ -55,7 +73,7 @@ module.exports = function registerPatterns(definePattern) {
   );
   definePattern(
     '隱藏 $元素',
-    (元素) => `document.querySelector(${元素}).style.display = "none";`,
+    (元素) => `document.querySelector('${元素}').style.display = "none";`,
     {
       type: 'ui',
       description: '隱藏指定元素',
@@ -65,7 +83,7 @@ module.exports = function registerPatterns(definePattern) {
   definePattern(
     '顯示 $訊息 在 $選擇器',
     (訊息, 選擇器) =>
-      `document.querySelector(${選擇器}).textContent = ${訊息};`,
+      `document.querySelector('${選擇器}').textContent = ${訊息};`,
     { type: 'ui', description: 'update DOM text content' }
   );
   definePattern(
@@ -76,13 +94,13 @@ module.exports = function registerPatterns(definePattern) {
   definePattern(
     '顯示圖片($來源 在 $選擇器)',
     (來源, 選擇器) =>
-      `const img = document.createElement('img'); img.src = ${來源}; document.querySelector(${選擇器}).appendChild(img);`,
+      `const img = document.createElement('img'); img.src = ${來源}; document.querySelector('${選擇器}').appendChild(img);`,
     { type: 'ui', description: 'insert image element' }
   );
   definePattern(
     '設定背景色($選擇器, $顏色)',
     (選擇器, 顏色) =>
-      `document.querySelector(${選擇器}).style.backgroundColor = ${顏色};`,
+      `document.querySelector('${選擇器}').style.backgroundColor = ${顏色};`,
     { type: 'ui', description: 'change background color' }
   );
 
@@ -90,18 +108,18 @@ module.exports = function registerPatterns(definePattern) {
     '切換顏色($選擇器, $顏色1, $顏色2)',
     (選擇器, 顏色1, 顏色2) => {
       const elVar = `__toggleEl${toggleId++}`;
-      return `let ${elVar} = document.querySelector(${選擇器}); ${elVar}.style.color = ${elVar}.style.color === ${顏色1} ? ${顏色2} : ${顏色1};`;
+      return `let ${elVar} = document.querySelector('${選擇器}'); ${elVar}.style.color = ${elVar}.style.color === ${顏色1} ? ${顏色2} : ${顏色1};`;
     },
     { type: 'ui', description: 'toggle text color' }
   );
   definePattern(
     '播放影片($選擇器)',
-    (選擇器) => `document.querySelector(${選擇器}).play();`,
+    (選擇器) => `document.querySelector('${選擇器}').play();`,
     { type: 'media', description: 'play video element' }
   );
   definePattern(
     '暫停音效($選擇器)',
-    (選擇器) => `document.querySelector(${選擇器}).pause();`,
+    (選擇器) => `document.querySelector('${選擇器}').pause();`,
     { type: 'media', description: 'pause audio element' }
   );
   definePattern(
@@ -139,7 +157,7 @@ module.exports = function registerPatterns(definePattern) {
   definePattern(
     '切換顯示隱藏 $選擇器',
     (選擇器) =>
-      `const el = document.querySelector(${選擇器}); el.style.display = el.style.display === 'none' ? 'block' : 'none';`,
+      `const el = document.querySelector('${選擇器}'); el.style.display = el.style.display === 'none' ? 'block' : 'none';`,
     { type: 'ui', description: 'toggle element display' }
   );
   definePattern(
@@ -171,11 +189,6 @@ module.exports = function registerPatterns(definePattern) {
     { type: 'data', description: 'show browser language' }
   );
   definePattern(
-    '顯示 JSON 格式化 $物件',
-    (物件) => `alert(JSON.stringify(${物件}, null, 2));`,
-    { type: 'data', description: 'display object as JSON' }
-  );
-  definePattern(
     '新增元素 $標籤 到 $選擇器',
     (標籤, 選擇器) => {
       const tag = processDisplayArgument(標籤);
@@ -186,12 +199,12 @@ module.exports = function registerPatterns(definePattern) {
   );
   definePattern(
     '清空 $選擇器 的內容',
-    (選擇器) => `document.querySelector(${選擇器}).innerHTML = '';`,
+    (選擇器) => `document.querySelector('${選擇器}').innerHTML = '';`,
     { type: 'ui', description: 'clear element content' }
   );
   definePattern(
     '設定文字於 $選擇器 為 $文字',
-    (選擇器, 文字) => `document.querySelector(${選擇器}).textContent = ${文字};`,
+    (選擇器, 文字) => `document.querySelector('${選擇器}').textContent = ${文字};`,
     { type: 'ui', description: 'set text content' }
   );
   definePattern(
@@ -203,17 +216,6 @@ module.exports = function registerPatterns(definePattern) {
     '在控制台輸出 $內容',
     (內容) => `console.log(${內容});`,
     { type: 'log', description: 'console output' }
-  );
-  definePattern(
-    '設定 cookie $名稱 為 $值',
-    (名稱, 值) => `document.cookie = ${名稱} + '=' + ${值};`,
-    { type: 'data', description: 'set browser cookie' }
-  );
-  definePattern(
-    '顯示 cookie $名稱 的值',
-    (名稱) =>
-      `alert(document.cookie.split('; ').find(c => c.startsWith(${名稱} + '='))?.split('=')[1]);`,
-    { type: 'data', description: 'get cookie value' }
   );
   definePattern(
     '顯示隨機整數至 $最大值',
