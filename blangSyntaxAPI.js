@@ -92,7 +92,7 @@ function buildRegexFromPattern(pattern) {
 }
 
 function getRegisteredPatterns() {
-  return patternRegistry;
+  return patternRegistry.map(({ pattern, type, description }) => ({ pattern, type, description }));
 }
 
 function getPatternsByType(type) {

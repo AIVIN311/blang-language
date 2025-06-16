@@ -60,5 +60,55 @@ module.exports = function registerPatterns(definePattern) {
       hints: ['元素']
     }
   );
+  definePattern(
+    '顯示 $訊息 在 $選擇器',
+    (訊息, 選擇器) =>
+      `document.querySelector(${選擇器}).textContent = ${訊息};`,
+    { type: 'ui', description: 'update DOM text content' }
+  );
+  definePattern(
+    '播放音效($檔名)',
+    (檔名) => `new Audio(${檔名}).play();`,
+    { type: 'media', description: 'play audio file' }
+  );
+  definePattern(
+    '顯示圖片($來源 在 $選擇器)',
+    (來源, 選擇器) =>
+      `const img = document.createElement('img'); img.src = ${來源}; document.querySelector(${選擇器}).appendChild(img);`,
+    { type: 'ui', description: 'insert image element' }
+  );
+  definePattern(
+    '設定背景色($選擇器, $顏色)',
+    (選擇器, 顏色) =>
+      `document.querySelector(${選擇器}).style.backgroundColor = ${顏色};`,
+    { type: 'ui', description: 'change background color' }
+  );
+  definePattern(
+    '播放影片($選擇器)',
+    (選擇器) => `document.querySelector(${選擇器}).play();`,
+    { type: 'media', description: 'play video element' }
+  );
+  definePattern(
+    '暫停音效($選擇器)',
+    (選擇器) => `document.querySelector(${選擇器}).pause();`,
+    { type: 'media', description: 'pause audio element' }
+  );
+  definePattern(
+    '顯示今天是星期幾',
+    () =>
+      'alert("今天是星期" + "日一二三四五六"[new Date().getDay()]);',
+    { type: 'control', description: 'show current weekday' }
+  );
+  definePattern(
+    '顯示現在是幾點幾分',
+    () =>
+      'alert("現在是" + new Date().getHours() + "點" + new Date().getMinutes() + "分");',
+    { type: 'control', description: 'show current time' }
+  );
+  definePattern(
+    '等待 $毫秒 毫秒後 顯示 $訊息',
+    (毫秒, 訊息) => `setTimeout(() => alert(${訊息}), ${毫秒});`,
+    { type: 'control', description: 'delay message in ms' }
+  );
   // 更多擴充語法可加入這裡
 };
