@@ -1,4 +1,5 @@
 module.exports = function registerPatterns(definePattern) {
+  let toggleId = 0;
   // 💬 基本輸出語法
   definePattern('顯示 $內容', (內容) => `alert(${內容});`, {
     description: '彈出警示框顯示指定內容',
@@ -83,6 +84,15 @@ module.exports = function registerPatterns(definePattern) {
       `document.querySelector(${選擇器}).style.backgroundColor = ${顏色};`,
     { type: 'ui', description: 'change background color' }
   );
+
+  definePattern(
+    '切換顏色($選擇器, $顏色1, $顏色2)',
+    (選擇器, 顏色1, 顏色2) => {
+      const elVar = `__toggleEl${toggleId++}`;
+      return `let ${elVar} = document.querySelector(${選擇器}); ${elVar}.style.color = ${elVar}.style.color === ${顏色1} ? ${顏色2} : ${顏色1};`;
+    },
+    { type: 'ui', description: 'toggle text color' }
+  );
   definePattern(
     '播放影片($選擇器)',
     (選擇器) => `document.querySelector(${選擇器}).play();`,
@@ -110,99 +120,6 @@ module.exports = function registerPatterns(definePattern) {
     (毫秒, 訊息) => `setTimeout(() => alert(${訊息}), ${毫秒});`,
     { type: 'control', description: 'delay message in ms' }
   );
-  /* 更多擴充語法可加入這裡
-  definePattern(
-    '重複執行($參數1)',
-    (參數1) => {},
-    { type: 'control' }
-  );
-  definePattern(
-    '設定樣式($參數1, $參數2, $參數3)',
-    (參數1, 參數2, 參數3) => {},
-    { type: 'ui' }
-  );
-  definePattern(
-    '切換顏色($參數1, $參數2, $參數3)',
-    (參數1, 參數2, 參數3) => {},
-    { type: 'control' }
-  );
-  definePattern(
-    '轉跳網頁($參數1)',
-    (參數1) => {},
-    { type: 'control' }
-  );
-  definePattern(
-    '顯示圖片($參數1)',
-    (參數1) => {},
-    { type: 'media' }
-  );
-  definePattern(
-    '說一句話($參數1)',
-    (參數1) => {},
-    { type: 'control' }
-  );
-  definePattern(
-    '播放音效($參數1)',
-    (參數1) => { new Audio(參數1).play(); },
-    { type: 'media' }
-  );
-  definePattern(
-    '隱藏($參數1)',
-    (參數1) => { document.querySelector(參數1).style.display = "none"; },
-    { type: 'ui' }
-  );
-  definePattern(
-    '設定背景色($參數1, $參數2)',
-    (參數1, 參數2) => { document.querySelector(參數1).style.backgroundColor = 參數2; },
-    { type: 'ui' }
-  );
-  */
-definePattern(
-  '重複執行($參數1)',
-  (參數1) => { return /* TODO */; },
-  { type: 'control' }
-);
-definePattern(
-  '設定樣式($參數1, $參數2, $參數3)',
-  (參數1, 參數2, 參數3) => { return /* TODO */; },
-  { type: 'ui' }
-);
-definePattern(
-  '切換顏色($參數1, $參數2, $參數3)',
-  (參數1, 參數2, 參數3) => { return /* TODO */; },
-  { type: 'control' }
-);
-definePattern(
-  '轉跳網頁($參數1)',
-  (參數1) => { return /* TODO */; },
-  { type: 'control' }
-);
-definePattern(
-  '顯示圖片($參數1)',
-  (參數1) => { return /* TODO */; },
-  { type: 'media' }
-);
-definePattern(
-  '說一句話($參數1)',
-  (參數1) => { return /* TODO */; },
-  { type: 'control' }
-);
-definePattern(
-  '播放音效($參數1)',
-  (參數1) => { return new Audio(參數1).play(); },
-  { type: 'media' }
-);
-definePattern(
-  '隱藏($參數1)',
-  (參數1) => { return document.querySelector(參數1).style.display = "none"; },
-  { type: 'ui' }
-);
-  definePattern(
-    '設定背景色($參數1, $參數2)',
-    (參數1, 參數2) => { return document.querySelector(參數1).style.backgroundColor = 參數2; },
-    { type: 'ui' }
-  );
-
   definePattern(
     '顯示今天日期',
     () => 'alert(new Date().toLocaleDateString());',
@@ -306,59 +223,4 @@ definePattern(
     (網址) => `window.open(${網址}, '_blank');`,
     { type: 'control', description: 'open new window' }
   );
-definePattern(
-  '重複執行($參數1)',
-  (參數1) => { return /* TODO */; },
-  { type: 'control' }
-);
-definePattern(
-  '設定樣式($參數1, $參數2, $參數3)',
-  (參數1, 參數2, 參數3) => { return /* TODO */; },
-  { type: 'ui' }
-);
-definePattern(
-  '切換顏色($參數1, $參數2, $參數3)',
-  (參數1, 參數2, 參數3) => { return /* TODO */; },
-  { type: 'control' }
-);
-definePattern(
-  '轉跳網頁($參數1)',
-  (參數1) => { return /* TODO */; },
-  { type: 'control' }
-);
-definePattern(
-  '顯示圖片($參數1)',
-  (參數1) => { return /* TODO */; },
-  { type: 'media' }
-);
-definePattern(
-  '說一句話($參數1)',
-  (參數1) => { return /* TODO */; },
-  { type: 'control' }
-);
-definePattern(
-  '播放音效($參數1)',
-  (參數1) => { return new Audio(參數1).play(); },
-  { type: 'media' }
-);
-definePattern(
-  '隱藏($參數1)',
-  (參數1) => { return document.querySelector(參數1).style.display = "none"; },
-  { type: 'ui' }
-);
-definePattern(
-  '設定背景色($參數1, $參數2)',
-  (參數1, 參數2) => { return document.querySelector(參數1).style.backgroundColor = 參數2; },
-  { type: 'ui' }
-);
-definePattern(
-  '切換顯示隱藏($參數1)',
-  (參數1) => { return document.querySelector(參數1).style.display = "none"; },
-  { type: 'ui' }
-);
-definePattern(
-  '循環播放音樂($參數1)',
-  (參數1) => { return /* TODO */; },
-  { type: 'control' }
-);
 };
