@@ -5,6 +5,9 @@
 **Blang** 是一套以「中文語意」為核心邏輯的實驗性程式語言，讓你用直覺的語句編寫真正能執行的互動應用。
 從命令到語境，從語法到語意，Blang 正在建構一套智慧語法的語言宇宙。
 
+- 📘 [Blang 語法導覽手冊](grammar_guide.md)
+- 🧾 [Blang 語法總覽表（自動同步）](grammar_auto.md)
+
 ---
 
 ## 🚀 快速開始
@@ -204,7 +207,8 @@ blang/
 ├── index.html              # 測試用 HTML 頁面
 ├── assets/                 # 說明用圖片
 ├── tests/                  # 單元測試腳本
-└── grammar.md              # 中文語法對照與設計筆記
+├── grammar_guide.md        # 中文語法對照與設計筆記
+└── grammar_auto.md         # 語法總覽表（自動產生）
 ````
 
 ## 🧪 測試與開發工具
