@@ -107,6 +107,7 @@ function getPatternsByType(type) {
 module.exports = {
   definePattern,
   runBlangParser,
+  buildRegexFromPattern,
   getRegisteredPatterns,
   getPatternsByType
 };
