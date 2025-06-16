@@ -2,9 +2,17 @@
 
 const registerPatterns = require('./customBlangPatterns.js');
 const patternRegistry = [];
+const patternGroups = {};
 
 function definePattern(pattern, generator, options = {}) {
-  patternRegistry.push({ pattern, generator, ...options });
+  const entry = { pattern, generator, ...options };
+  patternRegistry.push(entry);
+  if (entry.type) {
+    if (!patternGroups[entry.type]) {
+      patternGroups[entry.type] = [];
+    }
+    patternGroups[entry.type].push(entry);
+  }
 }
 
 // 在解析器初始化前註冊自訂語法模式
@@ -84,8 +92,13 @@ function getRegisteredPatterns() {
   return patternRegistry;
 }
 
+function getPatternsByType(type) {
+  return patternGroups[type] || [];
+}
+
 module.exports = {
   definePattern,
   runBlangParser,
-  getRegisteredPatterns
+  getRegisteredPatterns,
+  getPatternsByType
 };

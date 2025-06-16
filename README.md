@@ -31,6 +31,15 @@ definePattern(
 );
 ```
 
+可在第三個參數傳入 `{ type }` 以標記模式用途。常見分類包含：
+
+- `ui`：介面與 DOM 操作
+- `control`：流程控制語句
+- `speech`：語音或對話相關
+- `misc`：其他輔助指令
+
+在程式中可使用 `getPatternsByType(type)` 取得同類型的所有已註冊語法。
+
 執行轉譯：
 
 ```bash
