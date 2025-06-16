@@ -1,10 +1,12 @@
 // 🧠 blang-lint.js v0.1 - Blang 靜態語法檢查器（初版）
 const fs = require('fs');
+const { getRegisteredPatterns, buildRegexFromPattern } = require('./blangSyntaxAPI.js');
 
 const filepath = process.argv[2] || 'demo.blang';
 const lines = fs.readFileSync(filepath, 'utf8').split('\n');
 
 let issues = [];
+const patternRegexes = getRegisteredPatterns().map(p => buildRegexFromPattern(p.pattern).regex);
 
 function checkIndentation(line, index) {
   const trimmed = line.trim();
@@ -34,29 +36,10 @@ function checkUnclosedParentheses(line, index) {
 
 function checkUnknownStart(line, index) {
   const trimmed = line.trim();
-  const keywords = [
-    '變數 ',
-    '定義 ',
-    '呼叫 ',
-    '當（',
-    '如果（',
-    '否則：',
-    '等待（',
-    '顯示（',
-    '重複執行（',
-    '設定樣式（',
-    '建立人物（',
-    '取得屬性（',
-    '顯示訊息框（',
-    '使用者輸入（'
-  ];
-
-  // ✅ 支援「若（...）則 顯示（...）」語法
-  if (trimmed.match(/^若（.*?）則 顯示（.*?）/)) return;
-
   if (trimmed === '') return;
 
-  if (!keywords.some((k) => trimmed.startsWith(k))) {
+  const matched = patternRegexes.some((re) => re.test(trimmed));
+  if (!matched) {
     issues.push({
       line: index + 1,
       type: '未知語句',
