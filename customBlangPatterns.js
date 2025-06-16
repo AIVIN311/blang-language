@@ -197,9 +197,113 @@ definePattern(
   (參數1) => { return document.querySelector(參數1).style.display = "none"; },
   { type: 'ui' }
 );
-definePattern(
-  '設定背景色($參數1, $參數2)',
-  (參數1, 參數2) => { return document.querySelector(參數1).style.backgroundColor = 參數2; },
-  { type: 'ui' }
-);
+  definePattern(
+    '設定背景色($參數1, $參數2)',
+    (參數1, 參數2) => { return document.querySelector(參數1).style.backgroundColor = 參數2; },
+    { type: 'ui' }
+  );
+
+  definePattern(
+    '顯示今天日期',
+    () => 'alert(new Date().toLocaleDateString());',
+    { type: 'time', description: 'show current date' }
+  );
+  definePattern(
+    '替換所有 $舊字 為 $新字 在 $字串',
+    (舊字, 新字, 字串) => `alert(${字串}.replaceAll(${舊字}, ${新字}));`,
+    { type: 'string', description: 'replace text and display' }
+  );
+  definePattern(
+    '切換顯示隱藏 $選擇器',
+    (選擇器) =>
+      `const el = document.querySelector(${選擇器}); el.style.display = el.style.display === 'none' ? 'block' : 'none';`,
+    { type: 'ui', description: 'toggle element display' }
+  );
+  definePattern(
+    '增加透明度動畫到 $選擇器',
+    (選擇器) => `document.querySelector(${選擇器}).style.transition = 'opacity 0.5s';`,
+    { type: 'ui', description: 'fade animation' }
+  );
+  definePattern(
+    '顯示 $數字 的絕對值',
+    (數字) => `alert(Math.abs(${數字}));`,
+    { type: 'math', description: 'show absolute value' }
+  );
+  definePattern(
+    '遍歷 $清單 並顯示每項',
+    (清單) => `${清單}.forEach(item => alert(item));`,
+    { type: 'data', description: 'iterate list items' }
+  );
+  definePattern(
+    '停止所有音效',
+    () => "document.querySelectorAll('audio').forEach(a => a.pause());",
+    { type: 'media', description: 'pause all audio' }
+  );
+  definePattern(
+    '顯示目前瀏覽器語系',
+    () => 'alert(navigator.language);',
+    { type: 'data', description: 'show browser language' }
+  );
+  definePattern(
+    '顯示 JSON 格式化 $物件',
+    (物件) => `alert(JSON.stringify(${物件}, null, 2));`,
+    { type: 'data', description: 'display object as JSON' }
+  );
+  definePattern(
+    '新增元素 $標籤 到 $選擇器',
+    (標籤, 選擇器) =>
+      `document.querySelector(${選擇器}).appendChild(document.createElement(${標籤}));`,
+    { type: 'ui', description: 'append new element' }
+  );
+  definePattern(
+    '清空 $選擇器 的內容',
+    (選擇器) => `document.querySelector(${選擇器}).innerHTML = '';`,
+    { type: 'ui', description: 'clear element content' }
+  );
+  definePattern(
+    '設定文字於 $選擇器 為 $文字',
+    (選擇器, 文字) => `document.querySelector(${選擇器}).textContent = ${文字};`,
+    { type: 'ui', description: 'set text content' }
+  );
+  definePattern(
+    '在控制台輸出 $內容',
+    (內容) => `console.log(${內容});`,
+    { type: 'log', description: 'console output' }
+  );
+  definePattern(
+    '設定 cookie $名稱 為 $值',
+    (名稱, 值) => `document.cookie = ${名稱} + '=' + ${值};`,
+    { type: 'data', description: 'set browser cookie' }
+  );
+  definePattern(
+    '顯示 cookie $名稱 的值',
+    (名稱) =>
+      `alert(document.cookie.split('; ').find(c => c.startsWith(${名稱} + '='))?.split('=')[1]);`,
+    { type: 'data', description: 'get cookie value' }
+  );
+  definePattern(
+    '顯示隨機整數至 $最大值',
+    (最大值) => `alert(Math.floor(Math.random() * ${最大值}));`,
+    { type: 'math', description: 'random integer' }
+  );
+  definePattern(
+    '反轉 $清單',
+    (清單) => `${清單}.reverse();`,
+    { type: 'data', description: 'reverse list' }
+  );
+  definePattern(
+    '顯示網址參數 $鍵',
+    (鍵) => `alert(new URLSearchParams(location.search).get(${鍵}));`,
+    { type: 'data', description: 'show query parameter' }
+  );
+  definePattern(
+    '循環播放音樂 $檔名',
+    (檔名) => `const a = new Audio(${檔名}); a.loop = true; a.play();`,
+    { type: 'media', description: 'loop audio' }
+  );
+  definePattern(
+    '開新視窗到 $網址',
+    (網址) => `window.open(${網址}, '_blank');`,
+    { type: 'control', description: 'open new window' }
+  );
 };
