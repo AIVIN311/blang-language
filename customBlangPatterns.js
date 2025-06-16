@@ -55,7 +55,7 @@ module.exports = function registerPatterns(definePattern) {
   );
   definePattern(
     '隱藏 $元素',
-    (元素) => `document.querySelector(${元素}).style.display = "none";`,
+    (元素) => `document.querySelector('${元素}').style.display = "none";`,
     {
       type: 'ui',
       description: '隱藏指定元素',
@@ -65,7 +65,7 @@ module.exports = function registerPatterns(definePattern) {
   definePattern(
     '顯示 $訊息 在 $選擇器',
     (訊息, 選擇器) =>
-      `document.querySelector(${選擇器}).textContent = ${訊息};`,
+      `document.querySelector('${選擇器}').textContent = ${訊息};`,
     { type: 'ui', description: 'update DOM text content' }
   );
   definePattern(
@@ -76,13 +76,13 @@ module.exports = function registerPatterns(definePattern) {
   definePattern(
     '顯示圖片($來源 在 $選擇器)',
     (來源, 選擇器) =>
-      `const img = document.createElement('img'); img.src = ${來源}; document.querySelector(${選擇器}).appendChild(img);`,
+      `const img = document.createElement('img'); img.src = ${來源}; document.querySelector('${選擇器}').appendChild(img);`,
     { type: 'ui', description: 'insert image element' }
   );
   definePattern(
     '設定背景色($選擇器, $顏色)',
     (選擇器, 顏色) =>
-      `document.querySelector(${選擇器}).style.backgroundColor = ${顏色};`,
+      `document.querySelector('${選擇器}').style.backgroundColor = ${顏色};`,
     { type: 'ui', description: 'change background color' }
   );
 
@@ -90,18 +90,18 @@ module.exports = function registerPatterns(definePattern) {
     '切換顏色($選擇器, $顏色1, $顏色2)',
     (選擇器, 顏色1, 顏色2) => {
       const elVar = `__toggleEl${toggleId++}`;
-      return `let ${elVar} = document.querySelector(${選擇器}); ${elVar}.style.color = ${elVar}.style.color === ${顏色1} ? ${顏色2} : ${顏色1};`;
+      return `let ${elVar} = document.querySelector('${選擇器}'); ${elVar}.style.color = ${elVar}.style.color === ${顏色1} ? ${顏色2} : ${顏色1};`;
     },
     { type: 'ui', description: 'toggle text color' }
   );
   definePattern(
     '播放影片($選擇器)',
-    (選擇器) => `document.querySelector(${選擇器}).play();`,
+    (選擇器) => `document.querySelector('${選擇器}').play();`,
     { type: 'media', description: 'play video element' }
   );
   definePattern(
     '暫停音效($選擇器)',
-    (選擇器) => `document.querySelector(${選擇器}).pause();`,
+    (選擇器) => `document.querySelector('${選擇器}').pause();`,
     { type: 'media', description: 'pause audio element' }
   );
   definePattern(
@@ -139,12 +139,12 @@ module.exports = function registerPatterns(definePattern) {
   definePattern(
     '切換顯示隱藏 $選擇器',
     (選擇器) =>
-      `const el = document.querySelector(${選擇器}); el.style.display = el.style.display === 'none' ? 'block' : 'none';`,
+      `const el = document.querySelector('${選擇器}'); el.style.display = el.style.display === 'none' ? 'block' : 'none';`,
     { type: 'ui', description: 'toggle element display' }
   );
   definePattern(
     '增加透明度動畫到 $選擇器',
-    (選擇器) => `document.querySelector(${選擇器}).style.transition = 'opacity 0.5s';`,
+    (選擇器) => `document.querySelector('${選擇器}').style.transition = 'opacity 0.5s';`,
     { type: 'ui', description: 'fade animation' }
   );
   definePattern(
@@ -175,17 +175,17 @@ module.exports = function registerPatterns(definePattern) {
   definePattern(
     '新增元素 $標籤 到 $選擇器',
     (標籤, 選擇器) =>
-      `document.querySelector(${選擇器}).appendChild(document.createElement(${標籤}));`,
+      `document.querySelector('${選擇器}').appendChild(document.createElement('${標籤}'));`,
     { type: 'ui', description: 'append new element' }
   );
   definePattern(
     '清空 $選擇器 的內容',
-    (選擇器) => `document.querySelector(${選擇器}).innerHTML = '';`,
+    (選擇器) => `document.querySelector('${選擇器}').innerHTML = '';`,
     { type: 'ui', description: 'clear element content' }
   );
   definePattern(
     '設定文字於 $選擇器 為 $文字',
-    (選擇器, 文字) => `document.querySelector(${選擇器}).textContent = ${文字};`,
+    (選擇器, 文字) => `document.querySelector('${選擇器}').textContent = ${文字};`,
     { type: 'ui', description: 'set text content' }
   );
   definePattern(
