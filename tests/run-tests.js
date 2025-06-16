@@ -242,6 +242,29 @@ function testContentLengthCondition() {
   }
 }
 
+function testSetSelectorContent() {
+  const sample = '設定（#foo）為 "嗨呀!"';
+  const originalDemo = fs.readFileSync('demo.blang', 'utf8');
+  fs.writeFileSync('demo.blang', sample);
+
+  const hasOutput = fs.existsSync('output.js');
+  const originalOut = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
+
+  execSync('node parser_v0.9.4.js');
+  const output = fs.readFileSync('output.js', 'utf8');
+  assert(
+    output.includes('document.querySelector("#foo").textContent = "嗨呀!";'),
+    '設定（#foo）為 內容 should set text using helper'
+  );
+
+  fs.writeFileSync('demo.blang', originalDemo);
+  if (hasOutput) {
+    fs.writeFileSync('output.js', originalOut);
+  } else {
+    fs.unlinkSync('output.js');
+  }
+}
+
 function testLogStatement() {
   const sample = '說一句話（"這是測試"）';
   const originalDemo = fs.readFileSync('demo.blang', 'utf8');
@@ -456,6 +479,7 @@ try {
   testToggleColorParsing();
   testMultipleToggleColor();
   testShowImageParsing();
+  testSetSelectorContent();
   testLogStatement();
   testPlayVideoParsing();
   testPauseAudioParsing();

@@ -1,3 +1,4 @@
+const { handleFunctionCall } = require('./semanticHandler-v0.9.4.js');
 module.exports = function registerPatterns(definePattern) {
   let toggleId = 0;
   // 💬 基本輸出語法
@@ -186,6 +187,11 @@ module.exports = function registerPatterns(definePattern) {
     '設定文字於 $選擇器 為 $文字',
     (選擇器, 文字) => `document.querySelector(${選擇器}).textContent = ${文字};`,
     { type: 'ui', description: 'set text content' }
+  );
+  definePattern(
+    '設定（$選擇器）為 $內容',
+    (選擇器, 內容) => handleFunctionCall('設定文字內容', `${選擇器}, ${內容}`),
+    { type: 'ui' }
   );
   definePattern(
     '在控制台輸出 $內容',
