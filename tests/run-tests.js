@@ -352,6 +352,24 @@ function testIfElsePatternChinese() {
   );
 }
 
+function testGetRegisteredPatterns() {
+  const { getRegisteredPatterns } = require('../blangSyntaxAPI.js');
+  const patterns = getRegisteredPatterns();
+  const patternStrings = patterns.map(p => p.pattern);
+  const expected = [
+    '顯示 $內容',
+    '設定 $變數 為 $值',
+    '若 $條件 則 顯示 $當真 否則 顯示 $當假',
+    '若（$條件）則 顯示（$語句1） 否則 顯示（$語句2）',
+    '若($條件)則 顯示($語句1) 否則 顯示($語句2)'
+  ];
+  expected.forEach(pat => {
+    assert(patternStrings.includes(pat), `registered patterns should include "${pat}"`);
+  });
+  const ctrl = patterns.find(p => p.pattern === '若 $條件 則 顯示 $當真 否則 顯示 $當假');
+  assert(ctrl && ctrl.type === 'control', 'pattern should expose type property');
+}
+
 try {
   testProcessDisplayArgument();
   testParser();
@@ -369,6 +387,7 @@ try {
   testDisplayHourMinute();
   testIfElsePattern();
   testIfElsePatternChinese();
+  testGetRegisteredPatterns();
   console.log('All tests passed');
 } catch (err) {
   console.error('Test failed:\n', err.message);

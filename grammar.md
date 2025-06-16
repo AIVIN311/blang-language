@@ -72,6 +72,14 @@ definePattern(
 );
 ```
 
+若想列出目前載入的語法模式，可調用 `getRegisteredPatterns()`：
+
+```js
+const { getRegisteredPatterns } = require('./blangSyntaxAPI.js');
+console.log(getRegisteredPatterns());
+// 會顯示 pattern 字串以及對應的 {type}
+```
+
 ---
 
 ## 🧠 語義模組與自動宣告機制（v0.9.4）
