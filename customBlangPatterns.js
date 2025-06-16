@@ -110,50 +110,51 @@ module.exports = function registerPatterns(definePattern) {
     (毫秒, 訊息) => `setTimeout(() => alert(${訊息}), ${毫秒});`,
     { type: 'control', description: 'delay message in ms' }
   );
-  // 更多擴充語法可加入這裡
-definePattern(
-  '重複執行($參數1)',
-  (參數1) => { return /* TODO */; },
-  { type: 'control' }
-);
-definePattern(
-  '設定樣式($參數1, $參數2, $參數3)',
-  (參數1, 參數2, 參數3) => { return /* TODO */; },
-  { type: 'ui' }
-);
-definePattern(
-  '切換顏色($參數1, $參數2, $參數3)',
-  (參數1, 參數2, 參數3) => { return /* TODO */; },
-  { type: 'control' }
-);
-definePattern(
-  '轉跳網頁($參數1)',
-  (參數1) => { return /* TODO */; },
-  { type: 'control' }
-);
-definePattern(
-  '顯示圖片($參數1)',
-  (參數1) => { return /* TODO */; },
-  { type: 'media' }
-);
-definePattern(
-  '說一句話($參數1)',
-  (參數1) => { return /* TODO */; },
-  { type: 'control' }
-);
-definePattern(
-  '播放音效($參數1)',
-  (參數1) => { return new Audio(參數1).play(); },
-  { type: 'media' }
-);
-definePattern(
-  '隱藏($參數1)',
-  (參數1) => { return document.querySelector(參數1).style.display = "none"; },
-  { type: 'ui' }
-);
-definePattern(
-  '設定背景色($參數1, $參數2)',
-  (參數1, 參數2) => { return document.querySelector(參數1).style.backgroundColor = 參數2; },
-  { type: 'ui' }
-);
+  /* 更多擴充語法可加入這裡
+  definePattern(
+    '重複執行($參數1)',
+    (參數1) => {},
+    { type: 'control' }
+  );
+  definePattern(
+    '設定樣式($參數1, $參數2, $參數3)',
+    (參數1, 參數2, 參數3) => {},
+    { type: 'ui' }
+  );
+  definePattern(
+    '切換顏色($參數1, $參數2, $參數3)',
+    (參數1, 參數2, 參數3) => {},
+    { type: 'control' }
+  );
+  definePattern(
+    '轉跳網頁($參數1)',
+    (參數1) => {},
+    { type: 'control' }
+  );
+  definePattern(
+    '顯示圖片($參數1)',
+    (參數1) => {},
+    { type: 'media' }
+  );
+  definePattern(
+    '說一句話($參數1)',
+    (參數1) => {},
+    { type: 'control' }
+  );
+  definePattern(
+    '播放音效($參數1)',
+    (參數1) => { new Audio(參數1).play(); },
+    { type: 'media' }
+  );
+  definePattern(
+    '隱藏($參數1)',
+    (參數1) => { document.querySelector(參數1).style.display = "none"; },
+    { type: 'ui' }
+  );
+  definePattern(
+    '設定背景色($參數1, $參數2)',
+    (參數1, 參數2) => { document.querySelector(參數1).style.backgroundColor = 參數2; },
+    { type: 'ui' }
+  );
+  */
 };
