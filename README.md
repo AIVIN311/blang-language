@@ -31,6 +31,16 @@ definePattern(
 );
 ```
 
+<<<<<<< codex/extend-blangsyntaxapi.js-to-group-patterns
+可在第三個參數傳入 `{ type }` 以標記模式用途。常見分類包含：
+
+- `ui`：介面與 DOM 操作
+- `control`：流程控制語句
+- `speech`：語音或對話相關
+- `misc`：其他輔助指令
+
+在程式中可使用 `getPatternsByType(type)` 取得同類型的所有已註冊語法。
+=======
 要查看所有已註冊的語法模式，可使用 `getRegisteredPatterns()`：
 
 ```js
@@ -38,6 +48,7 @@ const { getRegisteredPatterns } = require('./blangSyntaxAPI.js');
 console.log(getRegisteredPatterns());
 // 返回陣列列出每個 pattern 及其 {type}
 ```
+>>>>>>> main
 
 執行轉譯：
 
