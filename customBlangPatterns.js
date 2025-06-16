@@ -2,12 +2,22 @@ const { handleFunctionCall } = require('./semanticHandler-v0.9.4.js');
 module.exports = function registerPatterns(definePattern) {
   let toggleId = 0;
   // 💬 基本輸出語法
+  definePattern(
+    '顯示 JSON 格式化 $物件',
+    (物件) => `alert(JSON.stringify(${物件}, null, 2));`,
+    { type: 'data', description: 'display object as JSON' }
+  );
   definePattern('顯示 $內容', (內容) => `alert(${內容});`, {
     description: '彈出警示框顯示指定內容',
     hints: ['內容']
   });
 
   // 💬 變數設定
+  definePattern(
+    '設定 cookie $名稱 為 $值',
+    (名稱, 值) => `document.cookie = ${名稱} + '=' + ${值};`,
+    { type: 'data', description: 'set browser cookie' }
+  );
   definePattern('設定 $變數 為 $值', (變數, 值) => `let ${變數} = ${值};`, {
     description: '宣告或重新賦值變數',
     hints: ['變數', '值']
@@ -168,11 +178,6 @@ module.exports = function registerPatterns(definePattern) {
     { type: 'data', description: 'show browser language' }
   );
   definePattern(
-    '顯示 JSON 格式化 $物件',
-    (物件) => `alert(JSON.stringify(${物件}, null, 2));`,
-    { type: 'data', description: 'display object as JSON' }
-  );
-  definePattern(
     '新增元素 $標籤 到 $選擇器',
     (標籤, 選擇器) =>
       `document.querySelector('${選擇器}').appendChild(document.createElement('${標籤}'));`,
@@ -197,11 +202,6 @@ module.exports = function registerPatterns(definePattern) {
     '在控制台輸出 $內容',
     (內容) => `console.log(${內容});`,
     { type: 'log', description: 'console output' }
-  );
-  definePattern(
-    '設定 cookie $名稱 為 $值',
-    (名稱, 值) => `document.cookie = ${名稱} + '=' + ${值};`,
-    { type: 'data', description: 'set browser cookie' }
   );
   definePattern(
     '顯示 cookie $名稱 的值',
