@@ -110,6 +110,12 @@ module.exports = function registerPatterns(definePattern) {
     (毫秒, 訊息) => `setTimeout(() => alert(${訊息}), ${毫秒});`,
     { type: 'control', description: 'delay message in ms' }
   );
+  definePattern(
+    '等待 $秒數 秒後：顯示 $訊息',
+    (秒數, 訊息) =>
+      `setTimeout(() => alert(${訊息}), ${秒數} * 1000);`,
+    { type: 'control', description: '延遲數秒後顯示訊息', hints: ['秒數', '訊息'] }
+  );
   /* 更多擴充語法可加入這裡
   definePattern(
     '重複執行($參數1)',
