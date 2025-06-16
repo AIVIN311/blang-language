@@ -36,7 +36,7 @@ function generatorCode(cmd, vars) {
   if (/隱藏/.test(cmd)) return `document.querySelector(${vars[0]}).style.display = "none";`;
   if (/設定背景色/.test(cmd))
     return `document.querySelector(${vars[0]}).style.backgroundColor = ${vars[1]};`;
-  return '// TODO';
+  return '/* TODO */';
 }
 
 let custom = fs.readFileSync(patternsPath, 'utf8');
@@ -50,7 +50,13 @@ Object.entries(commands).forEach(([cmd, { argsCount }]) => {
   if (hasPattern(custom, cmd)) return;
   const vars = Array.from({ length: Math.max(argsCount, 1) }, (_, i) => `參數${i + 1}`);
   const pattern = `${cmd}(${vars.map((v) => '$' + v).join(', ')})`;
-  const body = generatorCode(cmd, vars);
+  let body = generatorCode(cmd, vars);
+  if (typeof body === 'string') {
+    body = body.trim().replace(/;$/, '');
+    if (/,\s*$/.test(body)) {
+      console.warn(`generated body for ${cmd} ends with comma`);
+    }
+  }
   const type = guessType(cmd);
   const snippet = [
     `definePattern(`,
