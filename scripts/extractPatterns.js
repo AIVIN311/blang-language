@@ -18,7 +18,7 @@ for (const line of demoLines) {
   if (skipWords.includes(cmd)) continue;
   const params = m[2]
     .split(/[，,]/)
-    .map(s => s.trim())
+    .map((s) => s.trim())
     .filter(Boolean);
   if (!commands[cmd]) {
     commands[cmd] = { argsCount: params.length };
@@ -34,30 +34,32 @@ function guessType(cmd) {
 function generatorCode(cmd, vars) {
   if (/播放音效/.test(cmd)) return `new Audio(${vars[0]}).play();`;
   if (/隱藏/.test(cmd)) return `document.querySelector(${vars[0]}).style.display = "none";`;
-  if (/設定背景色/.test(cmd)) return `document.querySelector(${vars[0]}).style.backgroundColor = ${vars[1]};`;
+  if (/設定背景色/.test(cmd))
+    return `document.querySelector(${vars[0]}).style.backgroundColor = ${vars[1]};`;
   return '// TODO';
 }
 
 let custom = fs.readFileSync(patternsPath, 'utf8');
 
 function hasPattern(content, cmd) {
-  const re = new RegExp("definePattern\\(['\"]" + cmd.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&'));
+  const re = new RegExp('definePattern\\([\'"]' + cmd.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&'));
   return re.test(content);
 }
 
 Object.entries(commands).forEach(([cmd, { argsCount }]) => {
   if (hasPattern(custom, cmd)) return;
   const vars = Array.from({ length: Math.max(argsCount, 1) }, (_, i) => `參數${i + 1}`);
-  const pattern = `${cmd}(${vars.map(v => '$' + v).join(', ')})`;
+  const pattern = `${cmd}(${vars.map((v) => '$' + v).join(', ')})`;
   const body = generatorCode(cmd, vars);
   const type = guessType(cmd);
   const snippet = [
-    '  definePattern(',
-    `    '${pattern}',`,
-    `    (${vars.join(', ')}) => ${body},`,
-    `    { type: '${type}' }`,
-    '  );',
+    `definePattern(`,
+    `  '${pattern}',`,
+    `  (${vars.join(', ')}) => { return ${body}; },`,
+    `  { type: '${type}' }`,
+    `);`
   ].join('\n');
+
   custom = custom.replace(/\n\};\s*$/, `\n${snippet}\n};`);
 });
 
