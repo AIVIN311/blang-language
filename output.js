@@ -2,15 +2,7 @@ let 人物 = {}; // ⛳ 自動補上 人物 變數
 let 空 = 0; // ⛳ 自動補上未宣告變數
 const 輸入框 = document.getElementById("input");
 
-if (typeof ErrorHelper === 'undefined') {
-  var ErrorHelper = {
-    translateError: (e) => (e && e.message) || String(e),
-    runSafely: (fn) => { try { return fn(); } catch (err) { console.error(err); } }
-  };
-}
-
 document.getElementById("submit").addEventListener("click", () => {
-  ErrorHelper.runSafely(() => {
 if (輸入框.value === "") {
     alert("請先輸入內容");
 } else {
@@ -92,9 +84,13 @@ alert("今天是星期" + "日一二三四五六"[new Date().getDay()]);
 alert("現在是" + new Date().getHours() + "點" + new Date().getMinutes() + "分");
 alert("你好世界");
 if (1 > 0) { alert("大"); } else { alert("小"); }
+alert("開始測試");
+document.querySelector("#通知區").style.display = "none";
+setTimeout(() => {
+    alert("完成");
+}, 2000);
     }
     }
 }
 }
-  });
 });
