@@ -75,40 +75,40 @@ if (數量 > 2) {
         window.location.href = "https://example.com";
                 const img = document.createElement('img'); img.src = "圖.jpg"; document.querySelector("#區塊").appendChild(img);
                 console.log("你好世界");
-new Audio("ding.mp3").play();
-document.querySelector("#警告區塊").style.display = "none";
-document.querySelector("#表單").style.display = "block";
-document.querySelector("#頁面").style.backgroundColor = "lightblue";
-document.querySelector("#狀態文字").textContent = "處理中...";
-alert("今天是星期" + "日一二三四五六"[new Date().getDay()]);
-alert("現在是" + new Date().getHours() + "點" + new Date().getMinutes() + "分");
-alert("你好世界");
-if (1 > 0) { alert("大"); } else { alert("小"); }
-alert("開始測試");
-document.querySelector("#通知區").style.display = "none";
-setTimeout(() => {
-    alert("完成");
-}, 2000);
-// 未翻譯：顯示今天日期（無匹配的語法規則）
-// 未翻譯：替換所有 "貓" 為 "狗" 在 原句（無匹配的語法規則）
-切換顯示隱藏(#詳細);
-// 未翻譯：增加透明度動畫到 #方塊（無匹配的語法規則）
-// 未翻譯：顯示 數量 的絕對值（無匹配的語法規則）
-// 未翻譯：遍歷 水果們 並顯示每項（無匹配的語法規則）
-// 未翻譯：停止所有音效（無匹配的語法規則）
-// 未翻譯：顯示目前瀏覽器語系（無匹配的語法規則）
-// 未翻譯：顯示 JSON 格式化 使用者（無匹配的語法規則）
-// 未翻譯：新增元素 div 到 #容器（無匹配的語法規則）
-// 未翻譯：清空 #結果區 的內容（無匹配的語法規則）
-// 未翻譯：設定文字於 #狀態 為 "完成"（無匹配的語法規則）
-// 未翻譯：在控制台輸出 "測試中"（無匹配的語法規則）
-// 未翻譯：設定 cookie token 為 "123"（無匹配的語法規則）
-// 未翻譯：顯示 cookie token 的值（無匹配的語法規則）
-// 未翻譯：顯示隨機整數至 10（無匹配的語法規則）
-// 未翻譯：反轉 水果們（無匹配的語法規則）
-// 未翻譯：顯示網址參數 id（無匹配的語法規則）
-循環播放音樂("bg.mp3");
-// 未翻譯：開新視窗到 "https://example.com"（無匹配的語法規則）
+                new Audio("ding.mp3").play();
+                document.querySelector("#警告區塊").style.display = "none";
+                document.querySelector("#表單").style.display = "block";
+                document.querySelector("#頁面").style.backgroundColor = "lightblue";
+                document.querySelector("#狀態文字").textContent = "處理中...";
+        alert("今天是星期" + "日一二三四五六"[new Date().getDay()]);
+        alert("現在是" + new Date().getHours() + "點" + new Date().getMinutes() + "分");
+        alert("你好世界");
+        if (1 > 0) { alert("大"); } else { alert("小"); }
+        alert("開始測試");
+                document.querySelector("#通知區").style.display = "none";
+        setTimeout(() => {
+            alert("完成");
+        }, 2000);
+        // 未翻譯：顯示今天日期（無匹配的語法規則）
+        // 未翻譯：替換所有 "貓" 為 "狗" 在 原句（無匹配的語法規則）
+                切換顯示隱藏(#詳細);
+        // 未翻譯：增加透明度動畫到 #方塊（無匹配的語法規則）
+        // 未翻譯：顯示 數量 的絕對值（無匹配的語法規則）
+        // 未翻譯：遍歷 水果們 並顯示每項（無匹配的語法規則）
+        // 未翻譯：停止所有音效（無匹配的語法規則）
+        // 未翻譯：顯示目前瀏覽器語系（無匹配的語法規則）
+        // 未翻譯：顯示 JSON 格式化 使用者（無匹配的語法規則）
+        // 未翻譯：新增元素 div 到 #容器（無匹配的語法規則）
+        // 未翻譯：清空 #結果區 的內容（無匹配的語法規則）
+        // 未翻譯：設定文字於 #狀態 為 "完成"（無匹配的語法規則）
+        // 未翻譯：在控制台輸出 "測試中"（無匹配的語法規則）
+        // 未翻譯：設定 cookie token 為 "123"（無匹配的語法規則）
+        // 未翻譯：顯示 cookie token 的值（無匹配的語法規則）
+        // 未翻譯：顯示隨機整數至 10（無匹配的語法規則）
+        // 未翻譯：反轉 水果們（無匹配的語法規則）
+        // 未翻譯：顯示網址參數 id（無匹配的語法規則）
+                循環播放音樂("bg.mp3");
+        // 未翻譯：開新視窗到 "https://example.com"（無匹配的語法規則）
     }
     }
 }
