@@ -1,4 +1,4 @@
-const { handleFunctionCall } = require('./semanticHandler-v0.9.4.js');
+const { handleFunctionCall, processDisplayArgument } = require('./semanticHandler-v0.9.4.js');
 module.exports = function registerPatterns(definePattern) {
   let toggleId = 0;
   // 💬 基本輸出語法
@@ -162,7 +162,10 @@ module.exports = function registerPatterns(definePattern) {
   );
   definePattern(
     '增加透明度動畫到 $選擇器',
-    (選擇器) => `document.querySelector('${選擇器}').style.transition = 'opacity 0.5s';`,
+    (選擇器) => {
+      const sel = processDisplayArgument(選擇器);
+      return `document.querySelector(${sel}).style.transition = 'opacity 0.5s';`;
+    },
     { type: 'ui', description: 'fade animation' }
   );
   definePattern(
@@ -187,8 +190,11 @@ module.exports = function registerPatterns(definePattern) {
   );
   definePattern(
     '新增元素 $標籤 到 $選擇器',
-    (標籤, 選擇器) =>
-      `document.querySelector('${選擇器}').appendChild(document.createElement('${標籤}'));`,
+    (標籤, 選擇器) => {
+      const tag = processDisplayArgument(標籤);
+      const sel = processDisplayArgument(選擇器);
+      return `document.querySelector(${sel}).appendChild(document.createElement(${tag}));`;
+    },
     { type: 'ui', description: 'append new element' }
   );
   definePattern(
