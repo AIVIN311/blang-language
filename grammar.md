@@ -77,7 +77,8 @@ definePattern(
 ```js
 const { getRegisteredPatterns } = require('./blangSyntaxAPI.js');
 console.log(getRegisteredPatterns());
-// 會顯示 pattern 字串以及對應的 { type, description }
+// 會顯示 pattern 字串以及對應的 {type, description}
+
 ```
 
 ---
