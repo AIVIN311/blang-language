@@ -568,6 +568,13 @@ for (let i = 0; i < lines.length; i++) {
     }
   }
 
+  // ✅ 支援「隱藏 #id」簡寫
+  if (/^隱藏\s+#.+/.test(line.trim())) {
+    const selector = line.trim().replace(/^隱藏\s+/, '');
+    output.push(' '.repeat(indent) + handleFunctionCall('隱藏', selector, indent, declaredVars));
+    continue;
+  }
+
   // ✅ 一般函式語句處理：如 設定樣式(...)、轉大寫(...)、使用者輸入(...)
   if (
     (line.match(/^[\u4e00-\u9fa5\w]+[（(].*[）)]$/) || line.match(/^[\u4e00-\u9fa5\w]+\(.*\)$/)) &&
