@@ -1,5 +1,6 @@
 // 🧠 Blang parser v0.9.4 - 自動補宣告 + 條件語句語意優化整合版
 const fs = require('fs');
+const { runBlangParser } = require('./blangSyntaxAPI.js');
 const {
   processDisplayArgument,
   handleFunctionCall,
@@ -591,7 +592,12 @@ for (let i = 0; i < lines.length; i++) {
     }
   }
 
-  output.push(' '.repeat(indent) + `// 未翻譯：${line}（無匹配的語法規則）`);
+  const parsed = runBlangParser([line]).trim();
+  if (!parsed.startsWith('// 無法辨識語句')) {
+    output.push(' '.repeat(indent) + parsed);
+  } else {
+    output.push(' '.repeat(indent) + `// 未翻譯：${line}（無匹配的語法規則）`);
+  }
 }
 
 closeBlocks(0, 0);

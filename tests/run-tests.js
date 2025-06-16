@@ -423,6 +423,29 @@ function testDisplayHourMinute() {
   }
 }
 
+function testDisplayDate() {
+  const sample = '顯示今天日期';
+  const originalDemo = fs.readFileSync('demo.blang', 'utf8');
+  fs.writeFileSync('demo.blang', sample);
+
+  const hasOutput = fs.existsSync('output.js');
+  const originalOut = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
+
+  execSync('node parser_v0.9.4.js');
+  const output = fs.readFileSync('output.js', 'utf8');
+  assert(
+    output.includes('toLocaleDateString'),
+    '顯示今天日期 should produce alert with local date string'
+  );
+
+  fs.writeFileSync('demo.blang', originalDemo);
+  if (hasOutput) {
+    fs.writeFileSync('output.js', originalOut);
+  } else {
+    fs.unlinkSync('output.js');
+  }
+}
+
 function testIfElsePattern() {
   const { runBlangParser } = require('../blangSyntaxAPI.js');
   const lines = ['若 (1 > 0) 則 顯示 ("yes") 否則 顯示 ("no")'];
@@ -487,6 +510,7 @@ try {
   testWaitSecondsDisplay();
   testDisplayWeekday();
   testDisplayHourMinute();
+  testDisplayDate();
   testIfElsePattern();
   testIfElsePatternChinese();
   testGetRegisteredPatterns();
