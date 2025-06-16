@@ -31,6 +31,14 @@ definePattern(
 );
 ```
 
+要查看所有已註冊的語法模式，可使用 `getRegisteredPatterns()`：
+
+```js
+const { getRegisteredPatterns } = require('./blangSyntaxAPI.js');
+console.log(getRegisteredPatterns());
+// 返回陣列列出每個 pattern 及其 {type}
+```
+
 執行轉譯：
 
 ```bash
