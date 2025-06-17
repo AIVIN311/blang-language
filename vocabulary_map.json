@@ -75,6 +75,10 @@
         "module": "styleModule",
         "js": "styleModule.顯示($1)"
     },
+    "切換顯示隱藏": {
+        "module": "styleModule",
+        "js": "const el = document.querySelector($1); el.style.display = el.style.display === 'none' ? 'block' : 'none'"
+    },
     "播放影片": {
         "module": "mediaModule",
         "js": "$1.play()"

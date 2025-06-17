@@ -123,6 +123,31 @@ function testHideShortFormParsing() {
   }
 }
 
+function testToggleDisplayParsing() {
+  const sample = '切換顯示隱藏(#詳細)';
+  const originalDemo = fs.readFileSync('demo.blang', 'utf8');
+  fs.writeFileSync('demo.blang', sample);
+
+  const hasOutput = fs.existsSync('output.js');
+  const originalOut = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
+
+  execSync('node parser_v0.9.4.js');
+  const output = fs.readFileSync('output.js', 'utf8');
+  assert(
+    output.includes(
+      "const el = document.querySelector(\"#詳細\"); el.style.display = el.style.display === 'none' ? 'block' : 'none';"
+    ),
+    '切換顯示隱藏(#id) 應切換 display 屬性'
+  );
+
+  fs.writeFileSync('demo.blang', originalDemo);
+  if (hasOutput) {
+    fs.writeFileSync('output.js', originalOut);
+  } else {
+    fs.unlinkSync('output.js');
+  }
+}
+
 function testShowElementParsing() {
   const sample = '顯示(#showEl)';
   const originalDemo = fs.readFileSync('demo.blang', 'utf8');
@@ -324,6 +349,52 @@ function testCookieSetting() {
   assert(
     output.includes("document.cookie = token + '=' + \"123\";"),
     '設定 cookie 應產生正確的 cookie 指令'
+  );
+
+  fs.writeFileSync('demo.blang', originalDemo);
+  if (hasOutput) {
+    fs.writeFileSync('output.js', originalOut);
+  } else {
+    fs.unlinkSync('output.js');
+  }
+}
+
+function testDisplayAbsoluteValue() {
+  const sample = '顯示 數量 的絕對值';
+  const originalDemo = fs.readFileSync('demo.blang', 'utf8');
+  fs.writeFileSync('demo.blang', sample);
+
+  const hasOutput = fs.existsSync('output.js');
+  const originalOut = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
+
+  execSync('node parser_v0.9.4.js');
+  const output = fs.readFileSync('output.js', 'utf8');
+  assert(
+    output.includes('alert(Math.abs(數量));'),
+    '顯示 數量 的絕對值 應轉譯為 Math.abs'
+  );
+
+  fs.writeFileSync('demo.blang', originalDemo);
+  if (hasOutput) {
+    fs.writeFileSync('output.js', originalOut);
+  } else {
+    fs.unlinkSync('output.js');
+  }
+}
+
+function testDisplayCookieValue() {
+  const sample = '顯示 cookie token 的值';
+  const originalDemo = fs.readFileSync('demo.blang', 'utf8');
+  fs.writeFileSync('demo.blang', sample);
+
+  const hasOutput = fs.existsSync('output.js');
+  const originalOut = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
+
+  execSync('node parser_v0.9.4.js');
+  const output = fs.readFileSync('output.js', 'utf8');
+  assert(
+    output.includes("alert(document.cookie.split('; ').find(c => c.startsWith(token + '='))?.split('=')[1]);"),
+    '顯示 cookie token 的值 應取得 cookie 並 alert'
   );
 
   fs.writeFileSync('demo.blang', originalDemo);
@@ -567,6 +638,7 @@ try {
   testHideElementParsing();
   testHideParsing();
   testHideShortFormParsing();
+  testToggleDisplayParsing();
   testShowElementParsing();
   testToggleColorParsing();
   testMultipleToggleColor();
@@ -575,6 +647,8 @@ try {
   testFadeAnimationParsing();
   testSetSelectorContent();
   testCookieSetting();
+  testDisplayAbsoluteValue();
+  testDisplayCookieValue();
   testLogStatement();
   testPlayVideoParsing();
   testPauseAudioParsing();
