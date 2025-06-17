@@ -91,7 +91,7 @@ if (數量 > 2) {
         }, 2000);
         alert(new Date().toLocaleDateString());
         alert(原句.replaceAll("貓", "狗"));
-                切換顯示隱藏(#詳細);
+                const el = document.querySelector("#詳細"); el.style.display = el.style.display === 'none' ? 'block' : 'none';
         document.querySelector("#方塊").style.transition = 'opacity 0.5s';
         alert(Math.abs(數量));
         水果們.forEach(item => alert(item));
