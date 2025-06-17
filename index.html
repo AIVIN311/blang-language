@@ -84,7 +84,7 @@
         document.getElementById('原始語句區').innerText = input;
 
         try {
-          const jsCode = parseBlang(input); // 由 parser_v0.9.4.js 提供
+          const jsCode = parseBlang(input); // 由 parser.js 提供
           document.getElementById('轉譯結果區').innerText = jsCode;
 
           const result = handleSyntax(jsCode); // 假設 semanticHandler 處理結果
