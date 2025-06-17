@@ -1,47 +1,4 @@
-(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.handleSyntax = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-(function(root, factory){
-  if (typeof module === 'object' && module.exports) {
-    module.exports = factory();
-  } else {
-    root.ErrorHelper = factory();
-  }
-})(typeof self !== 'undefined' ? self : this, function(){
-  const errorMap = {
-    TS1005: '缺少括號或分號',
-    TS2304: '找不到名稱',
-    TS2339: '屬性不存在於型別上',
-    TS2552: '無法重新宣告',
-    ReferenceError: '參考錯誤',
-    SyntaxError: '語法錯誤',
-    TypeError: '型別錯誤'
-  };
-
-  function translateError(err){
-    if(!err) return '未知錯誤';
-    const msg = err.message || String(err);
-    const ts = msg.match(/TS(\d+)/);
-    if(ts){
-      const code = 'TS'+ts[1];
-      if(errorMap[code]) return errorMap[code] + '：' + msg;
-    }
-    for(const key of ['ReferenceError','SyntaxError','TypeError']){
-      if(msg.includes(key)) return (errorMap[key]||key) + '：' + msg;
-    }
-    return msg;
-  }
-
-  function runSafely(fn){
-    try { return fn(); }
-    catch(e){
-      const out = translateError(e);
-      if(typeof console!=='undefined') console.error(out);
-    }
-  }
-
-  return { translateError, runSafely };
-});
-
-},{}],2:[function(require,module,exports){
+(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 var indexOf = function (xs, item) {
     if (xs.indexOf) return xs.indexOf(item);
     else for (var i = 0; i < xs.length; i++) {
@@ -192,6 +149,49 @@ exports.createContext = Script.createContext = function (context) {
     return copy;
 };
 
+},{}],2:[function(require,module,exports){
+(function(root, factory){
+  if (typeof module === 'object' && module.exports) {
+    module.exports = factory();
+  } else {
+    root.ErrorHelper = factory();
+  }
+})(typeof self !== 'undefined' ? self : this, function(){
+  const errorMap = {
+    TS1005: '缺少括號或分號',
+    TS2304: '找不到名稱',
+    TS2339: '屬性不存在於型別上',
+    TS2552: '無法重新宣告',
+    ReferenceError: '參考錯誤',
+    SyntaxError: '語法錯誤',
+    TypeError: '型別錯誤'
+  };
+
+  function translateError(err){
+    if(!err) return '未知錯誤';
+    const msg = err.message || String(err);
+    const ts = msg.match(/TS(\d+)/);
+    if(ts){
+      const code = 'TS'+ts[1];
+      if(errorMap[code]) return errorMap[code] + '：' + msg;
+    }
+    for(const key of ['ReferenceError','SyntaxError','TypeError']){
+      if(msg.includes(key)) return (errorMap[key]||key) + '：' + msg;
+    }
+    return msg;
+  }
+
+  function runSafely(fn){
+    try { return fn(); }
+    catch(e){
+      const out = translateError(e);
+      if(typeof console!=='undefined') console.error(out);
+    }
+  }
+
+  return { translateError, runSafely };
+});
+
 },{}],3:[function(require,module,exports){
 (function(root, factory){
   if (typeof module === 'object' && module.exports) {
@@ -215,5 +215,8 @@ exports.createContext = Script.createContext = function (context) {
   };
 });
 
-},{"./errorHelper.js":1,"vm":2}]},{},[3])(3)
-});
+},{"./errorHelper.js":2,"vm":1}]},{},[3]);
+
+if (typeof window !== "undefined") {
+  window.handleSyntax = handleSyntax;
+}
