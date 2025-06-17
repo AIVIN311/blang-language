@@ -1,0 +1,22 @@
+(function(root, factory){
+  if (typeof module === 'object' && module.exports) {
+    module.exports = factory(require('./blangSyntaxAPI.js'), require('./errorHelper.js'));
+  } else {
+    root.parseBlang = factory(root.blangSyntaxAPI, root.ErrorHelper);
+  }
+})(typeof self !== 'undefined' ? self : this, function(blangSyntaxAPI, ErrorHelper){
+  const { runBlangParser } = blangSyntaxAPI || {};
+
+  function parseBlang(code){
+    const lines = Array.isArray(code) ? code : String(code).split(/\r?\n/);
+    const result = runBlangParser(lines).trim();
+    if(result.startsWith('// 無法辨識語句')){
+      const msg = ErrorHelper && ErrorHelper.translateError ?
+        ErrorHelper.translateError(new Error(result)) : result;
+      throw new Error(msg);
+    }
+    return result;
+  }
+
+  return parseBlang;
+});
