@@ -7,10 +7,6 @@ module.exports = function registerPatterns(definePattern) {
     (物件) => `alert(JSON.stringify(${物件}, null, 2));`,
     { type: 'data', description: 'display object as JSON' }
   );
-  definePattern('顯示 $內容', (內容) => `alert(${內容});`, {
-    description: '彈出警示框顯示指定內容',
-    hints: ['內容']
-  });
 
   // 💬 變數設定
   // 將 cookie 設定語法放在一般變數設定之前，
@@ -242,4 +238,8 @@ module.exports = function registerPatterns(definePattern) {
     (網址) => `window.open(${網址}, '_blank');`,
     { type: 'control', description: 'open new window' }
   );
+  definePattern('顯示 $內容', (內容) => `alert(${內容});`, {
+    description: '彈出警示框顯示指定內容',
+    hints: ['內容']
+  });
 };
