@@ -123,6 +123,31 @@ function testHideShortFormParsing() {
   }
 }
 
+function testToggleDisplayParsing() {
+  const sample = '切換顯示隱藏(#詳細)';
+  const originalDemo = fs.readFileSync('demo.blang', 'utf8');
+  fs.writeFileSync('demo.blang', sample);
+
+  const hasOutput = fs.existsSync('output.js');
+  const originalOut = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
+
+  execSync('node parser_v0.9.4.js');
+  const output = fs.readFileSync('output.js', 'utf8');
+  assert(
+    output.includes(
+      "const el = document.querySelector(\"#詳細\"); el.style.display = el.style.display === 'none' ? 'block' : 'none';"
+    ),
+    '切換顯示隱藏(#id) 應切換 display 屬性'
+  );
+
+  fs.writeFileSync('demo.blang', originalDemo);
+  if (hasOutput) {
+    fs.writeFileSync('output.js', originalOut);
+  } else {
+    fs.unlinkSync('output.js');
+  }
+}
+
 function testShowElementParsing() {
   const sample = '顯示(#showEl)';
   const originalDemo = fs.readFileSync('demo.blang', 'utf8');
@@ -613,6 +638,7 @@ try {
   testHideElementParsing();
   testHideParsing();
   testHideShortFormParsing();
+  testToggleDisplayParsing();
   testShowElementParsing();
   testToggleColorParsing();
   testMultipleToggleColor();
