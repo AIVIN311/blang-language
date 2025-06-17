@@ -175,6 +175,24 @@ module.exports = function registerPatterns(definePattern) {
     { type: 'data', description: 'iterate list items' }
   );
   definePattern(
+    '加入 $項目 到 $清單',
+    (項目, 清單) => {
+      const item = processDisplayArgument(項目);
+      const list = processDisplayArgument(清單);
+      return `ArrayModule.加入項目(${list}, ${item});`;
+    },
+    { type: 'data', description: 'append item to list' }
+  );
+  definePattern(
+    '把 $項目 加進 $清單',
+    (項目, 清單) => {
+      const item = processDisplayArgument(項目);
+      const list = processDisplayArgument(清單);
+      return `ArrayModule.加入項目(${list}, ${item});`;
+    },
+    { type: 'data', description: 'append item to list' }
+  );
+  definePattern(
     '停止所有音效',
     () => "document.querySelectorAll('audio').forEach(a => a.pause());",
     { type: 'media', description: 'pause all audio' }
