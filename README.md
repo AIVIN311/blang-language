@@ -66,6 +66,13 @@ console.log(getRegisteredPatterns());
 node parser_v0.9.4.js
 ```
 
+### 🔧 parseBlang 與 handleSyntax
+
+- `parseBlang(code)`：將 Blang 語句轉成 JavaScript 字串。
+- `handleSyntax(jsCode)`：立即執行上一步產生的 JavaScript，
+  在瀏覽器透過 `Function`，在 Node.js 則使用 `vm.runInNewContext`，
+  因此能直接觸發 `alert`、`setTimeout`、播放音效等效果。
+
 ---
 
 ## ✨ 語法示範（中文程式邏輯）
