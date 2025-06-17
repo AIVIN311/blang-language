@@ -73,17 +73,18 @@
     <!-- 模組載入順序建議：先載 array，再載核心邏輯 -->
     <script src="blang-modules/array.js"></script>
     <script src="errorHelper.js"></script>
-    <script src="output.js"></script>
-    <script src="parser.js"></script>
-    <script src="semanticHandler.js"></script>
+    <script src="blangSyntaxAPI.js"></script>
+    <script src="semanticHandler-v0.9.4.js"></script>
+    <script src="parser_v0.9.4.js"></script>
 
     <script>
+      console.log(parseBlang('顯示("你好")'));
       document.getElementById('submit').addEventListener('click', () => {
         const input = document.getElementById('input').value;
         document.getElementById('原始語句區').innerText = input;
 
         try {
-          const jsCode = parseBlang(input); // 假設 parser.js 有定義 parseBlang
+          const jsCode = parseBlang(input); // 由 parser_v0.9.4.js 提供
           document.getElementById('轉譯結果區').innerText = jsCode;
 
           const result = handleSyntax(jsCode); // 假設 semanticHandler 處理結果
