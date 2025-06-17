@@ -84,10 +84,13 @@
         document.getElementById('原始語句區').innerText = input;
 
         try {
+          console.log('輸入語句：', input);
           const jsCode = parseBlang(input); // 由 parser.js 提供
+          console.log('轉譯結果：', jsCode);
           document.getElementById('轉譯結果區').innerText = jsCode;
 
           const result = handleSyntax(jsCode); // 假設 semanticHandler 處理結果
+          console.log('執行結果：', result);
           document.getElementById('結果區').innerText = result ?? '✅ 執行成功';
           document.getElementById('console_log').innerText = '';
         } catch (e) {
