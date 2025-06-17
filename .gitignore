@@ -1,0 +1,11 @@
+# Build artifacts and temporary files
+output.js
+grammar_auto.md
+# Common temporary build directories
+build/
+dist/
+# Node modules
+node_modules/
+# Logs
+*.log
+.DS_Store
