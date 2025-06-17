@@ -111,3 +111,7 @@ module.exports = {
   getRegisteredPatterns,
   getPatternsByType
 };
+
+if (typeof window !== 'undefined') {
+  window.runBlangParser = runBlangParser;
+}

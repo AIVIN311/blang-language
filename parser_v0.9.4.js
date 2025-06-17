@@ -1,23 +1,36 @@
 // 🧠 Blang parser v0.9.4 - 自動補宣告 + 條件語句語意優化整合版
-const fs = require('fs');
-const { runBlangParser } = require('./blangSyntaxAPI.js');
-const {
-  processDisplayArgument,
-  handleFunctionCall,
-  normalizeParentheses, // 仍需
-  processConditionExpression // 仍需
-} = require('./semanticHandler-v0.9.4.js'); // ← 指向新版檔
+const isNode = typeof window === 'undefined';
+let fs;
+let runBlangParser;
+let processDisplayArgument;
+let handleFunctionCall;
+let normalizeParentheses; // 仍需
+let processConditionExpression; // 仍需
 
-// 讀取 demo.blang 檔案
-const blang = fs.readFileSync('demo.blang', 'utf8');
-const lines = blang.split('\n');
+if (isNode) {
+  fs = require('fs');
+  ({ runBlangParser } = require('./blangSyntaxAPI.js'));
+  ({
+    processDisplayArgument,
+    handleFunctionCall,
+    normalizeParentheses,
+    processConditionExpression
+  } = require('./semanticHandler-v0.9.4.js'));
+} else {
+  runBlangParser = window.runBlangParser;
+  ({
+    processDisplayArgument,
+    handleFunctionCall,
+    normalizeParentheses,
+    processConditionExpression
+  } = window);
+}
 
-const output = [];
-const stack = [];
-const registeredEvents = new Set();
-const declaredVars = new Set();
-declaredVars.add('輸入框');
-let toggleColorCounter = 0;
+let output;
+let stack;
+let registeredEvents;
+let declaredVars;
+let toggleColorCounter;
 
 function chineseToNumber(text) {
   const map = {
@@ -45,9 +58,6 @@ function chineseToNumber(text) {
   return map[text] || 0;
 }
 
-output.push('let 人物 = {}; // ⛳ 自動補上 人物 變數');
-output.push('let 空 = 0; // ⛳ 自動補上未宣告變數');
-output.push('const 輸入框 = document.getElementById("input");');
 
 function getIndentLevel(line) {
   return line.match(/^\s*/)[0].length;
@@ -143,7 +153,20 @@ function processCondition(condition) {
   return result;
 }
 
-for (let i = 0; i < lines.length; i++) {
+function parseBlang(text) {
+  const lines = text.split('\n');
+  output = [];
+  stack = [];
+  registeredEvents = new Set();
+  declaredVars = new Set();
+  declaredVars.add('輸入框');
+  toggleColorCounter = 0;
+
+  output.push('let 人物 = {}; // ⛳ 自動補上 人物 變數');
+  output.push('let 空 = 0; // ⛳ 自動補上未宣告變數');
+  output.push('const 輸入框 = document.getElementById("input");');
+
+  for (let i = 0; i < lines.length; i++) {
   const raw = lines[i];
   const line = normalizeParentheses(raw.trim()); // 🔑 全形 → 半形轉換
   const indent = getIndentLevel(raw);
@@ -600,6 +623,18 @@ for (let i = 0; i < lines.length; i++) {
   }
 }
 
-closeBlocks(0, 0);
-fs.writeFileSync('output.js', output.join('\n'));
-console.log('✅ 腦語 parser v0.9.4（全檔案變數掃描補宣告）已成功轉譯');
+  closeBlocks(0, 0);
+  return output.join('\n');
+}
+
+if (isNode) {
+  module.exports.parseBlang = parseBlang;
+  if (require.main === module) {
+    const blang = fs.readFileSync('demo.blang', 'utf8');
+    const js = parseBlang(blang);
+    fs.writeFileSync('output.js', js);
+    console.log('✅ 腦語 parser v0.9.4（全檔案變數掃描補宣告）已成功轉譯');
+  }
+} else {
+  window.parseBlang = parseBlang;
+}
