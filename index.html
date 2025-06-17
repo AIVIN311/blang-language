@@ -2,38 +2,97 @@
 <html lang="zh-Hant">
   <head>
     <meta charset="UTF-8" />
-    <title>🧠 Blang 語法測試平台</title>
+    <title>🧠 Blang 中文互動語法實驗室</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
       body {
         font-family: 'Noto Sans TC', sans-serif;
         margin: 2em;
         background: #fdfdfd;
+        color: #333;
       }
       input,
-      button {
-        font-size: 1.2em;
-        padding: 0.3em 0.6em;
+      button,
+      textarea {
+        font-size: 1.1em;
+        padding: 0.4em 0.6em;
+        margin-top: 0.5em;
       }
-      #結果區 {
+      #結果區,
+      #轉譯結果區,
+      #console_log {
         margin-top: 1.2em;
         font-weight: bold;
-        color: #336699;
+      }
+      #console_log {
+        background: #f3f3f3;
+        padding: 1em;
+        white-space: pre-wrap;
+        color: #cc0000;
+      }
+      .區塊 {
+        margin-bottom: 2em;
       }
     </style>
   </head>
   <body>
-    <h2>🧪 Blang 中文互動語法測試</h2>
-    <p>請輸入名字：</p>
-    <input id="input" placeholder="例如：小明" />
-    <button id="submit">送出</button>
+    <h2>🧪 Blang 中文語法測試平台</h2>
 
-    <div id="結果區"></div>
-    <div id="name_display"></div>
+    <div class="區塊">
+      <label for="input">請輸入語句：</label><br />
+      <input id="input" list="語法選單" placeholder="例如：顯示(名字)" />
+      <datalist id="語法選單">
+        <option value="顯示(名字)"></option>
+        <option value="建立清單(水果們)"></option>
+        <option value="加入項目(水果們, '香蕉')"></option>
+      </datalist>
+
+      <button id="submit">執行語句</button>
+    </div>
+
+    <div class="區塊">
+      <div>🔎 原始語句：</div>
+      <div id="原始語句區"></div>
+    </div>
+
+    <div class="區塊">
+      <div>🧾 轉譯結果：</div>
+      <div id="轉譯結果區"></div>
+    </div>
+
+    <div class="區塊">
+      <div>📤 執行結果：</div>
+      <div id="結果區"></div>
+    </div>
+
+    <div class="區塊">
+      <div>⚠️ 錯誤訊息：</div>
+      <div id="console_log"></div>
+    </div>
 
     <!-- 模組載入順序建議：先載 array，再載核心邏輯 -->
     <script src="blang-modules/array.js"></script>
     <script src="errorHelper.js"></script>
     <script src="output.js"></script>
+    <script src="parser.js"></script>
+    <script src="semanticHandler.js"></script>
+
+    <script>
+      document.getElementById('submit').addEventListener('click', () => {
+        const input = document.getElementById('input').value;
+        document.getElementById('原始語句區').innerText = input;
+
+        try {
+          const jsCode = parseBlang(input); // 假設 parser.js 有定義 parseBlang
+          document.getElementById('轉譯結果區').innerText = jsCode;
+
+          const result = handleSyntax(jsCode); // 假設 semanticHandler 處理結果
+          document.getElementById('結果區').innerText = result ?? '✅ 執行成功';
+          document.getElementById('console_log').innerText = '';
+        } catch (e) {
+          document.getElementById('console_log').innerText = e.message;
+        }
+      });
+    </script>
   </body>
 </html>
