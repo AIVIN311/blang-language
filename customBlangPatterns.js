@@ -170,6 +170,11 @@ module.exports = function registerPatterns(definePattern) {
     { type: 'math', description: 'show absolute value' }
   );
   definePattern(
+    '建立清單($名稱)',
+    (名稱) => `let ${名稱} = ArrayModule.建立清單();`,
+    { type: 'data', description: 'create list variable' }
+  );
+  definePattern(
     '遍歷 $清單 並顯示每項',
     (清單) => `${清單}.forEach(item => alert(item));`,
     { type: 'data', description: 'iterate list items' }
