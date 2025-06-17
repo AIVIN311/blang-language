@@ -2,8 +2,8 @@
 output.js
 grammar_auto.md
 # Common temporary build directories
+# build output directories
 build/
-dist/
 # Node modules
 node_modules/
 # Logs
