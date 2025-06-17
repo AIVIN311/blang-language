@@ -93,7 +93,7 @@ if (數量 > 2) {
         alert(原句.replaceAll("貓", "狗"));
                 切換顯示隱藏(#詳細);
         document.querySelector("#方塊").style.transition = 'opacity 0.5s';
-        alert(數量 的絕對值);
+        alert(Math.abs(數量));
         水果們.forEach(item => alert(item));
         document.querySelectorAll('audio').forEach(a => a.pause());
         alert(navigator.language);
@@ -103,7 +103,7 @@ if (數量 > 2) {
         document.querySelector('#狀態').textContent = "完成";
         console.log("測試中");
         document.cookie = token + '=' + "123";
-        alert(cookie token 的值);
+        alert(document.cookie.split('; ').find(c => c.startsWith(token + '='))?.split('=')[1]);
         alert(Math.floor(Math.random() * 10));
         水果們.reverse();
         alert(new URLSearchParams(location.search).get(id));
