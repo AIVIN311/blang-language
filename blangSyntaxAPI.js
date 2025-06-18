@@ -3,6 +3,11 @@
 const registerPatterns = require('./patterns');
 const patternRegistry = [];
 const patternGroups = {};
+const { handleFunctionCall } = require('./semanticHandler-v0.9.4.js');
+const vocabularyMap = require('./vocabulary_map.json');
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&');
+}
 
 function definePattern(pattern, generator, options = {}) {
   const entry = { pattern, generator };
@@ -45,11 +50,29 @@ function runBlangParser(lines) {
     }
 
     if (!matched) {
-      // 嘗試使用舊版條件判斷處理語句
-      const legacy = legacyParse(line);
-      output.push(legacy);
-      if (legacy.trim().startsWith('}') && controlStack.length > 0) {
-        controlStack.pop();
+      const trimmed = line.trim();
+      for (const key in vocabularyMap) {
+        if (trimmed.startsWith(key)) {
+          const callMatch = trimmed.match(new RegExp('^' + escapeRegExp(key) + '[（(](.*)[）)]$'));
+          if (callMatch) {
+            output.push(handleFunctionCall(key, callMatch[1]));
+            matched = true;
+            break;
+          }
+          if (trimmed === key) {
+            output.push(handleFunctionCall(key, ''));
+            matched = true;
+            break;
+          }
+        }
+      }
+      if (!matched) {
+        // 嘗試使用舊版條件判斷處理語句
+        const legacy = legacyParse(line);
+        output.push(legacy);
+        if (legacy.trim().startsWith('}') && controlStack.length > 0) {
+          controlStack.pop();
+        }
       }
     }
   }
