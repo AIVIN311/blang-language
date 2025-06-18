@@ -1,7 +1,7 @@
 const assert = require('assert');
 const fs = require('fs');
 const { execSync } = require('child_process');
-const { processDisplayArgument } = require('../semanticHandler-v0.9.4.js');
+const { processDisplayArgument, handleFunctionCall } = require('../semanticHandler-v0.9.4.js');
 const { testPatternSyntax } = require('./pattern-syntax.test');
 const { testSyntaxExamples } = require('./syntaxExamples.test');
 
@@ -10,6 +10,17 @@ function testProcessDisplayArgument() {
   assert.strictEqual(processDisplayArgument('紅色'), '"red"');
   assert.strictEqual(processDisplayArgument('obj[key]', declaredVars), 'obj[key]');
   assert.strictEqual(processDisplayArgument('obj[key]'), 'obj["key"]');
+}
+
+function testHandleFunctionCallQuoting() {
+  assert.strictEqual(
+    handleFunctionCall('顯示內容', '請輸入姓名'),
+    'console.log("請輸入姓名");'
+  );
+  assert.strictEqual(
+    handleFunctionCall('顯示', '完成'),
+    'document.querySelector("完成").style.display = "block";'
+  );
 }
 
 function testParser() {
@@ -781,6 +792,7 @@ function testGenerateDatalist() {
 try {
   testPatternSyntax();
   testProcessDisplayArgument();
+  testHandleFunctionCallQuoting();
   testParser();
   testConditionProcessing();
   testHideElementParsing();
