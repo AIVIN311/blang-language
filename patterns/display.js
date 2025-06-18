@@ -9,7 +9,7 @@ module.exports = function registerDisplayPatterns(definePattern) {
   );
   definePattern(
     '隱藏 $元素',
-    (元素) => `document.querySelector('${元素}').style.display = "none";`,
+    (元素) => handleFunctionCall('隱藏', 元素),
     { type: 'ui', description: '隱藏指定元素', hints: ['元素'] }
   );
   definePattern(
@@ -18,12 +18,21 @@ module.exports = function registerDisplayPatterns(definePattern) {
       `document.querySelector('${選擇器}').textContent = ${訊息};`,
     { type: 'ui', description: 'update DOM text content' }
   );
-  // vocabulary_map.json handles 顯示圖片 and 設定背景色
   definePattern(
-    '切換顏色($選擇器, $顏色1, $顏色2)',
-    (選擇器, 顏色1, 顏色2) => {
+    '顯示圖片($路徑 在 $選擇器)',
+    (路徑, 選擇器) => handleFunctionCall('顯示圖片', `${路徑}, ${選擇器}`),
+    { type: 'ui', description: 'append image to selector' }
+  );
+  // vocabulary_map.json handles 設定背景色
+  definePattern(
+    '切換顏色($參數)',
+    (參數) => {
+      const [選擇器, 顏色1, 顏色2] = 參數.split(/\s*,\s*/);
+      const sel = processDisplayArgument(選擇器);
+      const c1 = processDisplayArgument(顏色1);
+      const c2 = processDisplayArgument(顏色2);
       const elVar = `__toggleEl${toggleId++}`;
-      return `let ${elVar} = document.querySelector('${選擇器}'); ${elVar}.style.color = ${elVar}.style.color === ${顏色1} ? ${顏色2} : ${顏色1};`;
+      return `let ${elVar} = document.querySelector(${sel}); ${elVar}.style.color = ${elVar}.style.color === ${c1} ? ${c2} : ${c1};`;
     },
     { type: 'ui', description: 'toggle text color' }
   );
