@@ -640,6 +640,28 @@ function testAddItemDirectPattern() {
   );
 }
 
+function testFunctionDefinitionPattern() {
+  const { runBlangParser } = require('../blangSyntaxAPI.js');
+  const lines = ['定義 打招呼(名字)：'];
+  const result = runBlangParser(lines).trim();
+  assert.strictEqual(
+    result,
+    'function 打招呼(名字) {',
+    'function definition pattern should translate correctly'
+  );
+}
+
+function testFunctionCallPattern() {
+  const { runBlangParser } = require('../blangSyntaxAPI.js');
+  const lines = ['呼叫 打招呼("小明")'];
+  const result = runBlangParser(lines).trim();
+  assert.strictEqual(
+    result,
+    '打招呼("小明");',
+    'function call pattern should translate correctly'
+  );
+}
+
 function testGetRegisteredPatterns() {
   const { getRegisteredPatterns } = require('../blangSyntaxAPI.js');
   const patterns = getRegisteredPatterns();
@@ -693,6 +715,8 @@ try {
   testIfElsePattern();
   testIfElsePatternChinese();
   testAddItemDirectPattern();
+  testFunctionDefinitionPattern();
+  testFunctionCallPattern();
   testGetRegisteredPatterns();
   testSyntaxExamples();
   console.log('All tests passed');
