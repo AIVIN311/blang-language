@@ -28,6 +28,7 @@ if (輸入框.value === "") {
     document.getElementById('結果區').innerText = "Blang 語法測試中";
         new Audio("ding.mp3").play();
         呼叫AI回覆("使用者.問題"); // 🔮 AI
+        呼叫AI回覆("你好"); // 🔮 AI
     if (水果們.length >= 2) alert("你有很多水果！");
     if (水果們.length == 1) alert("剩下最後一個水果");
     let 數量 = 3;
@@ -109,6 +110,13 @@ if (數量 > 2) {
         alert(new URLSearchParams(location.search).get(id));
                 const a = new Audio("bg.mp3"); a.loop = true; a.play();
         window.open("https://example.com", '_blank');
+        alert(abc.toUpperCase());
+        alert(hello.includes(h));
+        alert(人物[key]);
+        alert(prompt(請輸入姓名));
+                ObjectModule.建立物件(a, b, c, 1);
+                document.querySelector("#輸出").textContent = 完成;
+                console.log("log 測試");
     }
     }
 }
