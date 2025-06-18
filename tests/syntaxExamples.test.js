@@ -6,7 +6,7 @@ function testSyntaxExamples() {
   const cases = [
     {
       phrase: '顯示("你好")',
-      expected: 'style.display = "block"'
+      expected: 'alert("你好");'
     },
     {
       phrase: '建立清單(清單)',
@@ -18,7 +18,7 @@ function testSyntaxExamples() {
     },
     {
       phrase: '顯示(輸入框.內容)',
-      expected: 'style.display = "block"'
+      expected: 'alert(輸入框.內容);'
     }
   ];
 
