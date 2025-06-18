@@ -756,6 +756,17 @@ function testGetRegisteredPatterns() {
   assert(Array.isArray(wait.hints), 'pattern should expose parameter hints');
 }
 
+function testMisspelledSuggestion() {
+  const parseBlang = require('../parser.js');
+  try {
+    parseBlang('顯示abc');
+    assert.fail('should throw on unknown phrase');
+  } catch (e) {
+    assert(e.suggestion, 'error should include suggestion');
+    assert.strictEqual(e.suggestion, '顯示內容', 'should suggest closest phrase');
+  }
+}
+
 try {
   testPatternSyntax();
   testProcessDisplayArgument();
@@ -793,6 +804,7 @@ try {
   testArrayModuleHelpers();
   testVocabularyMapParsing();
   testGetRegisteredPatterns();
+  testMisspelledSuggestion();
   testSyntaxExamples();
   console.log('All tests passed');
 } catch (err) {

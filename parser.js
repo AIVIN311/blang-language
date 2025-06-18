@@ -20,7 +20,10 @@
     if(result.startsWith('// 無法辨識語句')){
       const msg = ErrorHelper && ErrorHelper.translateError ?
         ErrorHelper.translateError(new Error(result)) : result;
-      throw new Error(msg);
+      const err = new Error(msg);
+      const m = result.match(/是否想輸入：(.+?)\?/);
+      if(m) err.suggestion = m[1];
+      throw err;
     }
     return result;
   }
