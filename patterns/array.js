@@ -21,6 +21,15 @@ module.exports = function registerArrayPatterns(definePattern) {
     { type: 'data', description: 'append item to list' }
   );
   definePattern(
+    '加入項目($清單, $項目)',
+    (清單, 項目) => {
+      const list = 清單.trim();
+      const item = processDisplayArgument(項目);
+      return `ArrayModule.加入項目(${list}, ${item});`;
+    },
+    { type: 'data', description: 'append item to list directly' }
+  );
+  definePattern(
     '把 $項目 加進 $清單',
     (項目, 清單) => {
       const item = processDisplayArgument(項目);
@@ -42,5 +51,10 @@ module.exports = function registerArrayPatterns(definePattern) {
     '反轉 $清單',
     (清單) => `${清單}.reverse();`,
     { type: 'data', description: 'reverse list' }
+  );
+  definePattern(
+    '加入項目($清單, $項目)',
+    (清單, 項目) => `ArrayModule.加入項目(${清單}, ${項目});`,
+    { type: 'data', description: 'direct add item' }
   );
 };

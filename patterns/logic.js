@@ -1,3 +1,5 @@
+const { handleFunctionCall } = require('../semanticHandler-v0.9.4.js');
+
 module.exports = function registerLogicPatterns(definePattern) {
   definePattern(
     '設定 cookie $名稱 為 $值',
@@ -97,5 +99,17 @@ module.exports = function registerLogicPatterns(definePattern) {
     '開新視窗到 $網址',
     (網址) => `window.open(${網址}, '_blank');`,
     { type: 'control', description: 'open new window' }
+  );
+
+  // 新增函式定義與呼叫相關樣式
+  definePattern(
+    '定義 $函式名($參數)：',
+    (函式名, 參數) => `function ${函式名}(${參數}) {`,
+    { type: 'function', description: 'define a function' }
+  );
+  definePattern(
+    '呼叫 $函式名($參數)',
+    (函式名, 參數) => handleFunctionCall(函式名, 參數),
+    { type: 'function', description: 'call a function' }
   );
 };
