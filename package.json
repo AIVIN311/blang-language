@@ -4,6 +4,7 @@
   "scripts": {
     "test": "node tests/run-tests.js",
     "build-doc": "node buildGrammarDoc.js",
+    "build-grammar-doc": "node buildGrammarDoc.js",
     "build-browser": "browserify semanticHandler.js -s handleSyntax -o dist/semanticHandler.browser.js"
   },
   "devDependencies": {
