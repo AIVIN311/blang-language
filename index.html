@@ -33,6 +33,9 @@
       .區塊 {
         margin-bottom: 2em;
       }
+      .undeclared {
+        background: yellow;
+      }
     </style>
   </head>
   <body>
@@ -75,13 +78,16 @@
     <script src="errorHelper.js"></script>
     <script src="dist/blangSyntaxAPI.browser.js"></script>
     <script src="dist/semanticHandler.browser.js"></script>
+    <script src="variableHints.js"></script>
     <script src="parser.js"></script>
 
     <script>
       console.log(parseBlang('顯示("你好")'));
       document.getElementById('submit').addEventListener('click', () => {
         const input = document.getElementById('input').value;
-        document.getElementById('原始語句區').innerText = input;
+        const { highlighted, message } = variableHints.getHints(input);
+        document.getElementById('原始語句區').innerHTML = highlighted;
+        if (message) document.getElementById('console_log').innerText = message;
 
         try {
           console.log('輸入語句：', input);
@@ -92,7 +98,7 @@
           const result = handleSyntax(jsCode); // 假設 semanticHandler 處理結果
           console.log('執行結果：', result);
           document.getElementById('結果區').innerText = result ?? '✅ 執行成功';
-          document.getElementById('console_log').innerText = '';
+          if (!message) document.getElementById('console_log').innerText = '';
         } catch (e) {
           document.getElementById('console_log').innerText = e.message;
         }
