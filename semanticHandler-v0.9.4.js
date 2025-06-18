@@ -39,6 +39,8 @@ const FUNC_MAP = {
   移除最後: 'ArrayModule.移除最後',
   顯示全部: 'ArrayModule.顯示全部',
   顯示第幾項: 'ArrayModule.顯示第幾項',
+  取得項目: 'ArrayModule.取得項目',
+  清空清單: 'ArrayModule.清空清單',
   'AI 回覆': 'DialogModule.AI回覆',
   顯示訊息框: 'DialogModule.顯示訊息框',
   播放音效: 'soundModule.播放音效',

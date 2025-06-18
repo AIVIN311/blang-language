@@ -686,6 +686,25 @@ function testClearListPattern() {
   assert.strictEqual(result, 'A.length = 0;', '清空清單 should translate to length reset');
 }
 
+function testArrayModuleHelpers() {
+  const arrayModule = require('../arrayModule.js');
+  assert.strictEqual(
+    arrayModule.顯示第幾項('list', '2'),
+    'list[2 - 1]',
+    '顯示第幾項 should return index lookup string'
+  );
+  assert.strictEqual(
+    arrayModule.取得項目('list', '3'),
+    'list[3 - 1]',
+    '取得項目 should return index lookup string'
+  );
+  assert.strictEqual(
+    arrayModule.清空清單('list'),
+    'list.length = 0',
+    '清空清單 should return length reset string'
+  );
+}
+
 function testVocabularyMapParsing() {
   const { runBlangParser } = require('../blangSyntaxAPI.js');
   const lines = ['說一句話("嗨")'];
@@ -771,6 +790,7 @@ try {
   testAddItemDirectPattern();
   testGetItemPattern();
   testClearListPattern();
+  testArrayModuleHelpers();
   testVocabularyMapParsing();
   testGetRegisteredPatterns();
   testSyntaxExamples();
