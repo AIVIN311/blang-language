@@ -114,7 +114,14 @@
           document.getElementById('結果區').innerText = result ?? '✅ 執行成功';
           if (!message) document.getElementById('console_log').innerText = '';
         } catch (e) {
-          document.getElementById('console_log').innerText = e.message;
+          const msg = e && e.message ? e.message : String(e);
+          if (msg.includes('無法辨識語句')) {
+            console.warn('無法解析語句：', input);
+            document.getElementById('console_log').innerText =
+              '⚠️ 無法辨識語句，請確認語法正確或參考語句範例。';
+          } else {
+            document.getElementById('console_log').innerText = msg;
+          }
         }
       });
     </script>
