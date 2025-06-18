@@ -1,3 +1,5 @@
+const colorMap = require('./colorMap.js');
+
 const hide = (selector) => {
   return `document.querySelector(${selector}).style.display = "none"`;
 };
