@@ -6,7 +6,7 @@ module.exports = {
 },{}],2:[function(require,module,exports){
 // blangSyntaxAPI.js
 
-const registerPatterns = require('./customBlangPatterns.js');
+const registerPatterns = require('./patterns');
 const patternRegistry = [];
 const patternGroups = {};
 
@@ -122,7 +122,7 @@ if (typeof window !== 'undefined') {
   window.runBlangParser = runBlangParser;
 }
 
-},{"./customBlangPatterns.js":4}],3:[function(require,module,exports){
+},{"./patterns":13}],3:[function(require,module,exports){
 module.exports = {
   紅色: 'red',
   藍色: 'blue',
@@ -136,177 +136,62 @@ module.exports = {
 };
 
 },{}],4:[function(require,module,exports){
-const { handleFunctionCall, processDisplayArgument } = require('./semanticHandler-v0.9.4.js');
-module.exports = function registerPatterns(definePattern) {
-  let toggleId = 0;
-  // 💬 基本輸出語法
-  definePattern(
-    '顯示 JSON 格式化 $物件',
-    (物件) => `alert(JSON.stringify(${物件}, null, 2));`,
-    { type: 'data', description: 'display object as JSON' }
-  );
+module.exports = {
+  顯示訊息框: (msg) => `alert(${msg})`
+};
 
-  // 💬 變數設定
-  // 將 cookie 設定語法放在一般變數設定之前，
-  // 以免被較寬鬆的模式攔截
-  definePattern(
-    '設定 cookie $名稱 為 $值',
-    (名稱, 值) => `document.cookie = ${名稱} + '=' + ${值};`,
-    { type: 'data', description: 'set browser cookie' }
-  );
-  definePattern(
-    '顯示 cookie $名稱 的值',
-    (名稱) =>
-      `alert(document.cookie.split('; ').find(c => c.startsWith(${名稱} + '='))?.split('=')[1]);`,
-    { type: 'data', description: 'get cookie value' }
-  );
-  definePattern('設定 $變數 為 $值', (變數, 值) => `let ${變數} = ${值};`, {
-    description: '宣告或重新賦值變數',
-    hints: ['變數', '值']
-  });
+},{}],5:[function(require,module,exports){
+module.exports = {
+  顯示圖片: (src, selector) => {
+    const cleanSrc = src.replace(/^["']|["']$/g, '');
+    return `const img = document.createElement('img'); img.src = "${cleanSrc}"; document.querySelector(${selector}).appendChild(img)`;
+  }
+};
 
-  // ✅ 若～則～否則（無括號版本）
-  definePattern(
-    '若 $條件 則 顯示 $當真 否則 顯示 $當假',
-    (條件, 當真, 當假) => `if (${條件}) { alert(${當真}); } else { alert(${當假}); }`,
-    {
-      type: 'control',
-      description: '根據條件顯示不同內容',
-      hints: ['條件', '當真', '當假']
-    }
-  );
+},{}],6:[function(require,module,exports){
+// inputModule.js
+module.exports = {
+  使用者輸入: (問題) => `prompt(${問題})`
+};
 
-  // ✅ 若（條件）則 顯示（語句1） 否則 顯示（語句2）
-  definePattern(
-    '若（$條件）則 顯示（$語句1） 否則 顯示（$語句2）',
-    (條件, 語句1, 語句2) => `if (${條件}) {\n  alert(${語句1});\n} else {\n  alert(${語句2});\n}`,
-    {
-      type: 'control',
-      description: '含括號的條件語句',
-      hints: ['條件', '語句1', '語句2']
-    }
-  );
-  definePattern(
-    '若($條件)則 顯示($語句1) 否則 顯示($語句2)',
-    (條件, 語句1, 語句2) => `if (${條件}) {\n  alert(${語句1});\n} else {\n  alert(${語句2});\n}`,
-    {
-      type: 'control',
-      description: '括號英文版的條件語句',
-      hints: ['條件', '語句1', '語句2']
-    }
-  );
-  definePattern(
-    '等待 $秒數 秒後 顯示 $訊息',
-    (秒數, 訊息) =>
-      `setTimeout(() => alert(${訊息}), ${秒數} * 1000);`,
-    {
-      type: 'control',
-      description: '延遲數秒後顯示訊息',
-      hints: ['秒數', '訊息（可選）']
-    }
-  );
-  definePattern(
-    '隱藏 $元素',
-    (元素) => `document.querySelector('${元素}').style.display = "none";`,
-    {
-      type: 'ui',
-      description: '隱藏指定元素',
-      hints: ['元素']
-    }
-  );
-  definePattern(
-    '顯示 $訊息 在 $選擇器',
-    (訊息, 選擇器) =>
-      `document.querySelector('${選擇器}').textContent = ${訊息};`,
-    { type: 'ui', description: 'update DOM text content' }
-  );
-  definePattern(
-    '播放音效($檔名)',
-    (檔名) => `new Audio(${檔名}).play();`,
-    { type: 'media', description: 'play audio file' }
-  );
-  definePattern(
-    '顯示圖片($來源 在 $選擇器)',
-    (來源, 選擇器) =>
-      `const img = document.createElement('img'); img.src = ${來源}; document.querySelector('${選擇器}').appendChild(img);`,
-    { type: 'ui', description: 'insert image element' }
-  );
-  definePattern(
-    '設定背景色($選擇器, $顏色)',
-    (選擇器, 顏色) =>
-      `document.querySelector('${選擇器}').style.backgroundColor = ${顏色};`,
-    { type: 'ui', description: 'change background color' }
-  );
+},{}],7:[function(require,module,exports){
+module.exports = {
+  說一句話: (text) => {
+    const clean = /^['"].*['"]$/.test(text.trim()) ? text : `"${text}"`;
+    return `console.log(${clean})`;
+  }
+};
 
-  definePattern(
-    '切換顏色($選擇器, $顏色1, $顏色2)',
-    (選擇器, 顏色1, 顏色2) => {
-      const elVar = `__toggleEl${toggleId++}`;
-      return `let ${elVar} = document.querySelector('${選擇器}'); ${elVar}.style.color = ${elVar}.style.color === ${顏色1} ? ${顏色2} : ${顏色1};`;
-    },
-    { type: 'ui', description: 'toggle text color' }
-  );
-  definePattern(
-    '播放影片($選擇器)',
-    (選擇器) => `document.querySelector('${選擇器}').play();`,
-    { type: 'media', description: 'play video element' }
-  );
-  definePattern(
-    '暫停音效($選擇器)',
-    (選擇器) => `document.querySelector('${選擇器}').pause();`,
-    { type: 'media', description: 'pause audio element' }
-  );
-  definePattern(
-    '顯示今天是星期幾',
-    () =>
-      'alert("今天是星期" + "日一二三四五六"[new Date().getDay()]);',
-    { type: 'control', description: 'show current weekday' }
-  );
-  definePattern(
-    '顯示現在是幾點幾分',
-    () =>
-      'alert("現在是" + new Date().getHours() + "點" + new Date().getMinutes() + "分");',
-    { type: 'control', description: 'show current time' }
-  );
-  definePattern(
-    '顯示現在時間',
-    () => 'alert(new Date().toLocaleString());',
-    { type: 'time' }
-  );
-  definePattern(
-    '等待 $毫秒 毫秒後 顯示 $訊息',
-    (毫秒, 訊息) => `setTimeout(() => alert(${訊息}), ${毫秒});`,
-    { type: 'control', description: 'delay message in ms' }
-  );
-  definePattern(
-    '顯示今天日期',
-    () => 'alert(new Date().toLocaleDateString());',
-    { type: 'time', description: 'show current date' }
-  );
-  definePattern(
-    '替換所有 $舊字 為 $新字 在 $字串',
-    (舊字, 新字, 字串) => `alert(${字串}.replaceAll(${舊字}, ${新字}));`,
-    { type: 'string', description: 'replace text and display' }
-  );
-  definePattern(
-    '切換顯示隱藏 $選擇器',
-    (選擇器) =>
-      `const el = document.querySelector('${選擇器}'); el.style.display = el.style.display === 'none' ? 'block' : 'none';`,
-    { type: 'ui', description: 'toggle element display' }
-  );
-  definePattern(
-    '增加透明度動畫到 $選擇器',
-    (選擇器) => {
-      const sel = processDisplayArgument(選擇器);
-      return `document.querySelector(${sel}).style.transition = 'opacity 0.5s';`;
-    },
-    { type: 'ui', description: 'fade animation' }
-  );
-  definePattern(
-    '顯示 $數字 的絕對值',
-    (數字) => `alert(Math.abs(${數字}));`,
-    { type: 'math', description: 'show absolute value' }
-  );
+},{}],8:[function(require,module,exports){
+// mathModule.js
+module.exports = {
+  隨機一個數: (max) => `Math.floor(Math.random() * ${max})`,
+  四捨五入: (value) => `Math.round(${value})`,
+  無條件捨去: (value) => `Math.floor(${value})`,
+  無條件進位: (value) => `Math.ceil(${value})`,
+  平方: (value) => `Math.pow(${value}, 2)`,
+  次方: (base, exp) => `Math.pow(${base}, ${exp})`,
+  絕對值: (value) => `Math.abs(${value})`
+};
+
+},{}],9:[function(require,module,exports){
+module.exports = {
+  播放影片: (target) => `document.querySelector(${target}).play()`,
+  暫停音效: (target) => `document.querySelector(${target}).pause()`
+};
+
+},{}],10:[function(require,module,exports){
+// objectModule.js
+
+module.exports = {
+  建立人物: (名字, 年齡) => `let 人物 = { 名字: ${名字}, 年齡: ${年齡} }`,
+  取得屬性: (obj, key) => `${obj}[${key}]`
+};
+
+},{}],11:[function(require,module,exports){
+const { processDisplayArgument } = require('../semanticHandler-v0.9.4.js');
+
+module.exports = function registerArrayPatterns(definePattern) {
   definePattern(
     '建立清單($名稱)',
     (名稱) => `let ${名稱} = ArrayModule.建立清單();`,
@@ -336,14 +221,94 @@ module.exports = function registerPatterns(definePattern) {
     { type: 'data', description: 'append item to list' }
   );
   definePattern(
+    '加入項目($清單, $項目)',
+    (清單, 項目) => {
+      const item = processDisplayArgument(項目);
+      return `ArrayModule.加入項目(${清單}, ${item});`;
+    },
+    { type: 'data', description: 'append item to list (function form)' }
+  );
+  definePattern(
+    '反轉 $清單',
+    (清單) => `${清單}.reverse();`,
+    { type: 'data', description: 'reverse list' }
+  );
+};
+
+},{"../semanticHandler-v0.9.4.js":15}],12:[function(require,module,exports){
+const { handleFunctionCall, processDisplayArgument } = require('../semanticHandler-v0.9.4.js');
+
+module.exports = function registerDisplayPatterns(definePattern) {
+  let toggleId = 0;
+  definePattern(
+    '顯示 JSON 格式化 $物件',
+    (物件) => `alert(JSON.stringify(${物件}, null, 2));`,
+    { type: 'data', description: 'display object as JSON' }
+  );
+  definePattern(
+    '隱藏 $元素',
+    (元素) => `document.querySelector('${元素}').style.display = "none";`,
+    { type: 'ui', description: '隱藏指定元素', hints: ['元素'] }
+  );
+  definePattern(
+    '顯示 $訊息 在 $選擇器',
+    (訊息, 選擇器) =>
+      `document.querySelector('${選擇器}').textContent = ${訊息};`,
+    { type: 'ui', description: 'update DOM text content' }
+  );
+  definePattern(
+    '播放音效($檔名)',
+    (檔名) => `new Audio(${檔名}).play();`,
+    { type: 'media', description: 'play audio file' }
+  );
+  definePattern(
+    '顯示圖片($來源 在 $選擇器)',
+    (來源, 選擇器) =>
+      `const img = document.createElement('img'); img.src = ${來源}; document.querySelector('${選擇器}').appendChild(img);`,
+    { type: 'ui', description: 'insert image element' }
+  );
+  definePattern(
+    '設定背景色($選擇器, $顏色)',
+    (選擇器, 顏色) =>
+      `document.querySelector('${選擇器}').style.backgroundColor = ${顏色};`,
+    { type: 'ui', description: 'change background color' }
+  );
+  definePattern(
+    '切換顏色($選擇器, $顏色1, $顏色2)',
+    (選擇器, 顏色1, 顏色2) => {
+      const elVar = `__toggleEl${toggleId++}`;
+      return `let ${elVar} = document.querySelector('${選擇器}'); ${elVar}.style.color = ${elVar}.style.color === ${顏色1} ? ${顏色2} : ${顏色1};`;
+    },
+    { type: 'ui', description: 'toggle text color' }
+  );
+  definePattern(
+    '播放影片($選擇器)',
+    (選擇器) => `document.querySelector('${選擇器}').play();`,
+    { type: 'media', description: 'play video element' }
+  );
+  definePattern(
+    '暫停音效($選擇器)',
+    (選擇器) => `document.querySelector('${選擇器}').pause();`,
+    { type: 'media', description: 'pause audio element' }
+  );
+  definePattern(
+    '切換顯示隱藏 $選擇器',
+    (選擇器) =>
+      `const el = document.querySelector('${選擇器}'); el.style.display = el.style.display === 'none' ? 'block' : 'none';`,
+    { type: 'ui', description: 'toggle element display' }
+  );
+  definePattern(
+    '增加透明度動畫到 $選擇器',
+    (選擇器) => {
+      const sel = processDisplayArgument(選擇器);
+      return `document.querySelector(${sel}).style.transition = 'opacity 0.5s';`;
+    },
+    { type: 'ui', description: 'fade animation' }
+  );
+  definePattern(
     '停止所有音效',
     () => "document.querySelectorAll('audio').forEach(a => a.pause());",
     { type: 'media', description: 'pause all audio' }
-  );
-  definePattern(
-    '顯示目前瀏覽器語系',
-    () => 'alert(navigator.language);',
-    { type: 'data', description: 'show browser language' }
   );
   definePattern(
     '新增元素 $標籤 到 $選擇器',
@@ -370,6 +335,104 @@ module.exports = function registerPatterns(definePattern) {
     { type: 'ui' }
   );
   definePattern(
+    '循環播放音樂 $檔名',
+    (檔名) => `const a = new Audio(${檔名}); a.loop = true; a.play();`,
+    { type: 'media', description: 'loop audio' }
+  );
+  definePattern('顯示 $內容', (內容) => `alert(${內容});`, {
+    description: '彈出警示框顯示指定內容',
+    hints: ['內容']
+  });
+};
+
+},{"../semanticHandler-v0.9.4.js":15}],13:[function(require,module,exports){
+const arrayPatterns = require('./array');
+const displayPatterns = require('./display');
+const logicPatterns = require('./logic');
+
+module.exports = function registerPatterns(definePattern) {
+  logicPatterns(definePattern);
+  arrayPatterns(definePattern);
+  displayPatterns(definePattern);
+};
+
+},{"./array":11,"./display":12,"./logic":14}],14:[function(require,module,exports){
+module.exports = function registerLogicPatterns(definePattern) {
+  definePattern(
+    '設定 cookie $名稱 為 $值',
+    (名稱, 值) => `document.cookie = ${名稱} + '=' + ${值};`,
+    { type: 'data', description: 'set browser cookie' }
+  );
+  definePattern(
+    '顯示 cookie $名稱 的值',
+    (名稱) => `alert(document.cookie.split('; ').find(c => c.startsWith(${名稱} + '='))?.split('=')[1]);`,
+    { type: 'data', description: 'get cookie value' }
+  );
+  definePattern('設定 $變數 為 $值', (變數, 值) => `let ${變數} = ${值};`, {
+    description: '宣告或重新賦值變數',
+    hints: ['變數', '值']
+  });
+  definePattern(
+    '若 $條件 則 顯示 $當真 否則 顯示 $當假',
+    (條件, 當真, 當假) => `if (${條件}) { alert(${當真}); } else { alert(${當假}); }`,
+    { type: 'control', description: '根據條件顯示不同內容', hints: ['條件', '當真', '當假'] }
+  );
+  definePattern(
+    '若（$條件）則 顯示（$語句1） 否則 顯示（$語句2）',
+    (條件, 語句1, 語句2) => `if (${條件}) {\n  alert(${語句1});\n} else {\n  alert(${語句2});\n}`,
+    { type: 'control', description: '含括號的條件語句', hints: ['條件', '語句1', '語句2'] }
+  );
+  definePattern(
+    '若($條件)則 顯示($語句1) 否則 顯示($語句2)',
+    (條件, 語句1, 語句2) => `if (${條件}) {\n  alert(${語句1});\n} else {\n  alert(${語句2});\n}`,
+    { type: 'control', description: '括號英文版的條件語句', hints: ['條件', '語句1', '語句2'] }
+  );
+  definePattern(
+    '等待 $秒數 秒後 顯示 $訊息',
+    (秒數, 訊息) => `setTimeout(() => alert(${訊息}), ${秒數} * 1000);`,
+    { type: 'control', description: '延遲數秒後顯示訊息', hints: ['秒數', '訊息（可選）'] }
+  );
+  definePattern(
+    '顯示今天是星期幾',
+    () => 'alert("今天是星期" + "日一二三四五六"[new Date().getDay()]);',
+    { type: 'control', description: 'show current weekday' }
+  );
+  definePattern(
+    '顯示現在是幾點幾分',
+    () => 'alert("現在是" + new Date().getHours() + "點" + new Date().getMinutes() + "分");',
+    { type: 'control', description: 'show current time' }
+  );
+  definePattern(
+    '顯示現在時間',
+    () => 'alert(new Date().toLocaleString());',
+    { type: 'time' }
+  );
+  definePattern(
+    '等待 $毫秒 毫秒後 顯示 $訊息',
+    (毫秒, 訊息) => `setTimeout(() => alert(${訊息}), ${毫秒});`,
+    { type: 'control', description: 'delay message in ms' }
+  );
+  definePattern(
+    '顯示今天日期',
+    () => 'alert(new Date().toLocaleDateString());',
+    { type: 'time', description: 'show current date' }
+  );
+  definePattern(
+    '替換所有 $舊字 為 $新字 在 $字串',
+    (舊字, 新字, 字串) => `alert(${字串}.replaceAll(${舊字}, ${新字}));`,
+    { type: 'string', description: 'replace text and display' }
+  );
+  definePattern(
+    '顯示 $數字 的絕對值',
+    (數字) => `alert(Math.abs(${數字}));`,
+    { type: 'math', description: 'show absolute value' }
+  );
+  definePattern(
+    '顯示目前瀏覽器語系',
+    () => 'alert(navigator.language);',
+    { type: 'data', description: 'show browser language' }
+  );
+  definePattern(
     '在控制台輸出 $內容',
     (內容) => `console.log(${內容});`,
     { type: 'log', description: 'console output' }
@@ -380,84 +443,18 @@ module.exports = function registerPatterns(definePattern) {
     { type: 'math', description: 'random integer' }
   );
   definePattern(
-    '反轉 $清單',
-    (清單) => `${清單}.reverse();`,
-    { type: 'data', description: 'reverse list' }
-  );
-  definePattern(
     '顯示網址參數 $鍵',
     (鍵) => `alert(new URLSearchParams(location.search).get(${鍵}));`,
     { type: 'data', description: 'show query parameter' }
-  );
-  definePattern(
-    '循環播放音樂 $檔名',
-    (檔名) => `const a = new Audio(${檔名}); a.loop = true; a.play();`,
-    { type: 'media', description: 'loop audio' }
   );
   definePattern(
     '開新視窗到 $網址',
     (網址) => `window.open(${網址}, '_blank');`,
     { type: 'control', description: 'open new window' }
   );
-  definePattern('顯示 $內容', (內容) => `alert(${內容});`, {
-    description: '彈出警示框顯示指定內容',
-    hints: ['內容']
-  });
-};
-},{"./semanticHandler-v0.9.4.js":12}],5:[function(require,module,exports){
-module.exports = {
-  顯示訊息框: (msg) => `alert(${msg})`
 };
 
-},{}],6:[function(require,module,exports){
-module.exports = {
-  顯示圖片: (src, selector) => {
-    const cleanSrc = src.replace(/^["']|["']$/g, '');
-    return `const img = document.createElement('img'); img.src = "${cleanSrc}"; document.querySelector(${selector}).appendChild(img)`;
-  }
-};
-
-},{}],7:[function(require,module,exports){
-// inputModule.js
-module.exports = {
-  使用者輸入: (問題) => `prompt(${問題})`
-};
-
-},{}],8:[function(require,module,exports){
-module.exports = {
-  說一句話: (text) => {
-    const clean = /^['"].*['"]$/.test(text.trim()) ? text : `"${text}"`;
-    return `console.log(${clean})`;
-  }
-};
-
-},{}],9:[function(require,module,exports){
-// mathModule.js
-module.exports = {
-  隨機一個數: (max) => `Math.floor(Math.random() * ${max})`,
-  四捨五入: (value) => `Math.round(${value})`,
-  無條件捨去: (value) => `Math.floor(${value})`,
-  無條件進位: (value) => `Math.ceil(${value})`,
-  平方: (value) => `Math.pow(${value}, 2)`,
-  次方: (base, exp) => `Math.pow(${base}, ${exp})`,
-  絕對值: (value) => `Math.abs(${value})`
-};
-
-},{}],10:[function(require,module,exports){
-module.exports = {
-  播放影片: (target) => `document.querySelector(${target}).play()`,
-  暫停音效: (target) => `document.querySelector(${target}).pause()`
-};
-
-},{}],11:[function(require,module,exports){
-// objectModule.js
-
-module.exports = {
-  建立人物: (名字, 年齡) => `let 人物 = { 名字: ${名字}, 年齡: ${年齡} }`,
-  取得屬性: (obj, key) => `${obj}[${key}]`
-};
-
-},{}],12:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 // v0.9.7 - semanticHandler.js（支援物件屬性 + 中文樣式屬性轉換）
 
 const stringModule = require('./stringModule.js');
@@ -744,12 +741,12 @@ if (typeof window !== 'undefined') {
 // 這個模組的功能是將中文語句轉換為 JavaScript 語句，
 // 並且支援物件屬性和中文樣式屬性轉換。
 
-},{"./arrayModule.js":1,"./colorMap.js":3,"./dialogModule.js":5,"./imageModule.js":6,"./inputModule.js":7,"./logModule.js":8,"./mathModule.js":9,"./mediaModule.js":10,"./objectModule.js":11,"./soundModule.js":13,"./stringModule.js":14,"./styleModule.js":15,"./textModule.js":16,"./timeModule.js":17,"./vocabulary_map.json":18}],13:[function(require,module,exports){
+},{"./arrayModule.js":1,"./colorMap.js":3,"./dialogModule.js":4,"./imageModule.js":5,"./inputModule.js":6,"./logModule.js":7,"./mathModule.js":8,"./mediaModule.js":9,"./objectModule.js":10,"./soundModule.js":16,"./stringModule.js":17,"./styleModule.js":18,"./textModule.js":19,"./timeModule.js":20,"./vocabulary_map.json":21}],16:[function(require,module,exports){
 module.exports = {
   播放音效: (src) => `new Audio(${src}).play()`
 };
 
-},{}],14:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 // stringModule.js
 module.exports = {
   轉大寫: (input) => `${input}.toUpperCase()`,
@@ -757,7 +754,7 @@ module.exports = {
   長度: (input) => `${input}.length`
 };
 
-},{}],15:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 module.exports = {
   設定樣式: (selector, styleProp, value) => {
     const propMap = {
@@ -789,14 +786,14 @@ module.exports = {
   }
 };
 
-},{}],16:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 module.exports = {
   設定文字內容: (selector, text) => {
     return `document.querySelector(${selector}).textContent = ${text}`;
   }
 };
 
-},{}],17:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 module.exports = {
   獲取現在時間: () => 'new Date().toLocaleTimeString()',
   顯示現在時間: () => 'alert(new Date().toLocaleString())',
@@ -806,7 +803,7 @@ module.exports = {
     'alert("現在是" + new Date().getHours() + "點" + new Date().getMinutes() + "分")'
 };
 
-},{}],18:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 module.exports={
     "轉大寫": {
         "module": "stringModule",
