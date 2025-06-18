@@ -65,7 +65,7 @@
     },
     "隱藏元素": {
         "module": "styleModule",
-        "js": "styleModule.隱藏元素($1)"
+        "js": "styleModule.隱藏($1)"
     },
     "隱藏": {
         "module": "styleModule",
@@ -129,7 +129,7 @@
     },
     "說一句話": {
         "module": "logModule",
-        "js": "logModule.說一句話($1)"
+        "js": "logModule.顯示內容($1)"
     },
     "顯示內容": {
         "module": "logModule",
