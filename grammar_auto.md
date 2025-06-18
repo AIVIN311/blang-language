@@ -50,7 +50,6 @@
 
 | Pattern | JavaScript | Description | Hints |
 | ------- | ---------- | ----------- | ----- |
-| 播放音效($檔名) | new Audio(樣本1).play(); | play audio file |  |
 | 播放影片($選擇器) | document.querySelector('樣本1').play(); | play video element |  |
 | 暫停音效($選擇器) | document.querySelector('樣本1').pause(); | pause audio element |  |
 | 停止所有音效 | document.querySelectorAll('audio').forEach(a => a.pause()); | pause all audio |  |

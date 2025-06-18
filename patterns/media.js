@@ -1,7 +1,4 @@
-module.exports = function registerMediaPatterns(definePattern) {
-  definePattern(
-    '播放音效($檔名)',
-    (檔名) => `new Audio(${檔名}).play();`,
-    { type: 'media', description: 'play audio file' }
-  );
+module.exports = function registerMediaPatterns() {
+  // Intentionally left blank. The "播放音效" phrase is now handled via
+  // vocabulary_map.json rather than a manual pattern.
 };
