@@ -1,6 +1,6 @@
 // blangSyntaxAPI.js
 
-const registerPatterns = require('./customBlangPatterns.js');
+const registerPatterns = require('./patterns');
 const patternRegistry = [];
 const patternGroups = {};
 

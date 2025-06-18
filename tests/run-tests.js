@@ -628,6 +628,17 @@ function testIfElsePatternChinese() {
   );
 }
 
+function testAddItemDirectPattern() {
+  const { runBlangParser } = require('../blangSyntaxAPI.js');
+  const lines = ['加入項目(A, "蘋果")'];
+  const result = runBlangParser(lines).trim();
+  assert.strictEqual(
+    result,
+    'ArrayModule.加入項目(A, "蘋果");',
+    'direct add item pattern should translate correctly'
+  );
+}
+
 function testGetRegisteredPatterns() {
   const { getRegisteredPatterns } = require('../blangSyntaxAPI.js');
   const patterns = getRegisteredPatterns();
@@ -680,6 +691,7 @@ try {
   testDisplayDate();
   testIfElsePattern();
   testIfElsePatternChinese();
+  testAddItemDirectPattern();
   testGetRegisteredPatterns();
   console.log('All tests passed');
 } catch (err) {
