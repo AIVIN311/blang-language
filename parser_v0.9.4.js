@@ -616,11 +616,7 @@ function parseBlang(text) {
   }
 
   const parsed = runBlangParser([line]).trim();
-  if (!parsed.startsWith('// 無法辨識語句')) {
-    output.push(' '.repeat(indent) + parsed);
-  } else {
-    output.push(' '.repeat(indent) + `// 未翻譯：${line}（無匹配的語法規則）`);
-  }
+  output.push(' '.repeat(indent) + parsed);
 }
 
   closeBlocks(0, 0);
