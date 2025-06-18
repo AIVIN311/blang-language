@@ -43,4 +43,22 @@ module.exports = function registerArrayPatterns(definePattern) {
     (清單) => `${清單}.reverse();`,
     { type: 'data', description: 'reverse list' }
   );
+
+  definePattern(
+    '顯示第幾項($清單, $位置)',
+    (清單, 位置) => `alert(${清單}[${位置} - 1]);`,
+    { type: 'array', description: 'display nth item of list' }
+  );
+
+  definePattern(
+    '取得項目($清單, $位置)',
+    (清單, 位置) => `${清單}[${位置} - 1]`,
+    { type: 'array', description: 'get item from list' }
+  );
+
+  definePattern(
+    '清空清單($清單)',
+    (清單) => `${清單}.length = 0;`,
+    { type: 'array', description: 'empty list' }
+  );
 };

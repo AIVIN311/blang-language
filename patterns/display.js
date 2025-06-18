@@ -19,11 +19,6 @@ module.exports = function registerDisplayPatterns(definePattern) {
     { type: 'ui', description: 'update DOM text content' }
   );
   definePattern(
-    '播放音效($檔名)',
-    (檔名) => `new Audio(${檔名}).play();`,
-    { type: 'media', description: 'play audio file' }
-  );
-  definePattern(
     '顯示圖片($來源 在 $選擇器)',
     (來源, 選擇器) =>
       `const img = document.createElement('img'); img.src = ${來源}; document.querySelector('${選擇器}').appendChild(img);`,
