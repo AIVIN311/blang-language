@@ -29,8 +29,6 @@
 | 若（$條件）則 顯示（$語句1） 否則 顯示（$語句2） | if (樣本1) {<br>  alert(樣本2);<br>} else {<br>  alert(樣本3);<br>} | 含括號的條件語句 | 條件, 語句1, 語句2 |
 | 若($條件)則 顯示($語句1) 否則 顯示($語句2) | if (樣本1) {<br>  alert(樣本2);<br>} else {<br>  alert(樣本3);<br>} | 括號英文版的條件語句 | 條件, 語句1, 語句2 |
 | 等待 $秒數 秒後 顯示 $訊息 | setTimeout(() => alert(樣本2), 樣本1 * 1000); | 延遲數秒後顯示訊息 | 秒數, 訊息（可選） |
-| 顯示今天是星期幾 | alert("今天是星期" + "日一二三四五六"[new Date().getDay()]); | show current weekday |  |
-| 顯示現在是幾點幾分 | alert("現在是" + new Date().getHours() + "點" + new Date().getMinutes() + "分"); | show current time |  |
 | 等待 $毫秒 毫秒後 顯示 $訊息 | setTimeout(() => alert(樣本2), 樣本1); | delay message in ms |  |
 | 開新視窗到 $網址 | window.open(樣本1, '_blank'); | open new window |  |
 
@@ -38,7 +36,6 @@
 
 | Pattern | JavaScript | Description | Hints |
 | ------- | ---------- | ----------- | ----- |
-| 顯示現在時間 | alert(new Date().toLocaleString()); |  |  |
 | 顯示今天日期 | alert(new Date().toLocaleDateString()); | show current date |  |
 
 ## string

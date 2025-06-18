@@ -44,15 +44,7 @@
     <div class="區塊">
       <label for="input">請輸入語句：</label><br />
       <input id="input" list="語法選單" placeholder="例如：顯示(名字)" />
-      <datalist id="語法選單">
-        <option value="顯示(名字)"></option>
-        <option value="建立清單(水果們)"></option>
-        <option value="加入項目(水果們, '香蕉')"></option>
-        <option value="顯示第幾項(水果們, 1)"></option>
-        <option value="取得項目(水果們, 1)"></option>
-        <option value="清空清單(水果們)"></option>
-        <option value="播放音效('ding.mp3')"></option>
-      </datalist>
+      <datalist id="語法選單"></datalist>
 
       <button id="submit">執行語句</button>
     </div>
@@ -106,6 +98,16 @@
     <script>
       console.log(parseBlang('顯示("你好")'));
 
+      const datalist = document.getElementById('語法選單');
+      datalist.innerHTML = '';
+      const patterns = blangSyntaxAPI.getRegisteredPatterns();
+      patterns.forEach(({ pattern, description }) => {
+        const opt = document.createElement('option');
+        opt.value = pattern;
+        if (description) opt.title = description;
+        datalist.appendChild(opt);
+      });
+
       function runBlang() {
         const input = document.getElementById('input').value;
         const { highlighted, message } = variableHints.getHints(input);
@@ -126,8 +128,9 @@
           const msg = e && e.message ? e.message : String(e);
           if (msg.includes('無法辨識語句')) {
             console.warn('無法解析語句：', input);
+            const suggestion = e && e.suggestion ? `，是否想輸入：${e.suggestion}?` : '';
             document.getElementById('console_log').innerText =
-              '⚠️ 無法辨識語句，請確認語法正確或參考語句範例。';
+              `⚠️ 無法辨識語句${suggestion}`;
           } else {
             document.getElementById('console_log').innerText = msg;
           }

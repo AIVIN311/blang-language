@@ -9,6 +9,42 @@ function escapeRegExp(string) {
   return string.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&');
 }
 
+function levenshtein(a = '', b = '') {
+  const m = a.length,
+    n = b.length;
+  const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
+  for (let i = 0; i <= m; i++) dp[i][0] = i;
+  for (let j = 0; j <= n; j++) dp[0][j] = j;
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost);
+    }
+  }
+  return dp[m][n];
+}
+
+function stripPattern(p) {
+  return p.replace(/\$[\w\u4e00-\u9fa5_]+/g, '').replace(/[（）()]/g, '').trim();
+}
+
+function findClosestMatch(input) {
+  const candidates = [
+    ...patternRegistry.map((p) => stripPattern(p.pattern)),
+    ...Object.keys(vocabularyMap),
+  ];
+  let best = '';
+  let bestDist = Infinity;
+  for (const c of candidates) {
+    const d = levenshtein(input, c);
+    if (d < bestDist) {
+      bestDist = d;
+      best = c;
+    }
+  }
+  return best;
+}
+
 function definePattern(pattern, generator, options = {}) {
   const entry = { pattern, generator };
   if (options.description) entry.description = options.description;
@@ -94,7 +130,8 @@ function legacyParse(line) {
   if (assignMatch) {
     return `let ${assignMatch[1]} = ${assignMatch[2]};`;
   }
-  return '// 無法辨識語句：' + line;
+  const suggestion = findClosestMatch(line.trim());
+  return `// 無法辨識語句，是否想輸入：${suggestion}?`;
 }
 
 function buildRegexFromPattern(pattern) {
@@ -174,9 +211,14 @@ module.exports = {
   runBlangParser,
   buildRegexFromPattern,
   getRegisteredPatterns,
+<<<<<<< codex/revise-docs,-add-tests,-and-regenerate-files
   getFuzzySuggestions,
   generateDatalist,
   getPatternsByType
+=======
+  getPatternsByType,
+  findClosestMatch
+>>>>>>> main
 };
 
 if (typeof window !== 'undefined') {

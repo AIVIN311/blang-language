@@ -56,7 +56,7 @@ function testConditionProcessing() {
 }
 
 function testHideElementParsing() {
-  const sample = '隱藏元素(#test)';
+  const sample = '隱藏(#test)';
   const originalDemo = fs.readFileSync('demo.blang', 'utf8');
   fs.writeFileSync('demo.blang', sample);
 
@@ -67,7 +67,7 @@ function testHideElementParsing() {
   const output = fs.readFileSync('output.js', 'utf8');
   assert(
     output.includes('document.querySelector("#test").style.display = "none";'),
-    '隱藏元素 should convert to querySelector with quoted selector'
+    '隱藏 should convert to querySelector with quoted selector'
   );
 
   fs.writeFileSync('demo.blang', originalDemo);
@@ -407,7 +407,7 @@ function testDisplayCookieValue() {
 }
 
 function testLogStatement() {
-  const sample = '說一句話（"這是測試"）';
+  const sample = '顯示內容("這是測試")';
   const originalDemo = fs.readFileSync('demo.blang', 'utf8');
   fs.writeFileSync('demo.blang', sample);
 
@@ -427,7 +427,7 @@ function testLogStatement() {
 }
 
 function testShowContentLog() {
-  const sample = '說一句話("abc")';
+  const sample = '顯示內容("abc")';
   const originalDemo = fs.readFileSync('demo.blang', 'utf8');
   fs.writeFileSync('demo.blang', sample);
 
@@ -436,7 +436,7 @@ function testShowContentLog() {
 
   execSync('node parser_v0.9.4.js');
   const output = fs.readFileSync('output.js', 'utf8');
-  assert(output.includes('console.log("abc")'), '說一句話 應轉為 console.log');
+  assert(output.includes('console.log("abc")'), '顯示內容 應轉為 console.log');
 
   fs.writeFileSync('demo.blang', originalDemo);
   if (hasOutput) {
@@ -707,7 +707,7 @@ function testArrayModuleHelpers() {
 
 function testVocabularyMapParsing() {
   const { runBlangParser } = require('../blangSyntaxAPI.js');
-  const lines = ['說一句話("嗨")'];
+  const lines = ['顯示內容("嗨")'];
   const result = runBlangParser(lines).trim();
   assert.strictEqual(result, 'console.log("嗨");', 'vocabulary map lines should be parsed');
 }
