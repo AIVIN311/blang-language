@@ -427,7 +427,7 @@ function testLogStatement() {
 }
 
 function testShowContentLog() {
-  const sample = '顯示內容("abc")';
+  const sample = '說一句話("abc")';
   const originalDemo = fs.readFileSync('demo.blang', 'utf8');
   fs.writeFileSync('demo.blang', sample);
 
@@ -436,7 +436,7 @@ function testShowContentLog() {
 
   execSync('node parser_v0.9.4.js');
   const output = fs.readFileSync('output.js', 'utf8');
-  assert(output.includes('console.log("abc")'), '顯示內容 應轉為 console.log');
+  assert(output.includes('console.log("abc")'), '說一句話 應轉為 console.log');
 
   fs.writeFileSync('demo.blang', originalDemo);
   if (hasOutput) {
@@ -630,14 +630,30 @@ function testIfElsePatternChinese() {
 }
 
 function testAddItemDirectPattern() {
+  const sample = '加入項目(A, "蘋果")';
+  const originalDemo = fs.readFileSync('demo.blang', 'utf8');
+  fs.writeFileSync('demo.blang', sample);
+
+  const hasOutput = fs.existsSync('output.js');
+  const originalOut = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
+
+  execSync('node parser_v0.9.4.js');
+  const output = fs.readFileSync('output.js', 'utf8');
+  assert(output.includes('ArrayModule.加入項目(A, "蘋果");'), 'direct add item pattern should translate correctly');
+
+  fs.writeFileSync('demo.blang', originalDemo);
+  if (hasOutput) {
+    fs.writeFileSync('output.js', originalOut);
+  } else {
+    fs.unlinkSync('output.js');
+  }
+}
+
+function testVocabularyMapParsing() {
   const { runBlangParser } = require('../blangSyntaxAPI.js');
-  const lines = ['加入項目(A, "蘋果")'];
+  const lines = ['說一句話("嗨")'];
   const result = runBlangParser(lines).trim();
-  assert.strictEqual(
-    result,
-    'ArrayModule.加入項目(A, "蘋果");',
-    'direct add item pattern should translate correctly'
-  );
+  assert.strictEqual(result, 'console.log("嗨");', 'vocabulary map lines should be parsed');
 }
 
 function testGetRegisteredPatterns() {
@@ -693,6 +709,7 @@ try {
   testIfElsePattern();
   testIfElsePatternChinese();
   testAddItemDirectPattern();
+  testVocabularyMapParsing();
   testGetRegisteredPatterns();
   testSyntaxExamples();
   console.log('All tests passed');
