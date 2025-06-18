@@ -126,5 +126,9 @@
     "說一句話": {
         "module": "logModule",
         "js": "logModule.說一句話($1)"
+    },
+    "顯示內容": {
+        "module": "logModule",
+        "js": "logModule.顯示內容($1)"
     }
 }

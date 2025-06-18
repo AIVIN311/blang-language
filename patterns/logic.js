@@ -79,6 +79,11 @@ module.exports = function registerLogicPatterns(definePattern) {
     { type: 'log', description: 'console output' }
   );
   definePattern(
+    '顯示內容($內容)',
+    (內容) => `console.log(${內容});`,
+    { type: 'log', description: 'console output' }
+  );
+  definePattern(
     '顯示隨機整數至 $最大值',
     (最大值) => `alert(Math.floor(Math.random() * ${最大值}));`,
     { type: 'math', description: 'random integer' }
