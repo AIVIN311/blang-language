@@ -107,7 +107,7 @@ if (數量 > 2) {
         alert(Math.floor(Math.random() * 10));
         水果們.reverse();
         alert(new URLSearchParams(location.search).get(id));
-                循環播放音樂("bg.mp3");
+                const a = new Audio("bg.mp3"); a.loop = true; a.play();
         window.open("https://example.com", '_blank');
     }
     }
