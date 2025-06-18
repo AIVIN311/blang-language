@@ -1,14 +1,37 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.blangSyntaxAPI = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+(function (global){(function (){
+function 呼叫AI回覆(msg) {
+  const text = typeof msg === 'undefined' ? '' : String(msg);
+  if (typeof window !== 'undefined' && typeof window.alert === 'function') {
+    window.alert(`AI 回覆尚未實作: ${text}`);
+  } else {
+    console.log('AI 回覆尚未實作:', text);
+  }
+}
+if (typeof window !== 'undefined') {
+  window.呼叫AI回覆 = 呼叫AI回覆;
+} else if (typeof global !== 'undefined') {
+  global.呼叫AI回覆 = 呼叫AI回覆;
+}
+module.exports = { 呼叫AI回覆 };
+
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],2:[function(require,module,exports){
 module.exports = {
   加入項目: (list, item) => `ArrayModule.加入項目(${list}, ${item})`
 };
 
-},{}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 // blangSyntaxAPI.js
 
 const registerPatterns = require('./patterns');
 const patternRegistry = [];
 const patternGroups = {};
+const { handleFunctionCall } = require('./semanticHandler-v0.9.4.js');
+const vocabularyMap = require('./vocabulary_map.json');
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&');
+}
 
 function definePattern(pattern, generator, options = {}) {
   const entry = { pattern, generator };
@@ -51,11 +74,29 @@ function runBlangParser(lines) {
     }
 
     if (!matched) {
-      // 嘗試使用舊版條件判斷處理語句
-      const legacy = legacyParse(line);
-      output.push(legacy);
-      if (legacy.trim().startsWith('}') && controlStack.length > 0) {
-        controlStack.pop();
+      const trimmed = line.trim();
+      for (const key in vocabularyMap) {
+        if (trimmed.startsWith(key)) {
+          const callMatch = trimmed.match(new RegExp('^' + escapeRegExp(key) + '[（(](.*)[）)]$'));
+          if (callMatch) {
+            output.push(handleFunctionCall(key, callMatch[1]));
+            matched = true;
+            break;
+          }
+          if (trimmed === key) {
+            output.push(handleFunctionCall(key, ''));
+            matched = true;
+            break;
+          }
+        }
+      }
+      if (!matched) {
+        // 嘗試使用舊版條件判斷處理語句
+        const legacy = legacyParse(line);
+        output.push(legacy);
+        if (legacy.trim().startsWith('}') && controlStack.length > 0) {
+          controlStack.pop();
+        }
       }
     }
   }
@@ -122,7 +163,7 @@ if (typeof window !== 'undefined') {
   window.runBlangParser = runBlangParser;
 }
 
-},{"./patterns":13}],3:[function(require,module,exports){
+},{"./patterns":15,"./semanticHandler-v0.9.4.js":17,"./vocabulary_map.json":23}],4:[function(require,module,exports){
 module.exports = {
   紅色: 'red',
   藍色: 'blue',
@@ -135,12 +176,12 @@ module.exports = {
   淡藍色: 'lightblue'
 };
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 module.exports = {
   顯示訊息框: (msg) => `alert(${msg})`
 };
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 module.exports = {
   顯示圖片: (src, selector) => {
     const cleanSrc = src.replace(/^["']|["']$/g, '');
@@ -148,21 +189,25 @@ module.exports = {
   }
 };
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 // inputModule.js
 module.exports = {
   使用者輸入: (問題) => `prompt(${問題})`
 };
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 module.exports = {
   說一句話: (text) => {
+    const clean = /^['"].*['"]$/.test(text.trim()) ? text : `"${text}"`;
+    return `console.log(${clean})`;
+  },
+  顯示內容: (text) => {
     const clean = /^['"].*['"]$/.test(text.trim()) ? text : `"${text}"`;
     return `console.log(${clean})`;
   }
 };
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 // mathModule.js
 module.exports = {
   隨機一個數: (max) => `Math.floor(Math.random() * ${max})`,
@@ -174,13 +219,13 @@ module.exports = {
   絕對值: (value) => `Math.abs(${value})`
 };
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 module.exports = {
   播放影片: (target) => `document.querySelector(${target}).play()`,
   暫停音效: (target) => `document.querySelector(${target}).pause()`
 };
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 // objectModule.js
 
 module.exports = {
@@ -188,7 +233,7 @@ module.exports = {
   取得屬性: (obj, key) => `${obj}[${key}]`
 };
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 const { processDisplayArgument } = require('../semanticHandler-v0.9.4.js');
 
 module.exports = function registerArrayPatterns(definePattern) {
@@ -212,6 +257,15 @@ module.exports = function registerArrayPatterns(definePattern) {
     { type: 'data', description: 'append item to list' }
   );
   definePattern(
+    '加入項目($清單, $項目)',
+    (清單, 項目) => {
+      const list = 清單.trim();
+      const item = processDisplayArgument(項目);
+      return `ArrayModule.加入項目(${list}, ${item});`;
+    },
+    { type: 'data', description: 'append item to list directly' }
+  );
+  definePattern(
     '把 $項目 加進 $清單',
     (項目, 清單) => {
       const item = processDisplayArgument(項目);
@@ -223,19 +277,25 @@ module.exports = function registerArrayPatterns(definePattern) {
   definePattern(
     '加入項目($清單, $項目)',
     (清單, 項目) => {
+      const list = 清單.trim();
       const item = processDisplayArgument(項目);
-      return `ArrayModule.加入項目(${清單}, ${item});`;
+      return `ArrayModule.加入項目(${list}, ${item});`;
     },
-    { type: 'data', description: 'append item to list (function form)' }
+    { type: 'data', description: 'append item to list' }
   );
   definePattern(
     '反轉 $清單',
     (清單) => `${清單}.reverse();`,
     { type: 'data', description: 'reverse list' }
   );
+  definePattern(
+    '加入項目($清單, $項目)',
+    (清單, 項目) => `ArrayModule.加入項目(${清單}, ${項目});`,
+    { type: 'data', description: 'direct add item' }
+  );
 };
 
-},{"../semanticHandler-v0.9.4.js":15}],12:[function(require,module,exports){
+},{"../semanticHandler-v0.9.4.js":17}],13:[function(require,module,exports){
 const { handleFunctionCall, processDisplayArgument } = require('../semanticHandler-v0.9.4.js');
 
 module.exports = function registerDisplayPatterns(definePattern) {
@@ -306,48 +366,6 @@ module.exports = function registerDisplayPatterns(definePattern) {
     { type: 'ui', description: 'fade animation' }
   );
   definePattern(
-    '顯示 $數字 的絕對值',
-    (數字) => `alert(Math.abs(${數字}));`,
-    { type: 'math', description: 'show absolute value' }
-  );
-  definePattern(
-    '建立清單($名稱)',
-    (名稱) => `let ${名稱} = ArrayModule.建立清單();`,
-    { type: 'data', description: 'create list variable' }
-  );
-  definePattern(
-    '遍歷 $清單 並顯示每項',
-    (清單) => `${清單}.forEach(item => alert(item));`,
-    { type: 'data', description: 'iterate list items' }
-  );
-  definePattern(
-    '加入 $項目 到 $清單',
-    (項目, 清單) => {
-      const item = processDisplayArgument(項目);
-      const list = processDisplayArgument(清單);
-      return `ArrayModule.加入項目(${list}, ${item});`;
-    },
-    { type: 'data', description: 'append item to list' }
-  );
-  definePattern(
-    '把 $項目 加進 $清單',
-    (項目, 清單) => {
-      const item = processDisplayArgument(項目);
-      const list = processDisplayArgument(清單);
-      return `ArrayModule.加入項目(${list}, ${item});`;
-    },
-    { type: 'data', description: 'append item to list' }
-  );
-  definePattern(
-    '加入項目($清單, $項目)',
-    (清單, 項目) => {
-      const list = 清單.trim();
-      const item = processDisplayArgument(項目);
-      return `ArrayModule.加入項目(${list}, ${item});`;
-    },
-    { type: 'data', description: 'append item to list' }
-  );
-  definePattern(
     '停止所有音效',
     () => "document.querySelectorAll('audio').forEach(a => a.pause());",
     { type: 'media', description: 'pause all audio' }
@@ -381,24 +399,47 @@ module.exports = function registerDisplayPatterns(definePattern) {
     (檔名) => `const a = new Audio(${檔名}); a.loop = true; a.play();`,
     { type: 'media', description: 'loop audio' }
   );
+  definePattern(
+    '循環播放音樂($檔名)',
+    (檔名) => `const a = new Audio(${檔名}); a.loop = true; a.play();`,
+    { type: 'media', description: 'loop audio' }
+  );
   definePattern('顯示 $內容', (內容) => `alert(${內容});`, {
     description: '彈出警示框顯示指定內容',
     hints: ['內容']
   });
 };
 
-},{"../semanticHandler-v0.9.4.js":15}],13:[function(require,module,exports){
+},{"../semanticHandler-v0.9.4.js":17}],14:[function(require,module,exports){
+const { handleFunctionCall } = require('../semanticHandler-v0.9.4.js');
+
+module.exports = function registerGeneralPatterns(definePattern) {
+  definePattern(
+    '$函式名($參數)',
+    (函式名, 參數) => {
+      if (函式名 === '顯示') return `alert(${參數});`;
+      return handleFunctionCall(函式名, 參數);
+    },
+    { type: 'function', description: 'direct function call' }
+  );
+};
+
+},{"../semanticHandler-v0.9.4.js":17}],15:[function(require,module,exports){
 const arrayPatterns = require('./array');
 const displayPatterns = require('./display');
 const logicPatterns = require('./logic');
+const generalPatterns = require('./general');
 
 module.exports = function registerPatterns(definePattern) {
   logicPatterns(definePattern);
   arrayPatterns(definePattern);
   displayPatterns(definePattern);
+  generalPatterns(definePattern);
 };
 
-},{"./array":11,"./display":12,"./logic":14}],14:[function(require,module,exports){
+},{"./array":12,"./display":13,"./general":14,"./logic":16}],16:[function(require,module,exports){
+const { handleFunctionCall } = require('../semanticHandler-v0.9.4.js');
+
 module.exports = function registerLogicPatterns(definePattern) {
   definePattern(
     '設定 cookie $名稱 為 $值',
@@ -495,23 +536,25 @@ module.exports = function registerLogicPatterns(definePattern) {
     { type: 'data', description: 'show query parameter' }
   );
   definePattern(
-    '循環播放音樂 $檔名',
-    (檔名) => `const a = new Audio(${檔名}); a.loop = true; a.play();`,
-    { type: 'media', description: 'loop audio' }
-  );
-  definePattern(
-    '循環播放音樂($檔名)',
-    (檔名) => `const a = new Audio(${檔名}); a.loop = true; a.play();`,
-    { type: 'media', description: 'loop audio' }
-  );
-  definePattern(
     '開新視窗到 $網址',
     (網址) => `window.open(${網址}, '_blank');`,
     { type: 'control', description: 'open new window' }
   );
+
+  // 新增函式定義與呼叫相關樣式
+  definePattern(
+    '定義 $函式名($參數)：',
+    (函式名, 參數) => `function ${函式名}(${參數}) {`,
+    { type: 'function', description: 'define a function' }
+  );
+  definePattern(
+    '呼叫 $函式名($參數)',
+    (函式名, 參數) => handleFunctionCall(函式名, 參數),
+    { type: 'function', description: 'call a function' }
+  );
 };
 
-},{}],15:[function(require,module,exports){
+},{"../semanticHandler-v0.9.4.js":17}],17:[function(require,module,exports){
 // v0.9.7 - semanticHandler.js（支援物件屬性 + 中文樣式屬性轉換）
 
 const stringModule = require('./stringModule.js');
@@ -799,12 +842,12 @@ if (typeof window !== 'undefined') {
 // 這個模組的功能是將中文語句轉換為 JavaScript 語句，
 // 並且支援物件屬性和中文樣式屬性轉換。
 
-},{"./arrayModule.js":1,"./colorMap.js":3,"./dialogModule.js":4,"./imageModule.js":5,"./inputModule.js":6,"./logModule.js":7,"./mathModule.js":8,"./mediaModule.js":9,"./objectModule.js":10,"./soundModule.js":16,"./stringModule.js":17,"./styleModule.js":18,"./textModule.js":19,"./timeModule.js":20,"./vocabulary_map.json":21}],16:[function(require,module,exports){
+},{"./aiModule.js":1,"./arrayModule.js":2,"./colorMap.js":4,"./dialogModule.js":5,"./imageModule.js":6,"./inputModule.js":7,"./logModule.js":8,"./mathModule.js":9,"./mediaModule.js":10,"./objectModule.js":11,"./soundModule.js":18,"./stringModule.js":19,"./styleModule.js":20,"./textModule.js":21,"./timeModule.js":22,"./vocabulary_map.json":23}],18:[function(require,module,exports){
 module.exports = {
   播放音效: (src) => `new Audio(${src}).play()`
 };
 
-},{}],17:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 // stringModule.js
 module.exports = {
   轉大寫: (input) => `${input}.toUpperCase()`,
@@ -812,7 +855,7 @@ module.exports = {
   長度: (input) => `${input}.length`
 };
 
-},{}],18:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 module.exports = {
   設定樣式: (selector, styleProp, value) => {
     const propMap = {
@@ -844,14 +887,14 @@ module.exports = {
   }
 };
 
-},{}],19:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 module.exports = {
   設定文字內容: (selector, text) => {
     return `document.querySelector(${selector}).textContent = ${text}`;
   }
 };
 
-},{}],20:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 module.exports = {
   獲取現在時間: () => 'new Date().toLocaleTimeString()',
   顯示現在時間: () => 'alert(new Date().toLocaleString())',
@@ -861,7 +904,7 @@ module.exports = {
     'alert("現在是" + new Date().getHours() + "點" + new Date().getMinutes() + "分")'
 };
 
-},{}],21:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 module.exports={
     "轉大寫": {
         "module": "stringModule",
@@ -983,6 +1026,10 @@ module.exports={
         "module": "soundModule",
         "js": "new Audio($1).play()"
     },
+    "循環播放音樂": {
+        "module": "soundModule",
+        "js": "const a = new Audio($1); a.loop = true; a.play()"
+    },
     "設定文字內容": {
         "module": "textModule",
         "js": "textModule.設定文字內容($1, $2)"
@@ -990,8 +1037,12 @@ module.exports={
     "說一句話": {
         "module": "logModule",
         "js": "logModule.說一句話($1)"
+    },
+    "顯示內容": {
+        "module": "logModule",
+        "js": "logModule.顯示內容($1)"
     }
 }
 
-},{}]},{},[2])(2)
+},{}]},{},[3])(3)
 });
