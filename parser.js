@@ -9,7 +9,14 @@
 
   function parseBlang(code){
     const lines = Array.isArray(code) ? code : String(code).split(/\r?\n/);
-    const result = runBlangParser(lines).trim();
+    let result;
+    try {
+      result = runBlangParser(lines).trim();
+    } catch(err){
+      const msg = ErrorHelper && ErrorHelper.translateError ?
+        ErrorHelper.translateError(err) : (err && err.message) || String(err);
+      throw new Error(msg);
+    }
     if(result.startsWith('// 無法辨識語句')){
       const msg = ErrorHelper && ErrorHelper.translateError ?
         ErrorHelper.translateError(new Error(result)) : result;
