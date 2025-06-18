@@ -18,18 +18,7 @@ module.exports = function registerDisplayPatterns(definePattern) {
       `document.querySelector('${選擇器}').textContent = ${訊息};`,
     { type: 'ui', description: 'update DOM text content' }
   );
-  definePattern(
-    '顯示圖片($來源 在 $選擇器)',
-    (來源, 選擇器) =>
-      `const img = document.createElement('img'); img.src = ${來源}; document.querySelector('${選擇器}').appendChild(img);`,
-    { type: 'ui', description: 'insert image element' }
-  );
-  definePattern(
-    '設定背景色($選擇器, $顏色)',
-    (選擇器, 顏色) =>
-      `document.querySelector('${選擇器}').style.backgroundColor = ${顏色};`,
-    { type: 'ui', description: 'change background color' }
-  );
+  // vocabulary_map.json handles 顯示圖片 and 設定背景色
   definePattern(
     '切換顏色($選擇器, $顏色1, $顏色2)',
     (選擇器, 顏色1, 顏色2) => {
@@ -37,22 +26,6 @@ module.exports = function registerDisplayPatterns(definePattern) {
       return `let ${elVar} = document.querySelector('${選擇器}'); ${elVar}.style.color = ${elVar}.style.color === ${顏色1} ? ${顏色2} : ${顏色1};`;
     },
     { type: 'ui', description: 'toggle text color' }
-  );
-  definePattern(
-    '播放影片($選擇器)',
-    (選擇器) => `document.querySelector('${選擇器}').play();`,
-    { type: 'media', description: 'play video element' }
-  );
-  definePattern(
-    '暫停音效($選擇器)',
-    (選擇器) => `document.querySelector('${選擇器}').pause();`,
-    { type: 'media', description: 'pause audio element' }
-  );
-  definePattern(
-    '切換顯示隱藏 $選擇器',
-    (選擇器) =>
-      `const el = document.querySelector('${選擇器}'); el.style.display = el.style.display === 'none' ? 'block' : 'none';`,
-    { type: 'ui', description: 'toggle element display' }
   );
   definePattern(
     '增加透明度動畫到 $選擇器',
@@ -91,16 +64,7 @@ module.exports = function registerDisplayPatterns(definePattern) {
     (選擇器, 內容) => handleFunctionCall('設定文字內容', `${選擇器}, ${內容}`),
     { type: 'ui' }
   );
-  definePattern(
-    '循環播放音樂 $檔名',
-    (檔名) => `const a = new Audio(${檔名}); a.loop = true; a.play();`,
-    { type: 'media', description: 'loop audio' }
-  );
-  definePattern(
-    '循環播放音樂($檔名)',
-    (檔名) => `const a = new Audio(${檔名}); a.loop = true; a.play();`,
-    { type: 'media', description: 'loop audio' }
-  );
+  // 循環播放音樂 改由 vocabulary_map.json 提供
   definePattern('顯示 $內容', (內容) => `alert(${內容});`, {
     description: '彈出警示框顯示指定內容',
     hints: ['內容']

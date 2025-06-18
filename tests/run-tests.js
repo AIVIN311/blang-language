@@ -493,7 +493,7 @@ function testPauseAudioParsing() {
 }
 
 function testPlaySoundParsing() {
-  const sample = '播放音效("ding.mp3")';
+  const sample = '播放音效(ding.mp3)';
   const originalDemo = fs.readFileSync('demo.blang', 'utf8');
   fs.writeFileSync('demo.blang', sample);
 
@@ -516,7 +516,7 @@ function testPlaySoundParsing() {
 }
 
 function testLoopAudioParsing() {
-  const sample = '循環播放音樂("bg.mp3")';
+  const sample = '循環播放音樂(bg.mp3)';
   const originalDemo = fs.readFileSync('demo.blang', 'utf8');
   fs.writeFileSync('demo.blang', sample);
 
