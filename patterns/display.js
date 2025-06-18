@@ -101,6 +101,11 @@ module.exports = function registerDisplayPatterns(definePattern) {
     (檔名) => `const a = new Audio(${檔名}); a.loop = true; a.play();`,
     { type: 'media', description: 'loop audio' }
   );
+  definePattern(
+    '顯示內容($內容)',
+    (內容) => `console.log(${內容})`,
+    { type: 'log', description: 'console output' }
+  );
   definePattern('顯示 $內容', (內容) => `alert(${內容});`, {
     description: '彈出警示框顯示指定內容',
     hints: ['內容']
