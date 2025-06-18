@@ -24,8 +24,8 @@ if (輸入框.value === "") {
     setTimeout(() => {
         alert("你好");
     }, 3000);
-    document.getElementById('name_display').innerText = "你的名字是：" + 輸入框.value;
-    document.getElementById('結果區').innerText = "Blang 語法測試中";
+    alert("你的名字是：" + "輸入框.內容 在 #name_display");
+    alert("Blang 語法測試中" 在 #結果區");
         new Audio("ding.mp3").play();
         呼叫AI回覆("使用者.問題"); // 🔮 AI
         呼叫AI回覆("你好"); // 🔮 AI
@@ -49,7 +49,7 @@ if (數量 > 2) {
         if (分數 >= 80) alert("良好以上成績");
         if (密碼 == "12345") alert("密碼為預設值,請修改");
         if (年齡 < 20) alert("青春正盛！");
-        document.getElementById('歡迎區').innerText = "歡迎你！";
+        alert("歡迎你！" 在 #歡迎區");
         alert("隨機數：" + Math.floor(Math.random() * 10));
         alert("總分近似值：" + Math.round(分數));
         alert("平方值：" + Math.pow(年齡, 2));
@@ -64,8 +64,7 @@ if (數量 > 2) {
                 水果們.length = 0;
     if (水果們.length === 0) {
         alert("清單是空的");
-        let __toggleEl0 = document.querySelector("#結果區");
-        __toggleEl0.style.color = __toggleEl0.style.color === "red" ? "blue" : "red";
+                ;
                 document.querySelector("#歡迎區").style.display = "none";
                 document.querySelector(影片播放器).play();
                 document.querySelector(音效播放器).pause();
@@ -73,9 +72,9 @@ if (數量 > 2) {
         alert(new Date().toLocaleString());
         let 原句 = '我喜歡貓';
         alert(原句.replace("貓", "狗"));
-        window.location.href = "https://example.com";
-                const img = document.createElement('img'); img.src = "圖.jpg"; document.querySelector("#區塊").appendChild(img);
-                console.log("你好世界");
+                window.location.href = "https://example.com";
+        const img = document.createElement('img'); img.src = "圖.jpg"; document.querySelector("#區塊").appendChild(img);
+        console.log("你好世界");
                 new Audio("ding.mp3").play();
                 document.querySelector("#警告區塊").style.display = "none";
                 document.querySelector("#表單").style.display = "block";

@@ -25,13 +25,16 @@ function levenshtein(a = '', b = '') {
 }
 
 function stripPattern(p) {
-  return p.replace(/\$[\w\u4e00-\u9fa5_]+/g, '').replace(/[（）()]/g, '').trim();
+  return p
+    .replace(/\$[\w\u4e00-\u9fa5_]+/g, '')
+    .replace(/[（）()]/g, '')
+    .trim();
 }
 
 function findClosestMatch(input) {
   const candidates = [
     ...patternRegistry.map((p) => stripPattern(p.pattern)),
-    ...Object.keys(vocabularyMap),
+    ...Object.keys(vocabularyMap)
   ];
   let best = '';
   let bestDist = Infinity;
@@ -156,7 +159,7 @@ function getRegisteredPatterns() {
     pattern,
     type,
     description,
-    hints,
+    hints
   }));
 }
 
@@ -191,12 +194,10 @@ function getFuzzySuggestions(input, limit = 3) {
   const cmds = Array.from(
     new Set([
       ...Object.keys(vocabularyMap),
-      ...patternRegistry.map((p) => p.pattern.replace(/\$[\w\u4e00-\u9fa5_]+/g, '')),
+      ...patternRegistry.map((p) => p.pattern.replace(/\$[\w\u4e00-\u9fa5_]+/g, ''))
     ])
   );
-  const ranked = cmds
-    .map((c) => ({ c, d: levenshtein(input, c) }))
-    .sort((a, b) => a.d - b.d);
+  const ranked = cmds.map((c) => ({ c, d: levenshtein(input, c) })).sort((a, b) => a.d - b.d);
   return ranked.slice(0, limit).map((r) => r.c);
 }
 
@@ -211,14 +212,9 @@ module.exports = {
   runBlangParser,
   buildRegexFromPattern,
   getRegisteredPatterns,
-<<<<<<< codex/revise-docs,-add-tests,-and-regenerate-files
   getFuzzySuggestions,
   generateDatalist,
   getPatternsByType
-=======
-  getPatternsByType,
-  findClosestMatch
->>>>>>> main
 };
 
 if (typeof window !== 'undefined') {
