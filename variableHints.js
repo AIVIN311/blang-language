@@ -5,6 +5,7 @@
     root.variableHints = factory();
   }
 })(typeof self !== 'undefined' ? self : this, function(){
+  // NOTE: Demo 環境僅檢查單行語句，跨行使用的變數可能會誤判為未宣告
   function findUndeclaredVars(code){
     const lines = Array.isArray(code) ? code : String(code).split(/\r?\n/);
     const declared = new Set();
@@ -17,7 +18,11 @@
       if(f) declared.add(f[1]);
     }
 
-    const ignore = new Set(['document','window','alert','console','setTimeout','setInterval','Math','Array','Object','String','Number','Boolean','JSON','Date']);
+    const ignore = new Set([
+      'document','window','alert','console','setTimeout','setInterval',
+      'Math','Array','Object','String','Number','Boolean','JSON','Date',
+      '顯示','設定','若','否則','變數','呼叫','輸入框'
+    ]);
     const vars = new Set();
     const tokenRegex = /[\u4e00-\u9fa5A-Za-z_][\w\u4e00-\u9fa5]*/g;
     for(const line of lines){
