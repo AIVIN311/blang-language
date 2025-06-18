@@ -756,17 +756,28 @@ function testGetRegisteredPatterns() {
   assert(Array.isArray(wait.hints), 'pattern should expose parameter hints');
 }
 
-function testMisspelledSuggestion() {
+
+function testUnifiedHideSynonyms() {
   const parseBlang = require('../parser.js');
-  try {
-    parseBlang('顯示abc');
-    assert.fail('should throw on unknown phrase');
-  } catch (e) {
-    assert(e.suggestion, 'error should include suggestion');
-    assert.strictEqual(e.suggestion, '顯示內容', 'should suggest closest phrase');
-  }
+  const js1 = parseBlang('隱藏元素(#u)').trim();
+  const js2 = parseBlang('隱藏(#u)').trim();
+  assert.strictEqual(js1, js2, '隱藏元素 與 隱藏 應輸出相同 JavaScript');
 }
 
+function testFuzzySuggestions() {
+  const { getFuzzySuggestions } = require('../blangSyntaxAPI.js');
+  const sugg = getFuzzySuggestions('隱藏元');
+  assert(sugg && sugg[0], '應該回傳建議');
+  assert(sugg.includes('隱藏'), '建議應包含 隱藏');
+}
+
+function testGenerateDatalist() {
+  const { generateDatalist, getRegisteredPatterns } = require('../blangSyntaxAPI.js');
+  const html = generateDatalist();
+  const count = (html.match(/<option/g) || []).length;
+  assert.strictEqual(count, getRegisteredPatterns().length, 'datalist option 數量應與 pattern 數相同');
+  assert(html.includes('<option'), '產生的 HTML 應包含 option 標籤');
+}
 try {
   testPatternSyntax();
   testProcessDisplayArgument();
@@ -804,7 +815,9 @@ try {
   testArrayModuleHelpers();
   testVocabularyMapParsing();
   testGetRegisteredPatterns();
-  testMisspelledSuggestion();
+  testUnifiedHideSynonyms();
+  testFuzzySuggestions();
+  testGenerateDatalist();
   testSyntaxExamples();
   console.log('All tests passed');
 } catch (err) {
