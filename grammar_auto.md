@@ -83,10 +83,7 @@
 | ------- | ---------- | ----------- | ----- |
 | 隱藏 $元素 | document.querySelector('樣本1').style.display = "none"; | 隱藏指定元素 | 元素 |
 | 顯示 $訊息 在 $選擇器 | document.querySelector('樣本2').textContent = 樣本1; | update DOM text content |  |
-| 顯示圖片($來源 在 $選擇器) | const img = document.createElement('img'); img.src = 樣本1; document.querySelector('樣本2').appendChild(img); | insert image element |  |
-| 設定背景色($選擇器, $顏色) | document.querySelector('樣本1').style.backgroundColor = 樣本2; | change background color |  |
 | 切換顏色($選擇器, $顏色1, $顏色2) | let __toggleEl0 = document.querySelector('樣本1'); __toggleEl0.style.color = __toggleEl0.style.color === 樣本2 ? 樣本3 : 樣本2; | toggle text color |  |
-| 切換顯示隱藏 $選擇器 | const el = document.querySelector('樣本1'); el.style.display = el.style.display === 'none' ? 'block' : 'none'; | toggle element display |  |
 | 增加透明度動畫到 $選擇器 | document.querySelector("樣本1").style.transition = 'opacity 0.5s'; | fade animation |  |
 | 新增元素 $標籤 到 $選擇器 | document.querySelector("樣本2").appendChild(document.createElement("樣本1")); | append new element |  |
 | 清空 $選擇器 的內容 | document.querySelector('樣本1').innerHTML = ''; | clear element content |  |
@@ -97,9 +94,5 @@
 
 | Pattern | JavaScript | Description | Hints |
 | ------- | ---------- | ----------- | ----- |
-| 播放影片($選擇器) | document.querySelector('樣本1').play(); | play video element |  |
-| 暫停音效($選擇器) | document.querySelector('樣本1').pause(); | pause audio element |  |
 | 停止所有音效 | document.querySelectorAll('audio').forEach(a => a.pause()); | pause all audio |  |
-| 循環播放音樂 $檔名 | const a = new Audio(樣本1); a.loop = true; a.play(); | loop audio |  |
-| 循環播放音樂($檔名) | const a = new Audio(樣本1); a.loop = true; a.play(); | loop audio |  |
 

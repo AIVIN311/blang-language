@@ -127,11 +127,55 @@ function getPatternsByType(type) {
   return patternGroups[type] || [];
 }
 
+function fillPattern(pattern) {
+  let count = 1;
+  return pattern.replace(/\$[\w\u4e00-\u9fa5_]+/g, () => `樣本${count++}`);
+}
+
+function levenshtein(a, b) {
+  const m = a.length,
+    n = b.length;
+  const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
+  for (let i = 0; i <= m; i++) dp[i][0] = i;
+  for (let j = 0; j <= n; j++) dp[0][j] = j;
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      dp[i][j] = Math.min(
+        dp[i - 1][j] + 1,
+        dp[i][j - 1] + 1,
+        dp[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
+      );
+    }
+  }
+  return dp[m][n];
+}
+
+function getFuzzySuggestions(input, limit = 3) {
+  const cmds = Array.from(
+    new Set([
+      ...Object.keys(vocabularyMap),
+      ...patternRegistry.map((p) => p.pattern.replace(/\$[\w\u4e00-\u9fa5_]+/g, '')),
+    ])
+  );
+  const ranked = cmds
+    .map((c) => ({ c, d: levenshtein(input, c) }))
+    .sort((a, b) => a.d - b.d);
+  return ranked.slice(0, limit).map((r) => r.c);
+}
+
+function generateDatalist() {
+  return getRegisteredPatterns()
+    .map((p) => `<option value="${fillPattern(p.pattern)}"></option>`)
+    .join('\n');
+}
+
 module.exports = {
   definePattern,
   runBlangParser,
   buildRegexFromPattern,
   getRegisteredPatterns,
+  getFuzzySuggestions,
+  generateDatalist,
   getPatternsByType
 };
 
