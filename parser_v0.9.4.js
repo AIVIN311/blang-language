@@ -453,8 +453,19 @@ function parseBlang(text) {
   }
 
 
+  // 顯示(... 在 ...)：顯示文字於指定選擇器
+  const showInMatch = line.match(/^顯示[（(](.*)\s+在\s+(.+)[)）]$/);
+  if (showInMatch) {
+    const message = normalizeParentheses(showInMatch[1].trim());
+    const selector = showInMatch[2].trim();
+    const parsed = runBlangParser([`顯示 ${message} 在 ${selector}`]).trim();
+    output.push(' '.repeat(indent) + parsed);
+    continue;
+  }
 
-  if (line.startsWith('顯示(') || line.startsWith('顯示（')) {
+
+
+  if ((line.startsWith('顯示(') || line.startsWith('顯示（')) && !line.match(/\s在\s/)) {
     const match = line.match(/^顯示[（(](.*?)[）)]$/);
     if (match) {
       let expr = normalizeParentheses(match[1].trim());
