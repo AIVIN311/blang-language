@@ -15,6 +15,7 @@ const textModule = require('./textModule.js');
 const arrayModule = require('./arrayModule.js');
 const vocabularyMap = require('./vocabulary_map.json');
 const colorMap = require('./colorMap.js');
+require('./aiModule.js');
 
 const modules = {
   stringModule,

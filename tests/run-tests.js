@@ -515,6 +515,29 @@ function testPlaySoundParsing() {
   }
 }
 
+function testLoopAudioParsing() {
+  const sample = '循環播放音樂("bg.mp3")';
+  const originalDemo = fs.readFileSync('demo.blang', 'utf8');
+  fs.writeFileSync('demo.blang', sample);
+
+  const hasOutput = fs.existsSync('output.js');
+  const originalOut = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
+
+  execSync('node parser_v0.9.4.js');
+  const output = fs.readFileSync('output.js', 'utf8');
+  assert(
+    output.includes('const a = new Audio("bg.mp3"); a.loop = true; a.play();'),
+    '循環播放音樂 should translate to looped Audio playback'
+  );
+
+  fs.writeFileSync('demo.blang', originalDemo);
+  if (hasOutput) {
+    fs.writeFileSync('output.js', originalOut);
+  } else {
+    fs.unlinkSync('output.js');
+  }
+}
+
 function testWaitSecondsDisplay() {
   const sample = '等待 3 秒後 顯示("嗨")';
   const originalDemo = fs.readFileSync('demo.blang', 'utf8');
@@ -656,6 +679,28 @@ function testVocabularyMapParsing() {
   assert.strictEqual(result, 'console.log("嗨");', 'vocabulary map lines should be parsed');
 }
 
+function testFunctionDefinitionPattern() {
+  const { runBlangParser } = require('../blangSyntaxAPI.js');
+  const lines = ['定義 打招呼(名字)：'];
+  const result = runBlangParser(lines).trim();
+  assert.strictEqual(
+    result,
+    'function 打招呼(名字) {',
+    'function definition pattern should translate correctly'
+  );
+}
+
+function testFunctionCallPattern() {
+  const { runBlangParser } = require('../blangSyntaxAPI.js');
+  const lines = ['呼叫 打招呼("小明")'];
+  const result = runBlangParser(lines).trim();
+  assert.strictEqual(
+    result,
+    '打招呼("小明");',
+    'function call pattern should translate correctly'
+  );
+}
+
 function testGetRegisteredPatterns() {
   const { getRegisteredPatterns } = require('../blangSyntaxAPI.js');
   const patterns = getRegisteredPatterns();
@@ -702,6 +747,7 @@ try {
   testPlayVideoParsing();
   testPauseAudioParsing();
   testPlaySoundParsing();
+  testLoopAudioParsing();
   testWaitSecondsDisplay();
   testDisplayWeekday();
   testDisplayHourMinute();
