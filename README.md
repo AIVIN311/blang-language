@@ -236,9 +236,11 @@ blang/
 
 ```bash
 npm run build-browser
+npm run build-blang-browser
 ```
 
-這會產生 `dist/semanticHandler.browser.js`，供瀏覽器環境使用。
+這會分別產生 `dist/semanticHandler.browser.js` 與 `dist/blangSyntaxAPI.browser.js`，供瀏覽器環境使用。
+在 `index.html` 中可於檔名後加入 `?v=1` 之類的查詢參數，避免瀏覽器快取舊版檔案。
 
 ## 🧪 測試與開發工具
 
@@ -279,6 +281,8 @@ node blang-lint.js
 ```bash
 npm run build-grammar-doc
 ```
+
+當你增修 `customBlangPatterns.js` 或其他語法規則時，再執行此指令以更新 `grammar_auto.md`。
 
 ---
 
