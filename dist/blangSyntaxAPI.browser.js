@@ -336,6 +336,15 @@ module.exports = function registerPatterns(definePattern) {
     { type: 'data', description: 'append item to list' }
   );
   definePattern(
+    '加入項目($清單, $項目)',
+    (清單, 項目) => {
+      const list = 清單.trim();
+      const item = processDisplayArgument(項目);
+      return `ArrayModule.加入項目(${list}, ${item});`;
+    },
+    { type: 'data', description: 'append item to list' }
+  );
+  definePattern(
     '停止所有音效',
     () => "document.querySelectorAll('audio').forEach(a => a.pause());",
     { type: 'media', description: 'pause all audio' }
@@ -375,6 +384,11 @@ module.exports = function registerPatterns(definePattern) {
     { type: 'log', description: 'console output' }
   );
   definePattern(
+    '顯示內容($內容)',
+    (內容) => `console.log(${內容});`,
+    { type: 'log', description: 'console output' }
+  );
+  definePattern(
     '顯示隨機整數至 $最大值',
     (最大值) => `alert(Math.floor(Math.random() * ${最大值}));`,
     { type: 'math', description: 'random integer' }
@@ -391,6 +405,11 @@ module.exports = function registerPatterns(definePattern) {
   );
   definePattern(
     '循環播放音樂 $檔名',
+    (檔名) => `const a = new Audio(${檔名}); a.loop = true; a.play();`,
+    { type: 'media', description: 'loop audio' }
+  );
+  definePattern(
+    '循環播放音樂($檔名)',
     (檔名) => `const a = new Audio(${檔名}); a.loop = true; a.play();`,
     { type: 'media', description: 'loop audio' }
   );
