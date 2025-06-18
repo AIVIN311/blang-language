@@ -53,6 +53,7 @@ Blang 是一種中文語場編程方式，用中文邏輯實現智慧語意互�
 |          | 隱藏元素（#id）                         | `document.querySelector("#id").style.display = 'none'` |
 | 媒體時間 | 播放影片（播放器）                      | `播放器.play()`                                 |
 |          | 暫停音效（播放器）                      | `播放器.pause()`                                |
+|          | 循環播放音樂（檔名）                    | `const a = new Audio(檔名); a.loop = true; a.play();` |
 |          | 獲取現在時間（）                        | `new Date().toLocaleTimeString()`                |
 |          | 顯示現在時間                           | `alert(new Date().toLocaleString())` |
 |          | 顯示今天是星期幾                       | `alert("今天是星期" + "日一二三四五六"[new Date().getDay()])` |
