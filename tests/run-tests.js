@@ -3,6 +3,7 @@ const fs = require('fs');
 const { execSync } = require('child_process');
 const { processDisplayArgument } = require('../semanticHandler-v0.9.4.js');
 const { testPatternSyntax } = require('./pattern-syntax.test');
+const { testSyntaxExamples } = require('./syntaxExamples.test');
 
 function testProcessDisplayArgument() {
   const declaredVars = new Set(['key']);
@@ -660,6 +661,7 @@ try {
   testIfElsePattern();
   testIfElsePatternChinese();
   testGetRegisteredPatterns();
+  testSyntaxExamples();
   console.log('All tests passed');
 } catch (err) {
   console.error('Test failed:\n', err.message);
