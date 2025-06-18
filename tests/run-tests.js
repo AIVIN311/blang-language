@@ -425,6 +425,26 @@ function testLogStatement() {
   }
 }
 
+function testShowContentLog() {
+  const sample = '顯示內容("abc")';
+  const originalDemo = fs.readFileSync('demo.blang', 'utf8');
+  fs.writeFileSync('demo.blang', sample);
+
+  const hasOutput = fs.existsSync('output.js');
+  const originalOut = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
+
+  execSync('node parser_v0.9.4.js');
+  const output = fs.readFileSync('output.js', 'utf8');
+  assert(output.includes('console.log("abc")'), '顯示內容 應轉為 console.log');
+
+  fs.writeFileSync('demo.blang', originalDemo);
+  if (hasOutput) {
+    fs.writeFileSync('output.js', originalOut);
+  } else {
+    fs.unlinkSync('output.js');
+  }
+}
+
 function testPlayVideoParsing() {
   const sample = '播放影片(#player)';
   const originalDemo = fs.readFileSync('demo.blang', 'utf8');
@@ -661,6 +681,7 @@ try {
   testDisplayAbsoluteValue();
   testDisplayCookieValue();
   testLogStatement();
+  testShowContentLog();
   testPlayVideoParsing();
   testPauseAudioParsing();
   testPlaySoundParsing();
