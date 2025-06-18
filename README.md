@@ -197,6 +197,8 @@ blang/
 ├── demo.blang              # 中文語法輸入檔
 ├── parser_v0.9.4.js        # 模組化語法轉譯器（主力引擎）
 ├── semanticHandler-v0.9.4.js # 語義轉換與情境邏輯處理器
+├── dist/
+│   └── semanticHandler.browser.js # 瀏覽器版語義處理器
 ├── blang-modules/          # 內建支援模組
 │   ├── array.js            # 清單操作模組
 │   └── display.js          # DOM 顯示處理

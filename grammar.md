@@ -110,6 +110,8 @@ blang/
 ├── demo.blang              # 中文語法輸入檔案
 ├── parser_v0.9.4.js        # 語法轉譯核心（支援語意優化、區塊關閉、自動補宣告）
 ├── semanticHandler-v0.9.4.js # 語意處理模組（顯示、語音、語義補齊）
+├── dist/
+│   └── semanticHandler.browser.js # 瀏覽器版語義處理器
 ├── blang-modules/
 │   ├── array.js            # 清單操作模組
 │   └── display.js          # DOM 顯示處理
