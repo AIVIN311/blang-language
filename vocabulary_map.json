@@ -61,7 +61,7 @@
     },
     "切換顏色": {
         "module": "styleModule",
-        "js": "$1.style.backgroundColor = ($1.style.backgroundColor === '$2' ? '$3' : '$2')"
+        "js": ""
     },
     "隱藏元素": {
         "module": "styleModule",

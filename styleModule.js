@@ -26,5 +26,14 @@ module.exports = {
   設定背景色: (selector, color) => {
     const cleanColor = color.replace(/^['"]|['"]$/g, '');
     return `document.querySelector(${selector}).style.backgroundColor = "${cleanColor}"`;
-  }
+  },
+  切換顏色: (() => {
+    let id = 0;
+    return (selector, c1, c2) => {
+      const varName = `__toggleEl${id++}`;
+      const color1 = colorMap[c1.replace(/^["']|["']$/g, '')] ? `"${colorMap[c1.replace(/^["']|["']$/g, '')]}"` : c1;
+      const color2 = colorMap[c2.replace(/^["']|["']$/g, '')] ? `"${colorMap[c2.replace(/^["']|["']$/g, '')]}"` : c2;
+      return `let ${varName} = document.querySelector(${selector}); ${varName}.style.color = ${varName}.style.color === ${color1} ? ${color2} : ${color1}`;
+    };
+  })()
 };
