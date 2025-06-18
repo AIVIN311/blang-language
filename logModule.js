@@ -1,10 +1,9 @@
+const log = (text) => {
+  const clean = /^['"].*['"]$/.test(text.trim()) ? text : `"${text}"`;
+  return `console.log(${clean})`;
+};
+
 module.exports = {
-  說一句話: (text) => {
-    const clean = /^['"].*['"]$/.test(text.trim()) ? text : `"${text}"`;
-    return `console.log(${clean})`;
-  },
-  顯示內容: (text) => {
-    const clean = /^['"].*['"]$/.test(text.trim()) ? text : `"${text}"`;
-    return `console.log(${clean})`;
-  }
+  顯示內容: log,
+  說一句話: log
 };

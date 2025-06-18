@@ -50,7 +50,7 @@ Blang 是一種中文語場編程方式，用中文邏輯實現智慧語意互�
 |          | 設定文字內容（#id, "文字"）              | `document.querySelector("#id").textContent = "文字"` |
 | 樣式控制 | 設定樣式（#id, 背景色, 紅色）           | `document.querySelector("#id").style["backgroundColor"] = "red"` |
 |          | 切換顏色（#id, 紅色, 藍色）             | `document.querySelector("#id").style.backgroundColor = (document.querySelector("#id").style.backgroundColor === 'red' ? 'blue' : 'red')` |
-|          | 隱藏元素（#id）                         | `document.querySelector("#id").style.display = 'none'` |
+|          | 隱藏（#id）                             | `document.querySelector("#id").style.display = 'none'` |
 | 媒體時間 | 播放影片（播放器）                      | `播放器.play()`                                 |
 |          | 暫停音效（播放器）                      | `播放器.pause()`                                |
 |          | 循環播放音樂（檔名）                    | `const a = new Audio(檔名); a.loop = true; a.play();` |
@@ -59,7 +59,7 @@ Blang 是一種中文語場編程方式，用中文邏輯實現智慧語意互�
 |          | 顯示今天是星期幾                       | `alert("今天是星期" + "日一二三四五六"[new Date().getDay()])` |
 |          | 顯示現在是幾點幾分                     | `alert("現在是" + new Date().getHours() + "點" + new Date().getMinutes() + "分")` |
 | 其他     | 轉跳網頁（"https://example.com"）        | `window.location.href = "https://example.com"`   |
-| 其他     | 說一句話（"內容"）                     | `console.log("內容")` |
+| 其他     | 顯示內容（"內容"）                     | `console.log("內容")` |
 
 ## 📖 模組化語法規則
 
