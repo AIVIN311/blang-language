@@ -187,6 +187,7 @@ if (輸入框.value === "") {
 | 顯示今天是星期幾                 | `alert("今天是星期" + "日一二三四五六"[new Date().getDay()])` |
 | 顯示現在是幾點幾分               | `alert("現在是" + new Date().getHours() + "點" + new Date().getMinutes() + "分")` |
 | 說一句話（"這是測試"）           | `console.log("這是測試")` |
+| 顯示內容（"資料"）               | `console.log("資料")` |
 
 ---
 
