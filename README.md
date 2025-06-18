@@ -310,6 +310,10 @@ Blang 不只是中文語法，它是一種「用語言創造智慧的方式」�
 
 ---
 
+## 🤝 Contributing
+
+想增修語法規則，可參考 `patterns` 目錄。`patterns/index.js` 會匯入 `array.js`、`display.js`、`logic.js` 與 `general.js`，並將它們透過 `definePattern` 依序註冊。每個檔案皆輸出一個接收 `definePattern` 的函式來定義相應的中文語法。
+
 ## ✍️ 作者與靈感
 
 本專案由 陳信瑋｜大傑斯 發想、設計與實作。
