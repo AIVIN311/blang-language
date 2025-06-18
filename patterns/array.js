@@ -34,4 +34,9 @@ module.exports = function registerArrayPatterns(definePattern) {
     (清單) => `${清單}.reverse();`,
     { type: 'data', description: 'reverse list' }
   );
+  definePattern(
+    '加入項目($清單, $項目)',
+    (清單, 項目) => `ArrayModule.加入項目(${清單}, ${項目});`,
+    { type: 'data', description: 'direct add item' }
+  );
 };

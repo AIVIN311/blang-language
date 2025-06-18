@@ -73,6 +73,9 @@ node parser_v0.9.4.js
   在瀏覽器透過 `Function`，在 Node.js 則使用 `vm.runInNewContext`，
   因此能直接觸發 `alert`、`setTimeout`、播放音效等效果。
 
+> **AI 回覆**：當語句產生 `呼叫AI回覆(...)` 時，系統會呼叫 `aiModule.js` 中的占位函式，
+> 它僅會在畫面或主控台顯示「AI 回覆尚未實作」及給定訊息。
+
 ---
 
 ## ✨ 語法示範（中文程式邏輯）
