@@ -198,6 +198,11 @@ module.exports = function registerPatterns(definePattern) {
     { type: 'data', description: 'append item to list' }
   );
   definePattern(
+    '加入項目($清單, $項目)',
+    (清單, 項目) => `ArrayModule.加入項目(${清單}, ${項目});`,
+    { type: 'data', description: 'append item to list' }
+  );
+  definePattern(
     '停止所有音效',
     () => "document.querySelectorAll('audio').forEach(a => a.pause());",
     { type: 'media', description: 'pause all audio' }
