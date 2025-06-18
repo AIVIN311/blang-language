@@ -30,6 +30,14 @@ module.exports = function registerArrayPatterns(definePattern) {
     { type: 'data', description: 'append item to list' }
   );
   definePattern(
+    '加入項目($清單, $項目)',
+    (清單, 項目) => {
+      const item = processDisplayArgument(項目);
+      return `ArrayModule.加入項目(${清單}, ${item});`;
+    },
+    { type: 'data', description: 'append item to list (function form)' }
+  );
+  definePattern(
     '反轉 $清單',
     (清單) => `${清單}.reverse();`,
     { type: 'data', description: 'reverse list' }
