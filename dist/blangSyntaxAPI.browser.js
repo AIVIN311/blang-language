@@ -306,6 +306,48 @@ module.exports = function registerDisplayPatterns(definePattern) {
     { type: 'ui', description: 'fade animation' }
   );
   definePattern(
+    '顯示 $數字 的絕對值',
+    (數字) => `alert(Math.abs(${數字}));`,
+    { type: 'math', description: 'show absolute value' }
+  );
+  definePattern(
+    '建立清單($名稱)',
+    (名稱) => `let ${名稱} = ArrayModule.建立清單();`,
+    { type: 'data', description: 'create list variable' }
+  );
+  definePattern(
+    '遍歷 $清單 並顯示每項',
+    (清單) => `${清單}.forEach(item => alert(item));`,
+    { type: 'data', description: 'iterate list items' }
+  );
+  definePattern(
+    '加入 $項目 到 $清單',
+    (項目, 清單) => {
+      const item = processDisplayArgument(項目);
+      const list = processDisplayArgument(清單);
+      return `ArrayModule.加入項目(${list}, ${item});`;
+    },
+    { type: 'data', description: 'append item to list' }
+  );
+  definePattern(
+    '把 $項目 加進 $清單',
+    (項目, 清單) => {
+      const item = processDisplayArgument(項目);
+      const list = processDisplayArgument(清單);
+      return `ArrayModule.加入項目(${list}, ${item});`;
+    },
+    { type: 'data', description: 'append item to list' }
+  );
+  definePattern(
+    '加入項目($清單, $項目)',
+    (清單, 項目) => {
+      const list = 清單.trim();
+      const item = processDisplayArgument(項目);
+      return `ArrayModule.加入項目(${list}, ${item});`;
+    },
+    { type: 'data', description: 'append item to list' }
+  );
+  definePattern(
     '停止所有音效',
     () => "document.querySelectorAll('audio').forEach(a => a.pause());",
     { type: 'media', description: 'pause all audio' }
@@ -438,6 +480,11 @@ module.exports = function registerLogicPatterns(definePattern) {
     { type: 'log', description: 'console output' }
   );
   definePattern(
+    '顯示內容($內容)',
+    (內容) => `console.log(${內容});`,
+    { type: 'log', description: 'console output' }
+  );
+  definePattern(
     '顯示隨機整數至 $最大值',
     (最大值) => `alert(Math.floor(Math.random() * ${最大值}));`,
     { type: 'math', description: 'random integer' }
@@ -446,6 +493,16 @@ module.exports = function registerLogicPatterns(definePattern) {
     '顯示網址參數 $鍵',
     (鍵) => `alert(new URLSearchParams(location.search).get(${鍵}));`,
     { type: 'data', description: 'show query parameter' }
+  );
+  definePattern(
+    '循環播放音樂 $檔名',
+    (檔名) => `const a = new Audio(${檔名}); a.loop = true; a.play();`,
+    { type: 'media', description: 'loop audio' }
+  );
+  definePattern(
+    '循環播放音樂($檔名)',
+    (檔名) => `const a = new Audio(${檔名}); a.loop = true; a.play();`,
+    { type: 'media', description: 'loop audio' }
   );
   definePattern(
     '開新視窗到 $網址',

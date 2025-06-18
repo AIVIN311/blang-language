@@ -515,6 +515,29 @@ function testPlaySoundParsing() {
   }
 }
 
+function testLoopAudioParsing() {
+  const sample = '循環播放音樂("bg.mp3")';
+  const originalDemo = fs.readFileSync('demo.blang', 'utf8');
+  fs.writeFileSync('demo.blang', sample);
+
+  const hasOutput = fs.existsSync('output.js');
+  const originalOut = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
+
+  execSync('node parser_v0.9.4.js');
+  const output = fs.readFileSync('output.js', 'utf8');
+  assert(
+    output.includes('const a = new Audio("bg.mp3"); a.loop = true; a.play();'),
+    '循環播放音樂 should translate to looped Audio playback'
+  );
+
+  fs.writeFileSync('demo.blang', originalDemo);
+  if (hasOutput) {
+    fs.writeFileSync('output.js', originalOut);
+  } else {
+    fs.unlinkSync('output.js');
+  }
+}
+
 function testWaitSecondsDisplay() {
   const sample = '等待 3 秒後 顯示("嗨")';
   const originalDemo = fs.readFileSync('demo.blang', 'utf8');
@@ -708,6 +731,7 @@ try {
   testPlayVideoParsing();
   testPauseAudioParsing();
   testPlaySoundParsing();
+  testLoopAudioParsing();
   testWaitSecondsDisplay();
   testDisplayWeekday();
   testDisplayHourMinute();

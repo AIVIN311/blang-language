@@ -119,6 +119,10 @@
         "module": "soundModule",
         "js": "new Audio($1).play()"
     },
+    "循環播放音樂": {
+        "module": "soundModule",
+        "js": "const a = new Audio($1); a.loop = true; a.play()"
+    },
     "設定文字內容": {
         "module": "textModule",
         "js": "textModule.設定文字內容($1, $2)"
