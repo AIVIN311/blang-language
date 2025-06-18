@@ -672,6 +672,20 @@ function testAddItemDirectPattern() {
   }
 }
 
+function testGetItemPattern() {
+  const { runBlangParser } = require('../blangSyntaxAPI.js');
+  const lines = ['取得項目(A, 2)'];
+  const result = runBlangParser(lines).trim();
+  assert.strictEqual(result, 'A[2 - 1]', '取得項目 should translate to array indexing');
+}
+
+function testClearListPattern() {
+  const { runBlangParser } = require('../blangSyntaxAPI.js');
+  const lines = ['清空清單(A)'];
+  const result = runBlangParser(lines).trim();
+  assert.strictEqual(result, 'A.length = 0;', '清空清單 should translate to length reset');
+}
+
 function testVocabularyMapParsing() {
   const { runBlangParser } = require('../blangSyntaxAPI.js');
   const lines = ['說一句話("嗨")'];
@@ -755,6 +769,8 @@ try {
   testIfElsePattern();
   testIfElsePatternChinese();
   testAddItemDirectPattern();
+  testGetItemPattern();
+  testClearListPattern();
   testVocabularyMapParsing();
   testGetRegisteredPatterns();
   testSyntaxExamples();

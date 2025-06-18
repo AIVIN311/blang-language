@@ -27,6 +27,7 @@ Blang 是一種中文語場編程方式，用中文邏輯實現智慧語意互�
 | 清單操作 | 變數 A = 建立清單（）                   | `let A = ArrayModule.建立清單();`               |
 |          | 加入項目（A, "蘋果"）                   | `ArrayModule.加入項目(A, "蘋果");`              |
 |          | 顯示全部（A）                           | `alert(ArrayModule.顯示全部(A));`               |
+|          | 取得項目（A, 位置）                     | `A[位置 - 1]`                                   |
 |          | 移除最後（A）                           | `ArrayModule.移除最後(A);`                      |
 |          | 顯示清單長度（A）                       | `A.length`                                       |
 |          | 清空清單（A）                           | `A.length = 0`                                   |
