@@ -29,8 +29,6 @@
 | 若（$條件）則 顯示（$語句1） 否則 顯示（$語句2） | if (樣本1) {<br>  alert(樣本2);<br>} else {<br>  alert(樣本3);<br>} | 含括號的條件語句 | 條件, 語句1, 語句2 |
 | 若($條件)則 顯示($語句1) 否則 顯示($語句2) | if (樣本1) {<br>  alert(樣本2);<br>} else {<br>  alert(樣本3);<br>} | 括號英文版的條件語句 | 條件, 語句1, 語句2 |
 | 等待 $秒數 秒後 顯示 $訊息 | setTimeout(() => alert(樣本2), 樣本1 * 1000); | 延遲數秒後顯示訊息 | 秒數, 訊息（可選） |
-| 顯示今天是星期幾 | alert("今天是星期" + "日一二三四五六"[new Date().getDay()]); | show current weekday |  |
-| 顯示現在是幾點幾分 | alert("現在是" + new Date().getHours() + "點" + new Date().getMinutes() + "分"); | show current time |  |
 | 等待 $毫秒 毫秒後 顯示 $訊息 | setTimeout(() => alert(樣本2), 樣本1); | delay message in ms |  |
 | 開新視窗到 $網址 | window.open(樣本1, '_blank'); | open new window |  |
 
@@ -38,7 +36,6 @@
 
 | Pattern | JavaScript | Description | Hints |
 | ------- | ---------- | ----------- | ----- |
-| 顯示現在時間 | alert(new Date().toLocaleString()); |  |  |
 | 顯示今天日期 | alert(new Date().toLocaleDateString()); | show current date |  |
 
 ## string
@@ -83,10 +80,7 @@
 | ------- | ---------- | ----------- | ----- |
 | 隱藏 $元素 | document.querySelector('樣本1').style.display = "none"; | 隱藏指定元素 | 元素 |
 | 顯示 $訊息 在 $選擇器 | document.querySelector('樣本2').textContent = 樣本1; | update DOM text content |  |
-| 顯示圖片($來源 在 $選擇器) | const img = document.createElement('img'); img.src = 樣本1; document.querySelector('樣本2').appendChild(img); | insert image element |  |
-| 設定背景色($選擇器, $顏色) | document.querySelector('樣本1').style.backgroundColor = 樣本2; | change background color |  |
 | 切換顏色($選擇器, $顏色1, $顏色2) | let __toggleEl0 = document.querySelector('樣本1'); __toggleEl0.style.color = __toggleEl0.style.color === 樣本2 ? 樣本3 : 樣本2; | toggle text color |  |
-| 切換顯示隱藏 $選擇器 | const el = document.querySelector('樣本1'); el.style.display = el.style.display === 'none' ? 'block' : 'none'; | toggle element display |  |
 | 增加透明度動畫到 $選擇器 | document.querySelector("樣本1").style.transition = 'opacity 0.5s'; | fade animation |  |
 | 新增元素 $標籤 到 $選擇器 | document.querySelector("樣本2").appendChild(document.createElement("樣本1")); | append new element |  |
 | 清空 $選擇器 的內容 | document.querySelector('樣本1').innerHTML = ''; | clear element content |  |
@@ -97,9 +91,5 @@
 
 | Pattern | JavaScript | Description | Hints |
 | ------- | ---------- | ----------- | ----- |
-| 播放影片($選擇器) | document.querySelector('樣本1').play(); | play video element |  |
-| 暫停音效($選擇器) | document.querySelector('樣本1').pause(); | pause audio element |  |
 | 停止所有音效 | document.querySelectorAll('audio').forEach(a => a.pause()); | pause all audio |  |
-| 循環播放音樂 $檔名 | const a = new Audio(樣本1); a.loop = true; a.play(); | loop audio |  |
-| 循環播放音樂($檔名) | const a = new Audio(樣本1); a.loop = true; a.play(); | loop audio |  |
 

@@ -36,21 +36,6 @@ module.exports = function registerLogicPatterns(definePattern) {
     { type: 'control', description: '延遲數秒後顯示訊息', hints: ['秒數', '訊息（可選）'] }
   );
   definePattern(
-    '顯示今天是星期幾',
-    () => 'alert("今天是星期" + "日一二三四五六"[new Date().getDay()]);',
-    { type: 'control', description: 'show current weekday' }
-  );
-  definePattern(
-    '顯示現在是幾點幾分',
-    () => 'alert("現在是" + new Date().getHours() + "點" + new Date().getMinutes() + "分");',
-    { type: 'control', description: 'show current time' }
-  );
-  definePattern(
-    '顯示現在時間',
-    () => 'alert(new Date().toLocaleString());',
-    { type: 'time' }
-  );
-  definePattern(
     '等待 $毫秒 毫秒後 顯示 $訊息',
     (毫秒, 訊息) => `setTimeout(() => alert(${訊息}), ${毫秒});`,
     { type: 'control', description: 'delay message in ms' }
