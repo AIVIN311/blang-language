@@ -243,8 +243,8 @@ function handleFunctionCall(funcName, params, indent = 0, declaredVars = new Set
       // 數字
       if (/^[\d.]+$/.test(raw)) return raw;
 
-      // 合法變數
-      if (/^[a-zA-Z_\u4e00-\u9fa5][\w\u4e00-\u9fa5]*$/.test(raw) || declaredVars.has(raw)) {
+      // 合法變數：僅當在宣告集合中出現時才視為變數
+      if (declaredVars.has(raw)) {
         return raw;
       }
 
