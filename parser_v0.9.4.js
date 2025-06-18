@@ -136,6 +136,19 @@ function autoDeclareVariablesFromCondition(condition) {
   }
 }
 
+function autoDeclareFromParams(params = '') {
+  const tokens = params.split(',').map((t) => t.trim()).filter(Boolean);
+  for (const raw of tokens) {
+    if (/^["'“”‘’].*["'“”‘’]$/.test(raw)) continue; // quoted
+    const token = raw.replace(/^["'“”‘’]|["'“”‘’]$/g, '');
+    if (/^\d+(\.\d+)?$/.test(token)) continue; // numeric
+    if (!/^[\u4e00-\u9fa5A-Za-z_][\w\u4e00-\u9fa5]*$/.test(token)) continue; // invalid identifier
+    if (ignoreList.has(token) || declaredVars.has(token)) continue;
+    declaredVars.add(token);
+    output.unshift(`let ${token} = 0; // ⛳ 自動補上未宣告變數`);
+  }
+}
+
 function processCondition(condition) {
   // 先處理「判斷是否為空」以避免被其他替換拆解
   let result = condition.replace(
@@ -203,6 +216,7 @@ function parseBlang(text) {
     if (match) {
       const funcName = match[1].trim();
       const params = match[2].trim();
+      autoDeclareFromParams(params);
       output.push(' '.repeat(indent) + handleFunctionCall(funcName, params, indent, declaredVars));
       continue;
     }
@@ -471,6 +485,7 @@ function parseBlang(text) {
       let expr = normalizeParentheses(match[1].trim());
 
       if (/^#/.test(expr)) {
+        autoDeclareFromParams(expr);
         output.push(' '.repeat(indent) + handleFunctionCall('顯示', expr, indent, declaredVars));
         continue;
       }
@@ -500,6 +515,7 @@ function parseBlang(text) {
     if (m) {
       const selector = m[1].trim();
       const text = m[2].trim();
+      autoDeclareFromParams(`${selector}, ${text}`);
       output.push(
         ' '.repeat(indent) +
           handleFunctionCall('設定文字內容', `${selector}, ${text}`, indent, declaredVars)
@@ -520,6 +536,7 @@ function parseBlang(text) {
       const funcName = match[1].trim();
       const params = match[2].trim();
       const rawCall = `${funcName}(${params})`;
+      autoDeclareFromParams(params);
       output.push(' '.repeat(indent) + handleFunctionCall(funcName, params, indent, declaredVars));
       continue;
     }
