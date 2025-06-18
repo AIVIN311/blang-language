@@ -90,14 +90,15 @@
     <!-- 模組載入順序建議：先載 array，再載核心邏輯 -->
     <script src="blang-modules/array.js"></script>
     <script src="errorHelper.js"></script>
-    <script src="dist/blangSyntaxAPI.browser.js?v=1"></script>
+    <script src="dist/blangSyntaxAPI.browser.js?v=0.9.4"></script>
     <script src="dist/semanticHandler.browser.js?v=1"></script>
     <script src="variableHints.js"></script>
     <script src="parser.js"></script>
 
     <script>
       console.log(parseBlang('顯示("你好")'));
-      document.getElementById('submit').addEventListener('click', () => {
+
+      function runBlang() {
         const input = document.getElementById('input').value;
         const { highlighted, message } = variableHints.getHints(input);
         document.getElementById('原始語句區').innerHTML = highlighted;
@@ -123,7 +124,9 @@
             document.getElementById('console_log').innerText = msg;
           }
         }
-      });
+      }
+
+      document.getElementById('submit').addEventListener('click', runBlang);
     </script>
   </body>
 </html>
