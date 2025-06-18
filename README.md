@@ -236,9 +236,10 @@ blang/
 
 ```bash
 npm run build-browser
+npm run build-blang-browser
 ```
 
-這會產生 `dist/semanticHandler.browser.js`，供瀏覽器環境使用。
+這會分別產生 `dist/semanticHandler.browser.js` 與 `dist/blangSyntaxAPI.browser.js`，供瀏覽器環境使用。
 
 ## 🧪 測試與開發工具
 
