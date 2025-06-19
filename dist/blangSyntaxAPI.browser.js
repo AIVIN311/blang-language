@@ -750,8 +750,9 @@ function processDisplayArgument(arg, declaredVars = new Set()) {
           return `"${colorMap[raw]}"`;
         }
         if (/^[\d.]+$/.test(raw)) return raw;
-        if (/^[a-zA-Z_\u4e00-\u9fa5][\w\u4e00-\u9fa5]*$/.test(raw) || declaredVars.has(raw))
-          return raw;
+        if (declaredVars.has(raw)) return raw;
+        if (/^[a-zA-Z_\u4e00-\u9fa5][\w\u4e00-\u9fa5]*$/.test(raw))
+          return `"${raw}"`;
         return `"${raw}"`;
       });
       const mod = modules[moduleName];
@@ -808,9 +809,12 @@ function handleFunctionCall(funcName, params, indent = 0, declaredVars = new Set
       // 數字
       if (/^[\d.]+$/.test(raw)) return raw;
 
-      // 合法變數
-      if (/^[a-zA-Z_\u4e00-\u9fa5][\w\u4e00-\u9fa5]*$/.test(raw) || declaredVars.has(raw)) {
+      // 合法變數僅在宣告集合中
+      if (declaredVars.has(raw)) {
         return raw;
+      }
+      if (/^[a-zA-Z_\u4e00-\u9fa5][\w\u4e00-\u9fa5]*$/.test(raw)) {
+        return `"${raw}"`;
       }
 
       if (/^\d+(\.\d+)?(px|em|rem|%)$/.test(raw)) return `"${raw}"`;
