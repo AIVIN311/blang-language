@@ -311,6 +311,13 @@ node blang-lint.js
 
 系統雖會自動補上未宣告變數，但仍建議檢查程式邏輯以免埋下錯誤。
 
+在 Node 環境可直接檢查轉譯後的 `output.js`：
+
+```bash
+node scripts/check-vars.js output.js
+```
+
+
 ### 開發工具
 
 產生語法文件：
