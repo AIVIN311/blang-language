@@ -130,7 +130,11 @@ function autoDeclareVariablesFromCondition(condition) {
     for (const v of vars) {
       if (!declaredVars.has(v) && isNaN(v) && !ignoreList.has(v)) {
         declaredVars.add(v);
-        output.unshift(`let ${v} = 0; // ⛳ 自動補上未宣告變數`);
+        if(/播放器$/.test(v)) {
+          output.unshift(`const ${v} = "#${v}"; // ⛳ 自動補上 DOM 選擇器變數`);
+        } else {
+          output.unshift(`let ${v} = 0; // ⛳ 自動補上未宣告變數`);
+        }
       }
     }
   }
@@ -145,7 +149,11 @@ function autoDeclareFromParams(params = '') {
     if (!/^[\u4e00-\u9fa5A-Za-z_][\w\u4e00-\u9fa5]*$/.test(token)) continue; // invalid identifier
     if (ignoreList.has(token) || declaredVars.has(token)) continue;
     declaredVars.add(token);
-    output.unshift(`let ${token} = 0; // ⛳ 自動補上未宣告變數`);
+    if(/播放器$/.test(token)) {
+      output.unshift(`const ${token} = "#${token}"; // ⛳ 自動補上 DOM 選擇器變數`);
+    } else {
+      output.unshift(`let ${token} = 0; // ⛳ 自動補上未宣告變數`);
+    }
   }
 }
 

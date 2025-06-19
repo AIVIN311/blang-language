@@ -480,6 +480,33 @@ function testPlayVideoParsing() {
   }
 }
 
+function testAutoDeclarePlayerSelector() {
+  const sample = '播放影片(影片播放器)';
+  const originalDemo = fs.readFileSync('demo.blang', 'utf8');
+  fs.writeFileSync('demo.blang', sample);
+
+  const hasOutput = fs.existsSync('output.js');
+  const originalOut = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
+
+  execSync('node parser_v0.9.4.js');
+  const output = fs.readFileSync('output.js', 'utf8');
+  assert(
+    output.includes('const 影片播放器 = "#影片播放器"'),
+    '未宣告的 影片播放器 應自動補成 DOM 選擇器字串'
+  );
+  assert(
+    output.includes('document.querySelector(影片播放器).play();'),
+    '播放影片 應使用自動補的選擇器變數'
+  );
+
+  fs.writeFileSync('demo.blang', originalDemo);
+  if (hasOutput) {
+    fs.writeFileSync('output.js', originalOut);
+  } else {
+    fs.unlinkSync('output.js');
+  }
+}
+
 function testPauseAudioParsing() {
   const sample = '暫停音效(#audio)';
   const originalDemo = fs.readFileSync('demo.blang', 'utf8');
@@ -812,6 +839,7 @@ try {
   testLogStatement();
   testShowContentLog();
   testPlayVideoParsing();
+  testAutoDeclarePlayerSelector();
   testPauseAudioParsing();
   testPlaySoundParsing();
   testLoopAudioParsing();
