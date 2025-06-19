@@ -50,11 +50,7 @@ Blang 是一種中文語場編程方式，用中文邏輯實現智慧語意互�
 |          | 設定文字內容（#id, "文字"）              | `document.querySelector("#id").textContent = "文字"` |
 | 樣式控制 | 設定樣式（#id, 背景色, 紅色）           | `document.querySelector("#id").style["backgroundColor"] = "red"` |
 |          | 切換顏色（#id, 紅色, 藍色）             | `document.querySelector("#id").style.backgroundColor = (document.querySelector("#id").style.backgroundColor === 'red' ? 'blue' : 'red')` |
-<<<<<<< codex/revise-docs,-add-tests,-and-regenerate-files
-|          | 隱藏（#id）                         | `document.querySelector("#id").style.display = 'none'` |
-=======
 |          | 隱藏（#id）                             | `document.querySelector("#id").style.display = 'none'` |
->>>>>>> main
 | 媒體時間 | 播放影片（播放器）                      | `播放器.play()`                                 |
 |          | 暫停音效（播放器）                      | `播放器.pause()`                                |
 |          | 循環播放音樂（檔名）                    | `const a = new Audio(檔名); a.loop = true; a.play();` |

@@ -466,6 +466,96 @@ function parseBlang(text) {
     }
   }
 
+  if (line.startsWith('顯示圖片（') && line.includes('在 #')) {
+    const m = line.match(/顯示圖片（(.*?)） 在 #(.*?)）/);
+    if (m) {
+      const src = m[1].trim();
+      const target = `#${m[2].trim()}`;
+      output.push(
+        ' '.repeat(indent) +
+          handleFunctionCall('顯示圖片', `${src}, ${target}`, indent, declaredVars)
+      );
+      continue;
+    }
+  }
+
+  if (line.startsWith('顯示（') && line.includes('在 #')) {
+    const match = line.match(/顯示（(.*?) 在 #(.*?)）/);
+    if (match) {
+      const rawExpr = match[1].trim();
+      const targetId = match[2].trim();
+      const parts = rawExpr.split(/\s*\+\s*/).map((part) => {
+        const trimmed = part.trim();
+        if (/^[A-Za-z_]+Module\.\w+/.test(trimmed)) return trimmed;
+        return processDisplayArgument(trimmed, declaredVars);
+      });
+      output.push(
+        ' '.repeat(indent) +
+          `document.getElementById("${targetId}").innerText = ${parts.join(
+            ' + '
+          )};`
+      );
+      continue;
+    }
+  }
+
+  if (line.match(/^切換顏色（.*）$/)) {
+    const m = line.match(/切換顏色（(.*?),\s*(.*?),\s*(.*)）/);
+    if (m) {
+      const sel = processDisplayArgument(m[1].trim(), declaredVars);
+      const c1 = processDisplayArgument(m[2].trim(), declaredVars);
+      const c2 = processDisplayArgument(m[3].trim(), declaredVars);
+      const elVar = `__toggleEl${toggleColorCounter++}`;
+      output.push(' '.repeat(indent) + `let ${elVar} = document.querySelector(${sel});`);
+      output.push(
+        ' '.repeat(indent) +
+          `${elVar}.style.color = ${elVar}.style.color === ${c1} ? ${c2} : ${c1};`
+      );
+      continue;
+    }
+  }
+
+  if (line.trim() === '顯示現在時間') {
+    output.push(' '.repeat(indent) + 'alert(new Date().toLocaleString());');
+    continue;
+  }
+
+  if (line.trim() === '顯示今天是星期幾') {
+    output.push(
+      ' '.repeat(indent) +
+        'alert("今天是星期" + "日一二三四五六"[new Date().getDay()]);'
+    );
+    continue;
+  }
+
+  if (line.trim() === '顯示現在是幾點幾分') {
+    output.push(
+      ' '.repeat(indent) +
+        'alert("現在是" + new Date().getHours() + "點" + new Date().getMinutes() + "分");'
+    );
+    continue;
+  }
+
+  if (line.match(/^替換文字（.*）$/)) {
+    const m = line.match(/替換文字（(.*?),\s*(.*?),\s*(.*)）/);
+    if (m) {
+      const str = processDisplayArgument(m[1].trim(), declaredVars);
+      const from = processDisplayArgument(m[2].trim(), declaredVars);
+      const to = processDisplayArgument(m[3].trim(), declaredVars);
+      output.push(' '.repeat(indent) + `${str}.replace(${from}, ${to});`);
+      continue;
+    }
+  }
+
+  if (line.match(/^轉跳網頁（.*）$/)) {
+    const m = line.match(/轉跳網頁（(.*)）/);
+    if (m) {
+      const url = processDisplayArgument(m[1].trim(), declaredVars);
+      output.push(' '.repeat(indent) + `window.location.href = ${url};`);
+      continue;
+    }
+  }
+
 
   // 顯示(... 在 ...)：顯示文字於指定選擇器
   const showInMatch = line.match(/^顯示[（(](.*)\s+在\s+(.+)[)）]$/);
