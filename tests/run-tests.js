@@ -2,6 +2,7 @@ const assert = require('assert');
 const fs = require('fs');
 const { execSync } = require('child_process');
 const { processDisplayArgument, handleFunctionCall } = require('../semanticHandler-v0.9.4.js');
+const styleModule = require('../styleModule.js');
 const { testPatternSyntax } = require('./pattern-syntax.test');
 const { testSyntaxExamples } = require('./syntaxExamples.test');
 
@@ -19,7 +20,7 @@ function testHandleFunctionCallQuoting() {
   );
   assert.strictEqual(
     handleFunctionCall('顯示', '完成'),
-    'document.querySelector("完成").style.display = "block";'
+    'document.querySelector("完成") && (document.querySelector("完成").style.display = "block");'
   );
 }
 
@@ -40,7 +41,7 @@ function testParser() {
     'alert line should be parsed'
   );
   assert(
-    output.includes('document.querySelector("#結果區").style["backgroundColor"] = "red";'),
+    output.includes('document.querySelector("#結果區") && (document.querySelector("#結果區").style["backgroundColor"] = "red");'),
     'style line should be parsed with color keyword'
   );
   if (hasOutput) {
@@ -84,7 +85,7 @@ function testHideElementParsing() {
   execSync('node parser_v0.9.4.js');
   const output = fs.readFileSync('output.js', 'utf8');
   assert(
-    output.includes('document.querySelector("#test").style.display = "none";'),
+    output.includes('document.querySelector("#test") && (document.querySelector("#test").style.display = "none");'),
     '隱藏 should convert to querySelector with quoted selector'
   );
 
@@ -107,7 +108,7 @@ function testHideParsing() {
   execSync('node parser_v0.9.4.js');
   const output = fs.readFileSync('output.js', 'utf8');
   assert(
-    output.includes('document.querySelector("#foo").style.display = "none";'),
+    output.includes('document.querySelector("#foo") && (document.querySelector("#foo").style.display = "none");'),
     '隱藏(#id) should convert to querySelector with display none'
   );
 
@@ -130,7 +131,7 @@ function testHideShortFormParsing() {
   execSync('node parser_v0.9.4.js');
   const output = fs.readFileSync('output.js', 'utf8');
   assert(
-    output.includes('document.querySelector("#bar").style.display = "none";'),
+    output.includes('document.querySelector("#bar") && (document.querySelector("#bar").style.display = "none");'),
     '隱藏 #id should convert to querySelector with display none'
   );
 
@@ -178,7 +179,7 @@ function testShowElementParsing() {
   execSync('node parser_v0.9.4.js');
   const output = fs.readFileSync('output.js', 'utf8');
   assert(
-    output.includes('document.querySelector("#showEl").style.display = "block";'),
+    output.includes('document.querySelector("#showEl") && (document.querySelector("#showEl").style.display = "block");'),
     '顯示 should convert to display block on selector'
   );
 
@@ -200,7 +201,7 @@ function testToggleColorParsing() {
 
   execSync('node parser_v0.9.4.js');
   const output = fs.readFileSync('output.js', 'utf8');
-  const match = output.match(/let (__toggleEl\d+) = document.querySelector\("#foo"\);\s*\1.style.color = \1.style.color === "red" \? "blue" : "red";/);
+  const match = output.match(/let (__toggleEl\d+) = document.querySelector\("#foo"\);\s*if \(\1\) \1.style.color = \1.style.color === "red" \? "blue" : "red";/);
   assert(match, '切換顏色 should toggle colors with a unique identifier');
 
   fs.writeFileSync('demo.blang', originalDemo);
@@ -227,8 +228,8 @@ function testMultipleToggleColor() {
   while ((m = varPattern.exec(output)) !== null) vars.push(m[1]);
   assert.strictEqual(vars.length, 2, 'should create two toggle variables');
   assert.notStrictEqual(vars[0], vars[1], 'toggle identifiers must be unique');
-  const re1 = new RegExp(`${vars[0]}\\.style.color = ${vars[0]}\\.style.color === "red" \\? "blue" : "red";`);
-  const re2 = new RegExp(`${vars[1]}\\.style.color = ${vars[1]}\\.style.color === "green" \\? "yellow" : "green";`);
+  const re1 = new RegExp(`if \\(${vars[0]}\\) ${vars[0]}\\.style.color = ${vars[0]}\\.style.color === "red" \\? "blue" : "red";`);
+  const re2 = new RegExp(`if \\(${vars[1]}\\) ${vars[1]}\\.style.color = ${vars[1]}\\.style.color === "green" \\? "yellow" : "green";`);
   assert(re1.test(output), 'first toggle statement should be correct');
   assert(re2.test(output), 'second toggle statement should be correct');
 
@@ -251,7 +252,7 @@ function testShowImageParsing() {
   execSync('node parser_v0.9.4.js');
   const output = fs.readFileSync('output.js', 'utf8');
   assert(
-    output.includes("document.querySelector(\"#foo\").appendChild(img);"),
+    output.includes("document.querySelector(\"#foo\") && document.querySelector(\"#foo\").appendChild(img);"),
     '顯示圖片 should append img element to selector'
   );
 
@@ -343,7 +344,7 @@ function testSetSelectorContent() {
   execSync('node parser_v0.9.4.js');
   const output = fs.readFileSync('output.js', 'utf8');
   assert(
-    output.includes('document.querySelector("#foo").textContent = "嗨呀!";'),
+    output.includes('document.querySelector("#foo") && (document.querySelector("#foo").textContent = "嗨呀!");'),
     '設定（#foo）為 內容 should set text using helper'
   );
 
@@ -353,6 +354,15 @@ function testSetSelectorContent() {
   } else {
     fs.unlinkSync('output.js');
   }
+}
+
+function testSelectorGuard() {
+  const vm = require('vm');
+  const code = styleModule.隱藏('"#missing"');
+  assert.doesNotThrow(
+    () => vm.runInNewContext(code + ';', { document: { querySelector: () => null } }),
+    'styleModule functions should guard against missing elements'
+  );
 }
 
 function testCookieSetting() {
@@ -475,7 +485,7 @@ function testPlayVideoParsing() {
   execSync('node parser_v0.9.4.js');
   const output = fs.readFileSync('output.js', 'utf8');
   assert(
-    output.includes('document.querySelector("#player").play();'),
+    output.includes('document.querySelector("#player") && document.querySelector("#player").play();'),
     '播放影片 should translate to play() on selector'
   );
 
@@ -502,7 +512,7 @@ function testAutoDeclarePlayerSelector() {
     '未宣告的 影片播放器 應自動補成 DOM 選擇器字串'
   );
   assert(
-    output.includes('document.querySelector(影片播放器).play();'),
+    output.includes('document.querySelector(影片播放器) && document.querySelector(影片播放器).play();'),
     '播放影片 應使用自動補的選擇器變數'
   );
 
@@ -546,7 +556,7 @@ function testPauseAudioParsing() {
   execSync('node parser_v0.9.4.js');
   const output = fs.readFileSync('output.js', 'utf8');
   assert(
-    output.includes('document.querySelector("#audio").pause();'),
+    output.includes('document.querySelector("#audio") && document.querySelector("#audio").pause();'),
     '暫停音效 should translate to pause() on selector'
   );
 
@@ -862,6 +872,7 @@ try {
   testAddElementParsing();
   testFadeAnimationParsing();
   testSetSelectorContent();
+  testSelectorGuard();
   testCookieSetting();
   testDisplayAbsoluteValue();
   testDisplayCookieValue();
