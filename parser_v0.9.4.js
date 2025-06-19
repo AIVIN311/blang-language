@@ -174,6 +174,33 @@ function processCondition(condition) {
   return result;
 }
 
+function removeUnusedDeclarations(code) {
+  const lines = code.split('\n');
+  const declPattern = /^\s*(?:const|let)\s+([\u4e00-\u9fa5A-Za-z_][\u4e00-\u9fa5A-Za-z0-9_]*) .*自動補上/;
+  const declarations = [];
+
+  lines.forEach((line, idx) => {
+    const m = line.match(declPattern);
+    if (m) declarations.push({ name: m[1], idx });
+  });
+
+  const codeWithoutComments = lines
+    .map(l => l.replace(/\/\/.*$/, ''))
+    .join('\n');
+
+  const unusedIdx = new Set();
+  for (const { name, idx } of declarations) {
+    const esc = name.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&');
+    const regex = new RegExp(esc, 'g');
+    const matches = codeWithoutComments.match(regex);
+    if (!matches || matches.length <= 1) {
+      unusedIdx.add(idx);
+    }
+  }
+
+  return lines.filter((_, i) => !unusedIdx.has(i)).join('\n');
+}
+
 function parseBlang(text) {
   const lines = text.split('\n');
   output = [];
@@ -645,7 +672,9 @@ function parseBlang(text) {
 }
 
   closeBlocks(0, 0);
-  return output.join('\n');
+  let code = output.join('\n');
+  code = removeUnusedDeclarations(code);
+  return code;
 }
 
 if (isNode) {
