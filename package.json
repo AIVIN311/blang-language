@@ -7,7 +7,8 @@
     "build-grammar-doc": "node buildGrammarDoc.js",
     "build-browser": "browserify semanticHandler.js -s handleSyntax -o dist/semanticHandler.browser.js",
     "build-blang-browser": "browserify blangSyntaxAPI.js -s blangSyntaxAPI -o dist/blangSyntaxAPI.browser.js",
-    "build-api": "node parser_v0.9.4.js"
+    "build-api": "node parser_v0.9.4.js",
+    "lint:vars": "node scripts/check-vars.js output.js"
   },
   "devDependencies": {
     "browserify": "^17.0.1"
