@@ -1,4 +1,10 @@
 module.exports = {
-  播放影片: (target) => `document.querySelector(${target}).play()`,
-  暫停音效: (target) => `document.querySelector(${target}).pause()`
+  播放影片: (target) => {
+    const elExpr = `document.querySelector(${target})`;
+    return `${elExpr} && ${elExpr}.play()`;
+  },
+  暫停音效: (target) => {
+    const elExpr = `document.querySelector(${target})`;
+    return `${elExpr} && ${elExpr}.pause()`;
+  }
 };
