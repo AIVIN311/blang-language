@@ -1,12 +1,6 @@
-let 淡藍色 = 0; // ⛳ 自動補上未宣告變數
 const 音效播放器 = "#音效播放器"; // ⛳ 自動補上 DOM 選擇器變數
 const 影片播放器 = "#影片播放器"; // ⛳ 自動補上 DOM 選擇器變數
-let 藍色 = 0; // ⛳ 自動補上未宣告變數
-let 字型大小 = 0; // ⛳ 自動補上未宣告變數
-let 紅色 = 0; // ⛳ 自動補上未宣告變數
-let 背景色 = 0; // ⛳ 自動補上未宣告變數
 let 人物 = {}; // ⛳ 自動補上 人物 變數
-let 空 = 0; // ⛳ 自動補上未宣告變數
 const 輸入框 = document.getElementById("input");
 
 document.getElementById("submit").addEventListener("click", () => {
@@ -65,34 +59,34 @@ if (數量 > 2) {
         alert("他的名字是：" + 人物["名字"]);
         alert(人物[key]);
                 alert("你好嗎?");
-                document.querySelector("#結果區").style["backgroundColor"] = "red";
-                document.querySelector("#歡迎區").style["fontSize"] = "24px";
+                document.querySelector("#結果區") && (document.querySelector("#結果區").style["backgroundColor"] = "red");
+                document.querySelector("#歡迎區") && (document.querySelector("#歡迎區").style["fontSize"] = "24px");
         alert("水果數量：" + 水果們.length);
                 水果們.length = 0;
     if (水果們.length === 0) {
         alert("清單是空的");
-                let __toggleEl0 = document.querySelector("#結果區"); __toggleEl0.style.color = __toggleEl0.style.color === "red" ? "blue" : "red";
-                document.querySelector("#歡迎區").style.display = "none";
-                document.querySelector(影片播放器).play();
-                document.querySelector(音效播放器).pause();
+                let __toggleEl0 = document.querySelector("#結果區"); if (__toggleEl0) __toggleEl0.style.color = __toggleEl0.style.color === "red" ? "blue" : "red";
+                document.querySelector("#歡迎區") && (document.querySelector("#歡迎區").style.display = "none");
+                document.querySelector(影片播放器) && document.querySelector(影片播放器).play();
+                document.querySelector(音效播放器) && document.querySelector(音效播放器).pause();
         alert("現在時間是：" + new Date().toLocaleTimeString());
         alert(new Date().toLocaleString());
         let 原句 = '我喜歡貓';
         alert(原句.replace("貓", "狗"));
                 window.location.href = "https://example.com";
-        const img = document.createElement('img'); img.src = "圖.jpg"; document.querySelector("#區塊").appendChild(img);
+        const img = document.createElement('img'); img.src = "圖.jpg"; document.querySelector("#區塊") && document.querySelector("#區塊").appendChild(img);
         console.log("你好世界");
                 new Audio("ding.mp3").play();
-                document.querySelector("#警告區塊").style.display = "none";
-                document.querySelector("#表單").style.display = "block";
-                document.querySelector("#頁面").style.backgroundColor = "lightblue";
-                document.querySelector("#狀態文字").textContent = "處理中...";
+                document.querySelector("#警告區塊") && (document.querySelector("#警告區塊").style.display = "none");
+                document.querySelector("#表單") && (document.querySelector("#表單").style.display = "block");
+                document.querySelector("#頁面") && (document.querySelector("#頁面").style.backgroundColor = "lightblue");
+                document.querySelector("#狀態文字") && (document.querySelector("#狀態文字").textContent = "處理中...");
         alert("今天是星期" + "日一二三四五六"[new Date().getDay()]);
         alert("現在是" + new Date().getHours() + "點" + new Date().getMinutes() + "分");
         alert("你好世界");
         if (1 > 0) { alert("大"); } else { alert("小"); }
         alert("開始測試");
-                document.querySelector("#通知區").style.display = "none";
+                document.querySelector("#通知區") && (document.querySelector("#通知區").style.display = "none");
         setTimeout(() => {
             alert("完成");
         }, 2000);
@@ -116,12 +110,12 @@ if (數量 > 2) {
         alert(new URLSearchParams(location.search).get(id));
                 const a = new Audio("bg.mp3"); a.loop = true; a.play();
         window.open("https://example.com", '_blank');
-        alert(abc.toUpperCase());
-        alert(hello.includes(h));
-        alert(人物[key]);
-        alert(prompt(請輸入姓名));
+        alert("abc".toUpperCase());
+        alert("hello".includes("h"));
+        alert("人物"[key]);
+        alert(prompt("請輸入姓名"));
                 ObjectModule.建立物件("a", "b", "c", 1);
-                document.querySelector("#輸出").textContent = "完成";
+                document.querySelector("#輸出") && (document.querySelector("#輸出").textContent = "完成");
                 console.log("log 測試");
     }
     }
