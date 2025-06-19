@@ -545,6 +545,47 @@ function testRemoveUnusedDeclarations() {
   }
 }
 
+function testSubstringVariablePruning() {
+  const sample = '設定 人物角色 為 2';
+  const originalDemo = fs.readFileSync('demo.blang', 'utf8');
+  fs.writeFileSync('demo.blang', sample);
+
+  const hasOutput = fs.existsSync('output.js');
+  const originalOut = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
+
+  execSync('node parser_v0.9.4.js');
+  const output = fs.readFileSync('output.js', 'utf8');
+  assert(!output.includes('let 人物 ='), 'substring usage should not keep base declaration');
+  assert(output.includes('let 人物角色 = 2;'), 'actual variable declaration should remain');
+
+  fs.writeFileSync('demo.blang', originalDemo);
+  if (hasOutput) {
+    fs.writeFileSync('output.js', originalOut);
+  } else {
+    fs.unlinkSync('output.js');
+  }
+}
+
+function testKeepUsedDeclaration() {
+  const sample = '如果(count > 3)：\n  顯示(count)';
+  const originalDemo = fs.readFileSync('demo.blang', 'utf8');
+  fs.writeFileSync('demo.blang', sample);
+
+  const hasOutput = fs.existsSync('output.js');
+  const originalOut = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
+
+  execSync('node parser_v0.9.4.js');
+  const output = fs.readFileSync('output.js', 'utf8');
+  assert(output.includes('let count = 0'), 'used variable declaration should remain');
+
+  fs.writeFileSync('demo.blang', originalDemo);
+  if (hasOutput) {
+    fs.writeFileSync('output.js', originalOut);
+  } else {
+    fs.unlinkSync('output.js');
+  }
+}
+
 function testPauseAudioParsing() {
   const sample = '暫停音效(#audio)';
   const originalDemo = fs.readFileSync('demo.blang', 'utf8');
@@ -881,6 +922,8 @@ try {
   testPlayVideoParsing();
   testAutoDeclarePlayerSelector();
   testRemoveUnusedDeclarations();
+  testSubstringVariablePruning();
+  testKeepUsedDeclaration();
   testPauseAudioParsing();
   testPlaySoundParsing();
   testLoopAudioParsing();
