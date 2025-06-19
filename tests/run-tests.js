@@ -507,6 +507,27 @@ function testAutoDeclarePlayerSelector() {
   }
 }
 
+function testRemoveUnusedDeclarations() {
+  const sample = '顯示("嗨")';
+  const originalDemo = fs.readFileSync('demo.blang', 'utf8');
+  fs.writeFileSync('demo.blang', sample);
+
+  const hasOutput = fs.existsSync('output.js');
+  const originalOut = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
+
+  execSync('node parser_v0.9.4.js');
+  const output = fs.readFileSync('output.js', 'utf8');
+  assert(!output.includes('let 人物'), '未使用的自動補上變數應被移除');
+  assert(!output.includes('let 空'), '未使用的自動補上變數應被移除');
+
+  fs.writeFileSync('demo.blang', originalDemo);
+  if (hasOutput) {
+    fs.writeFileSync('output.js', originalOut);
+  } else {
+    fs.unlinkSync('output.js');
+  }
+}
+
 function testPauseAudioParsing() {
   const sample = '暫停音效(#audio)';
   const originalDemo = fs.readFileSync('demo.blang', 'utf8');
@@ -840,6 +861,7 @@ try {
   testShowContentLog();
   testPlayVideoParsing();
   testAutoDeclarePlayerSelector();
+  testRemoveUnusedDeclarations();
   testPauseAudioParsing();
   testPlaySoundParsing();
   testLoopAudioParsing();
