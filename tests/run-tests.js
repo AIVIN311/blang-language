@@ -23,6 +23,13 @@ function testHandleFunctionCallQuoting() {
   );
 }
 
+function testPromptAutoQuoting() {
+  assert.strictEqual(
+    processDisplayArgument('使用者輸入(請輸入姓名)'),
+    'prompt("請輸入姓名")'
+  );
+}
+
 function testParser() {
   const hasOutput = fs.existsSync('output.js');
   const original = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
@@ -841,6 +848,7 @@ try {
   testPatternSyntax();
   testProcessDisplayArgument();
   testHandleFunctionCallQuoting();
+  testPromptAutoQuoting();
   testParser();
   testConditionProcessing();
   testHideElementParsing();
