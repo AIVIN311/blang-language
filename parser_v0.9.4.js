@@ -191,8 +191,12 @@ function removeUnusedDeclarations(code) {
   const unusedIdx = new Set();
   for (const { name, idx } of declarations) {
     const esc = name.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&');
-    const regex = new RegExp(esc, 'g');
-    const matches = codeWithoutComments.match(regex);
+    const regex = new RegExp(`\\b${esc}\\b`, 'g');
+    let matches = codeWithoutComments.match(regex);
+    if (!matches && /[^\w]/.test(name)) {
+      const alt = new RegExp(`(^|[^\\w\\u4e00-\\u9fa5])${esc}([^\\w\\u4e00-\\u9fa5]|$)`, 'g');
+      matches = codeWithoutComments.match(alt);
+    }
     if (!matches || matches.length <= 1) {
       unusedIdx.add(idx);
     }
