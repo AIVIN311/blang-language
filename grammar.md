@@ -51,8 +51,8 @@ Blang 是一種中文語場編程方式，用中文邏輯實現智慧語意互�
 | 樣式控制 | 設定樣式（#id, 背景色, 紅色）           | `document.querySelector("#id").style["backgroundColor"] = "red"` |
 |          | 切換顏色（#id, 紅色, 藍色）             | `document.querySelector("#id").style.backgroundColor = (document.querySelector("#id").style.backgroundColor === 'red' ? 'blue' : 'red')` |
 |          | 隱藏（#id）                             | `document.querySelector("#id").style.display = 'none'` |
-| 媒體時間 | 播放影片（播放器）                      | `播放器.play()`                                 |
-|          | 暫停音效（播放器）                      | `播放器.pause()`                                |
+| 媒體時間 | 播放影片（播放器）                      | `document.querySelector(播放器).play()`                                 |
+|          | 暫停音效（播放器）                      | `document.querySelector(播放器).pause()`                                |
 |          | 循環播放音樂（檔名）                    | `const a = new Audio(檔名); a.loop = true; a.play();` |
 |          | 獲取現在時間（）                        | `new Date().toLocaleTimeString()`                |
 |          | 顯示現在時間                           | `alert(new Date().toLocaleString())` |
