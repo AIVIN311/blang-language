@@ -68,6 +68,7 @@ if (數量 > 2) {
                 let __toggleEl0 = document.querySelector("#結果區"); if (__toggleEl0) __toggleEl0.style.color = __toggleEl0.style.color === "red" ? "blue" : "red";
                 document.querySelector("#歡迎區") && (document.querySelector("#歡迎區").style.display = "none");
                 document.querySelector(影片播放器) && document.querySelector(影片播放器).play();
+                document.querySelector("#影片播放器")?.pause();
                 document.querySelector(音效播放器) && document.querySelector(音效播放器).pause();
         alert("現在時間是：" + new Date().toLocaleTimeString());
         alert(new Date().toLocaleString());
