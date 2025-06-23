@@ -192,6 +192,7 @@ if (輸入框.value === "") {
 | 取得項目（清單, 位置）           | `清單[位置 - 1]` |
 | 清空清單（清單）                 | `清單.length = 0` |
 | 播放音效（"ding.mp3"）           | `new Audio("ding.mp3").play();`                 |
+| 暫停影片()                   | `document.querySelector("#影片播放器")?.pause();` |
 | 循環播放音樂（"bg.mp3"）         | `const a = new Audio("bg.mp3"); a.loop = true; a.play();` |
 | 說出（"內容"）                   | `console.log("內容");`                          |
 | 朗讀（"內容"）                   | `speak("內容");`                                |
@@ -203,6 +204,8 @@ if (輸入框.value === "") {
 | 顯示今天是星期幾                 | `alert("今天是星期" + "日一二三四五六"[new Date().getDay()])` |
 | 顯示現在是幾點幾分               | `alert("現在是" + new Date().getHours() + "點" + new Date().getMinutes() + "分")` |
 | 顯示內容（"這是測試"）           | `console.log("這是測試")` |
+模組：mediaModule
+
 
 ---
 

@@ -52,6 +52,7 @@ Blang 是一種中文語場編程方式，用中文邏輯實現智慧語意互�
 |          | 切換顏色（#id, 紅色, 藍色）             | `document.querySelector("#id").style.backgroundColor = (document.querySelector("#id").style.backgroundColor === 'red' ? 'blue' : 'red')` |
 |          | 隱藏（#id）                             | `document.querySelector("#id").style.display = 'none'` |
 | 媒體時間 | 播放影片（播放器）                      | `document.querySelector(播放器).play()`                                 |
+|          | 暫停影片（）                      | `document.querySelector("#影片播放器")?.pause();` |
 |          | 暫停音效（播放器）                      | `document.querySelector(播放器).pause()`                                |
 |          | 循環播放音樂（檔名）                    | `const a = new Audio(檔名); a.loop = true; a.play();` |
 |          | 獲取現在時間（）                        | `new Date().toLocaleTimeString()`                |
@@ -60,6 +61,12 @@ Blang 是一種中文語場編程方式，用中文邏輯實現智慧語意互�
 |          | 顯示現在是幾點幾分                     | `alert("現在是" + new Date().getHours() + "點" + new Date().getMinutes() + "分")` |
 | 其他     | 轉跳網頁（"https://example.com"）        | `window.location.href = "https://example.com"`   |
 | 其他     | 顯示內容（"內容"）                     | `console.log("內容")` |
+## 🎞️ 媒體語法
+- 暫停影片() ➝ 暫停播放影片播放器
+- 播放音效("路徑.mp3") ➝ 播放指定音效
+
+模組：mediaModule
+
 
 ## 📖 模組化語法規則
 
