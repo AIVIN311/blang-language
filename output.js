@@ -1,3 +1,8 @@
+let 問好嗎 = 0; // ⛳ 自動補上未宣告變數
+let 名字 = 0; // ⛳ 自動補上未宣告變數
+let 要向 = 0; // ⛳ 自動補上未宣告變數
+let 你要執行這個程式嗎 = 0; // ⛳ 自動補上未宣告變數
+let confirm = 0; // ⛳ 自動補上未宣告變數
 const 音效播放器 = "#音效播放器"; // ⛳ 自動補上 DOM 選擇器變數
 const 影片播放器 = "#影片播放器"; // ⛳ 自動補上 DOM 選擇器變數
 let 人物 = {}; // ⛳ 自動補上 人物 變數
@@ -118,6 +123,16 @@ if (數量 > 2) {
                 ObjectModule.建立物件("a", "b", "c", 1);
                 document.querySelector("#輸出") && (document.querySelector("#輸出").textContent = "完成");
                 console.log("log 測試");
+        alert("歡迎使用 Blang！");
+        if (confirm("你要執行這個程式嗎?")) {
+        alert("確認執行");
+        } else {
+        alert("取消操作");
+        let 名字 = "大傑斯";
+        } // 👈 自動關閉 else 區塊
+        if (confirm("要向 " + 名字 + " 問好嗎?")) {
+        alert("你好," + 名字);
+        }
     }
     }
 }
