@@ -74,6 +74,31 @@ function testConditionProcessing() {
   }
 }
 
+function testConfirmCondition() {
+  const sample = '如果(確認("確定刪除？"))：\n  顯示("已刪除")';
+  const originalDemo = fs.readFileSync('demo.blang', 'utf8');
+  fs.writeFileSync('demo.blang', sample);
+
+  const hasOutput = fs.existsSync('output.js');
+  const originalOut = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
+
+  execSync('node parser_v0.9.4.js');
+  const output = fs.readFileSync('output.js', 'utf8');
+  assert(
+    output.includes('if (confirm('),
+    'if statement should use confirm()'
+  );
+  assert(output.includes('確定刪除'), 'message text should be preserved');
+  assert(output.includes('alert("已刪除");'), 'alert line should be present');
+
+  fs.writeFileSync('demo.blang', originalDemo);
+  if (hasOutput) {
+    fs.writeFileSync('output.js', originalOut);
+  } else {
+    fs.unlinkSync('output.js');
+  }
+}
+
 function testHideElementParsing() {
   const sample = '隱藏(#test)';
   const originalDemo = fs.readFileSync('demo.blang', 'utf8');
@@ -925,6 +950,7 @@ try {
   testPromptAutoQuoting();
   testParser();
   testConditionProcessing();
+  testConfirmCondition();
   testHideElementParsing();
   testHideParsing();
   testHideShortFormParsing();

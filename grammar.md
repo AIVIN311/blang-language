@@ -46,6 +46,7 @@ Blang 是一種中文語場編程方式，用中文邏輯實現智慧語意互�
 | 物件操作 | 建立人物（"小傑", 25）                  | `let 人物 = { 名字: "小傑", 年齡: 25 }`          |
 |          | 取得屬性（人物, 名字）                  | `人物[名字]`                                    |
 | 輸入輸出 | 顯示訊息框（"內容"）                    | `alert("內容")`                                |
+|          | 確認（"內容"）                          | `confirm("內容")`                    |
 |          | 使用者輸入（"問題？"）                  | `prompt("問題？")`                              |
 |          | 設定文字內容（#id, "文字"）              | `document.querySelector("#id").textContent = "文字"` |
 | 樣式控制 | 設定樣式（#id, 背景色, 紅色）           | `document.querySelector("#id").style["backgroundColor"] = "red"` |
