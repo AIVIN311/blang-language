@@ -171,6 +171,28 @@ function processCondition(condition) {
   result = processConditionExpression(result)
     // 補強未在 processConditionExpression 中處理的片段
     .replace(/(===|!==|==|!=)\s*空/g, '$1 ""');
+
+  function replaceConfirm(str) {
+    const regex = /確認\s*\(/g;
+    let out = '';
+    let last = 0;
+    let m;
+    while ((m = regex.exec(str))) {
+      out += str.slice(last, m.index) + 'confirm(';
+      let i = regex.lastIndex;
+      let depth = 1;
+      while (i < str.length && depth > 0) {
+        if (str[i] === '(') depth++; else if (str[i] === ')') depth--; i++; }
+      const inner = str.slice(regex.lastIndex, i - 1);
+      out += processDisplayArgument(replaceConfirm(inner), declaredVars) + ')';
+      last = i;
+      regex.lastIndex = i;
+    }
+    out += str.slice(last);
+    return out;
+  }
+
+  result = replaceConfirm(result);
   return result;
 }
 

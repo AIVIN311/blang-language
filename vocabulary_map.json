@@ -31,6 +31,10 @@
         "module": "dialogModule",
         "js": "alert($1)"
     },
+    "確認": {
+        "module": "dialogModule",
+        "js": "confirm($1)"
+    },
     "使用者輸入": {
         "module": "inputModule",
         "js": "prompt($1)"
