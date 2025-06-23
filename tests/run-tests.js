@@ -632,6 +632,29 @@ function testPlaySoundParsing() {
   }
 }
 
+function testPauseVideoParsing() {
+  const sample = '暫停影片()';
+  const originalDemo = fs.readFileSync('demo.blang', 'utf8');
+  fs.writeFileSync('demo.blang', sample);
+
+  const hasOutput = fs.existsSync('output.js');
+  const originalOut = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
+
+  execSync('node parser_v0.9.4.js');
+  const output = fs.readFileSync('output.js', 'utf8');
+  assert(
+    output.includes('document.querySelector("#影片播放器")?.pause();'),
+    '暫停影片 should translate to pause() on default selector'
+  );
+
+  fs.writeFileSync('demo.blang', originalDemo);
+  if (hasOutput) {
+    fs.writeFileSync('output.js', originalOut);
+  } else {
+    fs.unlinkSync('output.js');
+  }
+}
+
 function testLoopAudioParsing() {
   const sample = '循環播放音樂(bg.mp3)';
   const originalDemo = fs.readFileSync('demo.blang', 'utf8');
@@ -925,6 +948,7 @@ try {
   testSubstringVariablePruning();
   testKeepUsedDeclaration();
   testPauseAudioParsing();
+  testPauseVideoParsing();
   testPlaySoundParsing();
   testLoopAudioParsing();
   testWaitSecondsDisplay();

@@ -87,6 +87,10 @@
         "module": "mediaModule",
         "js": "$1.pause()"
     },
+    "暫停影片": {
+        "module": "mediaModule",
+        "js": "document.querySelector(\"#影片播放器\")?.pause()"
+    },
     "獲取現在時間": {
         "module": "timeModule",
         "js": "new Date().toLocaleTimeString()"
