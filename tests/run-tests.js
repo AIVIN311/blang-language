@@ -895,6 +895,20 @@ function testClearListPattern() {
   assert.strictEqual(result, 'A.length = 0;', '清空清單 should translate to length reset');
 }
 
+function testListIncludesPattern() {
+  const { runBlangParser } = require('../blangSyntaxAPI.js');
+  const lines = ['清單包含(A, "蘋果")'];
+  const result = runBlangParser(lines).trim();
+  assert.strictEqual(result, '"A".includes("蘋果");', '清單包含 should translate to includes call');
+}
+
+function testTrimFunction() {
+  const { runBlangParser } = require('../blangSyntaxAPI.js');
+  const lines = ['去除空白(名字)'];
+  const result = runBlangParser(lines).trim();
+  assert.strictEqual(result, '"名字".trim();', '去除空白 should translate to trim call');
+}
+
 function testArrayModuleHelpers() {
   const arrayModule = require('../arrayModule.js');
   assert.strictEqual(
@@ -1032,6 +1046,8 @@ try {
   testAddItemDirectPattern();
   testGetItemPattern();
   testClearListPattern();
+  testListIncludesPattern();
+  testTrimFunction();
   testArrayModuleHelpers();
   testVocabularyMapParsing();
   testGetRegisteredPatterns();
