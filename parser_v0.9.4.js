@@ -738,6 +738,9 @@ function parseBlang(text) {
   closeBlocks(0, 0);
   let code = output.join('\n');
   code = removeUnusedDeclarations(code);
+  if (!code.trim().endsWith('});')) {
+    code += '\n});';
+  }
   return code;
 }
 
