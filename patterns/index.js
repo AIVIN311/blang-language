@@ -4,6 +4,7 @@ const mediaPatterns = require('./media');
 const logicPatterns = require('./logic');
 const generalPatterns = require('./general');
 const confirmPattern = require('./confirm');
+const conditionPattern = require('./condition');
 
 module.exports = function registerPatterns(definePattern) {
   logicPatterns(definePattern);
@@ -12,4 +13,5 @@ module.exports = function registerPatterns(definePattern) {
   mediaPatterns(definePattern);
   generalPatterns(definePattern);
   confirmPattern(definePattern);
+  conditionPattern(definePattern);
 };

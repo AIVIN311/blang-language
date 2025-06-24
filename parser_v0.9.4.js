@@ -385,12 +385,50 @@ function parseBlang(text) {
     }
   }
 
+  if (line.match(/^否則如果[（(](.*?)[）)]：$/)) {
+    const match = line.match(/^否則如果[（(](.*?)[）)]：$/);
+    if (match) {
+      const currentBlock = stack[stack.length - 1];
+      if (currentBlock && (currentBlock.type === 'if' || currentBlock.type === 'else-if')) {
+        const condition = processCondition(match[1]);
+        autoDeclareVariablesFromCondition(condition);
+        output.push(' '.repeat(currentBlock.indent) + `} else if (${condition}) {`);
+        stack.pop();
+        stack.push({ indent: currentBlock.indent, type: 'else-if' });
+      } else {
+        output.push(' '.repeat(indent) + `// ⚠️ 未翻譯：${line}（無對應的 '如果' 區塊）`);
+      }
+      continue;
+    }
+  }
+
+  if (line.match(/^否則如果[（(](.*?)[）)]：顯示[（(](.*?)[）)]$/)) {
+    const match = line.match(/^否則如果[（(](.*?)[）)]：顯示[（(](.*?)[）)]$/);
+    if (match) {
+      const currentBlock = stack[stack.length - 1];
+      if (currentBlock && (currentBlock.type === 'if' || currentBlock.type === 'else-if')) {
+        const condition = processCondition(match[1]);
+        const content = match[2].trim();
+        autoDeclareVariablesFromCondition(condition);
+        output.push(
+          ' '.repeat(currentBlock.indent) +
+            `} else if (${condition}) alert(${processDisplayArgument(content, declaredVars)});`
+        );
+        stack.pop();
+        stack.push({ indent: currentBlock.indent, type: 'else-if' });
+      } else {
+        output.push(' '.repeat(indent) + `// ⚠️ 未翻譯：${line}（無對應的 '如果' 區塊）`);
+      }
+      continue;
+    }
+  }
+
   if (line.trim() === '否則：') {
     const currentBlock = stack[stack.length - 1];
 
-    if (currentBlock && currentBlock.type === 'if') {
+    if (currentBlock && (currentBlock.type === 'if' || currentBlock.type === 'else-if')) {
       output.push(' '.repeat(currentBlock.indent) + '} else {');
-      stack.pop(); // 結束 if 區塊
+      stack.pop(); // 結束 if 或 else-if 區塊
       stack.push({ indent: currentBlock.indent, type: 'else' }); // 開啟 else 區塊
     } else {
       output.push(' '.repeat(indent) + `// ⚠️ 未翻譯：${line}（無對應的 '如果' 區塊）`);

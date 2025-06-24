@@ -817,6 +817,26 @@ function testIfElsePatternChinese() {
   );
 }
 
+function testElseIfBlock() {
+  const sample = '如果(數值 > 5)：\n  顯示(">5")\n否則如果(數值 > 3)：\n  顯示(">3")\n否則：\n  顯示("其他")';
+  const originalDemo = fs.readFileSync('demo.blang', 'utf8');
+  fs.writeFileSync('demo.blang', sample);
+
+  const hasOutput = fs.existsSync('output.js');
+  const originalOut = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
+
+  execSync('node parser_v0.9.4.js');
+  const output = fs.readFileSync('output.js', 'utf8');
+  assert(output.includes('} else if (數值 > 3) {'), 'should translate else-if block');
+
+  fs.writeFileSync('demo.blang', originalDemo);
+  if (hasOutput) {
+    fs.writeFileSync('output.js', originalOut);
+  } else {
+    fs.unlinkSync('output.js');
+  }
+}
+
 function testAddItemDirectPattern() {
   const sample = '加入項目(A, "蘋果")';
   const originalDemo = fs.readFileSync('demo.blang', 'utf8');
@@ -983,6 +1003,7 @@ try {
   testDisplayDate();
   testIfElsePattern();
   testIfElsePatternChinese();
+  testElseIfBlock();
   testAddItemDirectPattern();
   testGetItemPattern();
   testClearListPattern();
