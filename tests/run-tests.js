@@ -928,6 +928,17 @@ function testArrayModuleHelpers() {
   );
 }
 
+function testEventPattern() {
+  const { runBlangParser } = require('../blangSyntaxAPI.js');
+  const lines = ['當(#btn.被點擊)時：'];
+  const result = runBlangParser(lines).trim();
+  assert.strictEqual(
+    result,
+    'document.querySelector("#btn").addEventListener("click", () => {',
+    'click event pattern should translate to addEventListener'
+  );
+}
+
 function testVocabularyMapParsing() {
   const { runBlangParser } = require('../blangSyntaxAPI.js');
   const lines = ['顯示內容("嗨")'];
@@ -1049,6 +1060,7 @@ try {
   testListIncludesPattern();
   testTrimFunction();
   testArrayModuleHelpers();
+  testEventPattern();
   testVocabularyMapParsing();
   testGetRegisteredPatterns();
   testUnifiedHideSynonyms();
