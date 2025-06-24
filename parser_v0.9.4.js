@@ -347,6 +347,21 @@ function parseBlang(text) {
     continue;
   }
 
+  if (line.match(/^當[（(](.+?)\.被點擊[）)]時：$/)) {
+    const match = line.match(/^當[（(](.+?)\.被點擊[）)]時：$/);
+    if (match) {
+      const selector = match[1].trim();
+      closeBlocks(indent, nextIndent, line);
+      output.push('');
+      output.push(
+        ' '.repeat(indent) +
+          `document.querySelector(${processDisplayArgument(selector)}).addEventListener("click", () => {`
+      );
+      stack.push({ indent, type: 'event' });
+      continue;
+    }
+  }
+
   if (line.match(/^如果[（(](.*?)\.內容 為 空[）)]：?/)) {
     const match = line.match(/^如果[（(](.*?)\.內容 為 空[）)]：?/);
     if (match) {
