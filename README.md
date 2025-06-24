@@ -194,6 +194,7 @@ if (輸入框.value === "") {
 | 呼叫 加入項目（清單, "項目"）    | `Array.加入項目(...)`                           |
 | 取得項目（清單, 位置）           | `清單[位置 - 1]` |
 | 清空清單（清單）                 | `清單.length = 0` |
+| 清單包含（清單, 值）             | `清單.includes(值)` |
 | 播放音效（"ding.mp3"）           | `new Audio("ding.mp3").play();`                 |
 | 暫停影片()                   | `document.querySelector("#影片播放器")?.pause();` |
 | 循環播放音樂（"bg.mp3"）         | `const a = new Audio("bg.mp3"); a.loop = true; a.play();` |
@@ -202,11 +203,14 @@ if (輸入框.value === "") {
 | 等待（3000 毫秒）後 顯示（...）  | `setTimeout(() => alert(...), 3000)`            |
 | 等待 3 秒後：顯示（...）         | `setTimeout(() => alert(...), 3000)`            |
 | 重複執行（3）次：                | `for (let i = 0; i < 3; i++) { ... }`           |
+| 重複 5 次 顯示("哈囉")           | `for (let i = 0; i < 5; i++) { alert("哈囉"); }` |
 | 顯示圖片（"圖.jpg" 在 #區塊）    | `const img = document.createElement('img'); img.src = "圖.jpg"; document.querySelector("#區塊").appendChild(img);` |
 | 顯示現在時間                     | `alert(new Date().toLocaleString())` |
 | 顯示今天是星期幾                 | `alert("今天是星期" + "日一二三四五六"[new Date().getDay()])` |
 | 顯示現在是幾點幾分               | `alert("現在是" + new Date().getHours() + "點" + new Date().getMinutes() + "分")` |
 | 顯示內容（"這是測試"）           | `console.log("這是測試")` |
+| 去除空白（文字）                 | `文字.trim()` |
+| 問AI（訊息）                     | `呼叫AI回覆(訊息)` |
 模組：mediaModule
 
 
