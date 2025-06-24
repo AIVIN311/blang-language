@@ -25,6 +25,7 @@ Blang 是一種中文語場編程方式，用中文邏輯實現智慧語意互�
 |          | 顯示圖片（"圖.jpg" 在 #區塊）          | `const img = document.createElement('img'); img.src = "圖.jpg"; document.querySelector("#區塊").appendChild(img);` |
 | 延遲執行 | 等待（3000 毫秒）後 顯示（...）         | `setTimeout(() => alert(...), 3000)`            |
 |          | 等待 3 秒後：顯示（...）                | `setTimeout(() => alert(...), 3000)`            |
+| 迴圈控制 | 重複 3 次 顯示（"嗨"） | `for (let i = 0; i < 3; i++) { alert("嗨"); }` |
 | 清單操作 | 變數 A = 建立清單（）                   | `let A = ArrayModule.建立清單();`               |
 |          | 加入項目（A, "蘋果"）                   | `ArrayModule.加入項目(A, "蘋果");`              |
 |          | 顯示全部（A）                           | `alert(ArrayModule.顯示全部(A));`               |
@@ -65,6 +66,9 @@ Blang 是一種中文語場編程方式，用中文邏輯實現智慧語意互�
 |          | 顯示現在是幾點幾分                     | `alert("現在是" + new Date().getHours() + "點" + new Date().getMinutes() + "分")` |
 | 其他     | 轉跳網頁（"https://example.com"）        | `window.location.href = "https://example.com"`   |
 | 其他     | 顯示內容（"內容"）                     | `console.log("內容")` |
+| AI 互動 | 問AI("今天幾號？") | `呼叫AI回覆("今天幾號？"); // 🔮 AI` |
+| AI 互動 | 讓AI解釋("什麼是電腦") | `呼叫AI回覆("什麼是電腦"); // 🔮 AI` |
+| AI 互動 | 呼叫AI回覆("嗨") | `呼叫AI回覆("嗨"); // 🔮 AI` |
 ## 🎞️ 媒體語法
 - 暫停影片() ➝ 暫停播放影片播放器
 - 播放音效("路徑.mp3") ➝ 播放指定音效

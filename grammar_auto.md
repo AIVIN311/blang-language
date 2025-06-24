@@ -20,6 +20,7 @@
 | ------- | ---------- | ----------- | ----- |
 | 設定 $變數 為 $值 | let 樣本1 = 樣本2; | 宣告或重新賦值變數 | 變數, 值 |
 | 顯示 $內容 | alert(樣本1); | 彈出警示框顯示指定內容 | 內容 |
+| 確認($訊息) | confirm(樣本1) |  |  |
 
 ## control
 
@@ -31,6 +32,10 @@
 | 等待 $秒數 秒後 顯示 $訊息 | setTimeout(() => alert(樣本2), 樣本1 * 1000); | 延遲數秒後顯示訊息 | 秒數, 訊息（可選） |
 | 等待 $毫秒 毫秒後 顯示 $訊息 | setTimeout(() => alert(樣本2), 樣本1); | delay message in ms |  |
 | 開新視窗到 $網址 | window.open(樣本1, '_blank'); | open new window |  |
+| 否則如果($條件)： | } else if (樣本1) { | else if statement |  |
+| 當（$選擇器.被點擊）時： | document.querySelector("樣本1").addEventListener("click", () => { | add click event listener |  |
+| 當($選擇器.被點擊)時： | document.querySelector("樣本1").addEventListener("click", () => { | add click event listener |  |
+| 重複 $次數 次 $語句 | for (let i = 0; i < 樣本1; i++) { // 無法辨識語句，是否想輸入：呼叫?; } | repeat an action N times |  |
 
 ## time
 
@@ -78,18 +83,21 @@
 
 | Pattern | JavaScript | Description | Hints |
 | ------- | ---------- | ----------- | ----- |
-| 隱藏 $元素 | document.querySelector('樣本1').style.display = "none"; | 隱藏指定元素 | 元素 |
+| 隱藏 $元素 | document.querySelector("樣本1") && (document.querySelector("樣本1").style.display = "none"); | 隱藏指定元素 | 元素 |
 | 顯示 $訊息 在 $選擇器 | document.querySelector('樣本2').textContent = 樣本1; | update DOM text content |  |
-| 切換顏色($選擇器, $顏色1, $顏色2) | let __toggleEl0 = document.querySelector('樣本1'); __toggleEl0.style.color = __toggleEl0.style.color === 樣本2 ? 樣本3 : 樣本2; | toggle text color |  |
+| 顯示圖片($路徑 在 $選擇器) | const img = document.createElement('img'); img.src = "樣本1"; document.querySelector("樣本2") && document.querySelector("樣本2").appendChild(img); | append image to selector |  |
+| 切換顏色($參數) | let __toggleEl0 = document.querySelector("#id"); __toggleEl0.style.color = __toggleEl0.style.color === "red" ? "blue" : "red"; | toggle text color |  |
 | 增加透明度動畫到 $選擇器 | document.querySelector("樣本1").style.transition = 'opacity 0.5s'; | fade animation |  |
 | 新增元素 $標籤 到 $選擇器 | document.querySelector("樣本2").appendChild(document.createElement("樣本1")); | append new element |  |
 | 清空 $選擇器 的內容 | document.querySelector('樣本1').innerHTML = ''; | clear element content |  |
 | 設定文字於 $選擇器 為 $文字 | document.querySelector('樣本1').textContent = 樣本2; | set text content |  |
-| 設定（$選擇器）為 $內容 | document.querySelector(樣本1).textContent = 樣本2; |  |  |
+| 設定（$選擇器）為 $內容 | document.querySelector("樣本1") && (document.querySelector("樣本1").textContent = "樣本2"); |  |  |
 
 ## media
 
 | Pattern | JavaScript | Description | Hints |
 | ------- | ---------- | ----------- | ----- |
 | 停止所有音效 | document.querySelectorAll('audio').forEach(a => a.pause()); | pause all audio |  |
+| 暫停影片() | document.querySelector("#影片播放器")?.pause(); | pause default video player |  |
+| 播放音效($路徑) | new Audio("樣本1").play(); | play audio file |  |
 
