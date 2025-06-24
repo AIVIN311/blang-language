@@ -15,14 +15,20 @@ function 讓AI解釋(msg) {
   return 呼叫AI回覆(msg);
 }
 
+function callAI(input) {
+  alert("AI 回應尚未實作：" + input);
+}
+
 if (typeof window !== 'undefined') {
   window.呼叫AI回覆 = 呼叫AI回覆;
   window.問AI = 問AI;
   window.讓AI解釋 = 讓AI解釋;
+  window.callAI = callAI;
 } else if (typeof global !== 'undefined') {
   global.呼叫AI回覆 = 呼叫AI回覆;
   global.問AI = 問AI;
   global.讓AI解釋 = 讓AI解釋;
+  global.callAI = callAI;
 }
 
-module.exports = { 呼叫AI回覆, 問AI, 讓AI解釋 };
+module.exports = { 呼叫AI回覆, 問AI, 讓AI解釋, callAI };
