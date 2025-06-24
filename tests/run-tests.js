@@ -998,6 +998,14 @@ function testUnifiedHideSynonyms() {
   assert.strictEqual(js1, js2, '隱藏元素 與 隱藏 應輸出相同 JavaScript');
 }
 
+function testAISynonyms() {
+  const parseBlang = require('../parser.js');
+  const js1 = parseBlang('問AI("你好嗎？")').trim();
+  const js2 = parseBlang('讓 AI 解釋("測試")').trim();
+  assert(js1.includes('呼叫AI回覆('), '問AI 應轉為呼叫AI回覆');
+  assert(js2.includes('呼叫AI回覆("測試")'), '讓 AI 解釋 應轉為呼叫AI回覆');
+}
+
 function testFuzzySuggestions() {
   const { getFuzzySuggestions } = require('../blangSyntaxAPI.js');
   const sugg = getFuzzySuggestions('隱藏元');
@@ -1064,6 +1072,7 @@ try {
   testVocabularyMapParsing();
   testGetRegisteredPatterns();
   testUnifiedHideSynonyms();
+  testAISynonyms();
   testFuzzySuggestions();
   testGenerateDatalist();
   testSyntaxExamples();
