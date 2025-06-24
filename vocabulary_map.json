@@ -7,6 +7,10 @@
         "module": "stringModule",
         "js": "$1.includes($2)"
     },
+    "去除空白": {
+        "module": "stringModule",
+        "js": "$1.trim()"
+    },
     "隨機一個數": {
         "module": "mathModule",
         "js": "Math.floor(Math.random() * $1)"
@@ -62,6 +66,10 @@
     "判斷是否為空": {
         "module": "arrayModule",
         "js": "$1.length === 0"
+    },
+    "清單包含": {
+        "module": "arrayModule",
+        "js": "$1.includes($2)"
     },
     "切換顏色": {
         "module": "styleModule",

@@ -17,6 +17,14 @@ function testSyntaxExamples() {
       expected: 'ArrayModule.加入項目("清單", "x");'
     },
     {
+      phrase: '清單包含(水果們, "蘋果")',
+      expected: '"水果們".includes("蘋果");'
+    },
+    {
+      phrase: '去除空白(名字)',
+      expected: '"名字".trim();'
+    },
+    {
       phrase: '顯示(輸入框.內容)',
       expected: 'alert(輸入框.內容);'
     }

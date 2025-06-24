@@ -18,7 +18,15 @@ module.exports = { 呼叫AI回覆 };
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],2:[function(require,module,exports){
 module.exports = {
-  加入項目: (list, item) => `ArrayModule.加入項目(${list}, ${item})`
+  加入項目: (list, item) => `ArrayModule.加入項目(${list}, ${item})`,
+
+  顯示第幾項: (list, index) => `${list}[${index} - 1]`,
+
+  取得項目: (list, index) => `${list}[${index} - 1]`,
+
+  清單包含: (list, value) => `${list}.includes(${value})`,
+
+  清空清單: (list) => `${list}.length = 0`
 };
 
 },{}],3:[function(require,module,exports){
@@ -31,6 +39,45 @@ const { handleFunctionCall } = require('./semanticHandler-v0.9.4.js');
 const vocabularyMap = require('./vocabulary_map.json');
 function escapeRegExp(string) {
   return string.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&');
+}
+
+function levenshtein(a = '', b = '') {
+  const m = a.length,
+    n = b.length;
+  const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
+  for (let i = 0; i <= m; i++) dp[i][0] = i;
+  for (let j = 0; j <= n; j++) dp[0][j] = j;
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost);
+    }
+  }
+  return dp[m][n];
+}
+
+function stripPattern(p) {
+  return p
+    .replace(/\$[\w\u4e00-\u9fa5_]+/g, '')
+    .replace(/[（）()]/g, '')
+    .trim();
+}
+
+function findClosestMatch(input) {
+  const candidates = [
+    ...patternRegistry.map((p) => stripPattern(p.pattern)),
+    ...Object.keys(vocabularyMap)
+  ];
+  let best = '';
+  let bestDist = Infinity;
+  for (const c of candidates) {
+    const d = levenshtein(input, c);
+    if (d < bestDist) {
+      bestDist = d;
+      best = c;
+    }
+  }
+  return best;
 }
 
 function definePattern(pattern, generator, options = {}) {
@@ -118,7 +165,8 @@ function legacyParse(line) {
   if (assignMatch) {
     return `let ${assignMatch[1]} = ${assignMatch[2]};`;
   }
-  return '// 無法辨識語句：' + line;
+  const suggestion = findClosestMatch(line.trim());
+  return `// 無法辨識語句，是否想輸入：${suggestion}?`;
 }
 
 function buildRegexFromPattern(pattern) {
@@ -143,7 +191,7 @@ function getRegisteredPatterns() {
     pattern,
     type,
     description,
-    hints,
+    hints
   }));
 }
 
@@ -151,11 +199,53 @@ function getPatternsByType(type) {
   return patternGroups[type] || [];
 }
 
+function fillPattern(pattern) {
+  let count = 1;
+  return pattern.replace(/\$[\w\u4e00-\u9fa5_]+/g, () => `樣本${count++}`);
+}
+
+function levenshtein(a, b) {
+  const m = a.length,
+    n = b.length;
+  const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
+  for (let i = 0; i <= m; i++) dp[i][0] = i;
+  for (let j = 0; j <= n; j++) dp[0][j] = j;
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      dp[i][j] = Math.min(
+        dp[i - 1][j] + 1,
+        dp[i][j - 1] + 1,
+        dp[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
+      );
+    }
+  }
+  return dp[m][n];
+}
+
+function getFuzzySuggestions(input, limit = 3) {
+  const cmds = Array.from(
+    new Set([
+      ...Object.keys(vocabularyMap),
+      ...patternRegistry.map((p) => p.pattern.replace(/\$[\w\u4e00-\u9fa5_]+/g, ''))
+    ])
+  );
+  const ranked = cmds.map((c) => ({ c, d: levenshtein(input, c) })).sort((a, b) => a.d - b.d);
+  return ranked.slice(0, limit).map((r) => r.c);
+}
+
+function generateDatalist() {
+  return getRegisteredPatterns()
+    .map((p) => `<option value="${fillPattern(p.pattern)}"></option>`)
+    .join('\n');
+}
+
 module.exports = {
   definePattern,
   runBlangParser,
   buildRegexFromPattern,
   getRegisteredPatterns,
+  getFuzzySuggestions,
+  generateDatalist,
   getPatternsByType
 };
 
@@ -163,7 +253,7 @@ if (typeof window !== 'undefined') {
   window.runBlangParser = runBlangParser;
 }
 
-},{"./patterns":15,"./semanticHandler-v0.9.4.js":18,"./vocabulary_map.json":24}],4:[function(require,module,exports){
+},{"./patterns":18,"./semanticHandler-v0.9.4.js":22,"./vocabulary_map.json":28}],4:[function(require,module,exports){
 module.exports = {
   紅色: 'red',
   藍色: 'blue',
@@ -178,14 +268,16 @@ module.exports = {
 
 },{}],5:[function(require,module,exports){
 module.exports = {
-  顯示訊息框: (msg) => `alert(${msg})`
+  顯示訊息框: (msg) => `alert(${msg})`,
+  確認: (msg) => `confirm(${msg})`
 };
 
 },{}],6:[function(require,module,exports){
 module.exports = {
   顯示圖片: (src, selector) => {
     const cleanSrc = src.replace(/^["']|["']$/g, '');
-    return `const img = document.createElement('img'); img.src = "${cleanSrc}"; document.querySelector(${selector}).appendChild(img)`;
+    const elExpr = `document.querySelector(${selector})`;
+    return `const img = document.createElement('img'); img.src = "${cleanSrc}"; ${elExpr} && ${elExpr}.appendChild(img)`;
   }
 };
 
@@ -196,18 +288,25 @@ module.exports = {
 };
 
 },{}],8:[function(require,module,exports){
+const log = (text) => {
+  const clean = /^['"].*['"]$/.test(text.trim()) ? text : `"${text}"`;
+  return `console.log(${clean})`;
+};
+
 module.exports = {
-  說一句話: (text) => {
-    const clean = /^['"].*['"]$/.test(text.trim()) ? text : `"${text}"`;
-    return `console.log(${clean})`;
-  },
-  顯示內容: (text) => {
-    const clean = /^['"].*['"]$/.test(text.trim()) ? text : `"${text}"`;
-    return `console.log(${clean})`;
-  }
+  顯示內容: log,
+  說一句話: log
 };
 
 },{}],9:[function(require,module,exports){
+module.exports = {
+  重複次數執行: (times, jsStatement) => {
+    const stmt = jsStatement.trim().replace(/;?$/, ';');
+    return `for (let i = 0; i < ${times}; i++) { ${stmt} }`;
+  }
+};
+
+},{}],10:[function(require,module,exports){
 // mathModule.js
 module.exports = {
   隨機一個數: (max) => `Math.floor(Math.random() * ${max})`,
@@ -219,13 +318,19 @@ module.exports = {
   絕對值: (value) => `Math.abs(${value})`
 };
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 module.exports = {
-  播放影片: (target) => `document.querySelector(${target}).play()`,
-  暫停音效: (target) => `document.querySelector(${target}).pause()`
+  播放影片: (target) => {
+    const elExpr = `document.querySelector(${target})`;
+    return `${elExpr} && ${elExpr}.play()`;
+  },
+  暫停音效: (target) => {
+    const elExpr = `document.querySelector(${target})`;
+    return `${elExpr} && ${elExpr}.pause()`;
+  }
 };
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 // objectModule.js
 
 module.exports = {
@@ -233,7 +338,7 @@ module.exports = {
   取得屬性: (obj, key) => `${obj}[${key}]`
 };
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 const { processDisplayArgument } = require('../semanticHandler-v0.9.4.js');
 
 module.exports = function registerArrayPatterns(definePattern) {
@@ -299,7 +404,21 @@ module.exports = function registerArrayPatterns(definePattern) {
   );
 };
 
-},{"../semanticHandler-v0.9.4.js":18}],13:[function(require,module,exports){
+},{"../semanticHandler-v0.9.4.js":22}],14:[function(require,module,exports){
+module.exports = function registerConditionPatterns(definePattern) {
+  definePattern(
+    '否則如果($條件)：',
+    (條件) => `} else if (${條件}) {`,
+    { type: 'control', description: 'else if statement' }
+  );
+};
+
+},{}],15:[function(require,module,exports){
+module.exports = function registerConfirmPattern(definePattern) {
+  definePattern('確認($訊息)', (訊息) => `confirm(${訊息})`);
+};
+
+},{}],16:[function(require,module,exports){
 const { handleFunctionCall, processDisplayArgument } = require('../semanticHandler-v0.9.4.js');
 
 module.exports = function registerDisplayPatterns(definePattern) {
@@ -311,7 +430,7 @@ module.exports = function registerDisplayPatterns(definePattern) {
   );
   definePattern(
     '隱藏 $元素',
-    (元素) => `document.querySelector('${元素}').style.display = "none";`,
+    (元素) => handleFunctionCall('隱藏', 元素),
     { type: 'ui', description: '隱藏指定元素', hints: ['元素'] }
   );
   definePattern(
@@ -321,40 +440,22 @@ module.exports = function registerDisplayPatterns(definePattern) {
     { type: 'ui', description: 'update DOM text content' }
   );
   definePattern(
-    '顯示圖片($來源 在 $選擇器)',
-    (來源, 選擇器) =>
-      `const img = document.createElement('img'); img.src = ${來源}; document.querySelector('${選擇器}').appendChild(img);`,
-    { type: 'ui', description: 'insert image element' }
+    '顯示圖片($路徑 在 $選擇器)',
+    (路徑, 選擇器) => handleFunctionCall('顯示圖片', `${路徑}, ${選擇器}`),
+    { type: 'ui', description: 'append image to selector' }
   );
+  // vocabulary_map.json handles 設定背景色
   definePattern(
-    '設定背景色($選擇器, $顏色)',
-    (選擇器, 顏色) =>
-      `document.querySelector('${選擇器}').style.backgroundColor = ${顏色};`,
-    { type: 'ui', description: 'change background color' }
-  );
-  definePattern(
-    '切換顏色($選擇器, $顏色1, $顏色2)',
-    (選擇器, 顏色1, 顏色2) => {
+    '切換顏色($參數)',
+    (參數) => {
+      const [選擇器, 顏色1, 顏色2] = 參數.split(/\s*,\s*/);
+      const sel = processDisplayArgument(選擇器);
+      const c1 = processDisplayArgument(顏色1);
+      const c2 = processDisplayArgument(顏色2);
       const elVar = `__toggleEl${toggleId++}`;
-      return `let ${elVar} = document.querySelector('${選擇器}'); ${elVar}.style.color = ${elVar}.style.color === ${顏色1} ? ${顏色2} : ${顏色1};`;
+      return `let ${elVar} = document.querySelector(${sel}); ${elVar}.style.color = ${elVar}.style.color === ${c1} ? ${c2} : ${c1};`;
     },
     { type: 'ui', description: 'toggle text color' }
-  );
-  definePattern(
-    '播放影片($選擇器)',
-    (選擇器) => `document.querySelector('${選擇器}').play();`,
-    { type: 'media', description: 'play video element' }
-  );
-  definePattern(
-    '暫停音效($選擇器)',
-    (選擇器) => `document.querySelector('${選擇器}').pause();`,
-    { type: 'media', description: 'pause audio element' }
-  );
-  definePattern(
-    '切換顯示隱藏 $選擇器',
-    (選擇器) =>
-      `const el = document.querySelector('${選擇器}'); el.style.display = el.style.display === 'none' ? 'block' : 'none';`,
-    { type: 'ui', description: 'toggle element display' }
   );
   definePattern(
     '增加透明度動畫到 $選擇器',
@@ -393,23 +494,14 @@ module.exports = function registerDisplayPatterns(definePattern) {
     (選擇器, 內容) => handleFunctionCall('設定文字內容', `${選擇器}, ${內容}`),
     { type: 'ui' }
   );
-  definePattern(
-    '循環播放音樂 $檔名',
-    (檔名) => `const a = new Audio(${檔名}); a.loop = true; a.play();`,
-    { type: 'media', description: 'loop audio' }
-  );
-  definePattern(
-    '循環播放音樂($檔名)',
-    (檔名) => `const a = new Audio(${檔名}); a.loop = true; a.play();`,
-    { type: 'media', description: 'loop audio' }
-  );
+  // 循環播放音樂 改由 vocabulary_map.json 提供
   definePattern('顯示 $內容', (內容) => `alert(${內容});`, {
     description: '彈出警示框顯示指定內容',
     hints: ['內容']
   });
 };
 
-},{"../semanticHandler-v0.9.4.js":18}],14:[function(require,module,exports){
+},{"../semanticHandler-v0.9.4.js":22}],17:[function(require,module,exports){
 const { handleFunctionCall } = require('../semanticHandler-v0.9.4.js');
 
 module.exports = function registerGeneralPatterns(definePattern) {
@@ -423,11 +515,14 @@ module.exports = function registerGeneralPatterns(definePattern) {
   );
 };
 
-},{"../semanticHandler-v0.9.4.js":18}],15:[function(require,module,exports){
+},{"../semanticHandler-v0.9.4.js":22}],18:[function(require,module,exports){
 const arrayPatterns = require('./array');
 const displayPatterns = require('./display');
 const mediaPatterns = require('./media');
 const logicPatterns = require('./logic');
+const confirmPattern = require('./confirm');
+const conditionPattern = require('./condition');
+const loopPatterns = require('./loop');
 const generalPatterns = require('./general');
 
 module.exports = function registerPatterns(definePattern) {
@@ -435,10 +530,13 @@ module.exports = function registerPatterns(definePattern) {
   arrayPatterns(definePattern);
   displayPatterns(definePattern);
   mediaPatterns(definePattern);
+  confirmPattern(definePattern);
+  conditionPattern(definePattern);
+  loopPatterns(definePattern);
   generalPatterns(definePattern);
 };
 
-},{"./array":12,"./display":13,"./general":14,"./logic":16,"./media":17}],16:[function(require,module,exports){
+},{"./array":13,"./condition":14,"./confirm":15,"./display":16,"./general":17,"./logic":19,"./loop":20,"./media":21}],19:[function(require,module,exports){
 const { handleFunctionCall } = require('../semanticHandler-v0.9.4.js');
 
 module.exports = function registerLogicPatterns(definePattern) {
@@ -475,21 +573,6 @@ module.exports = function registerLogicPatterns(definePattern) {
     '等待 $秒數 秒後 顯示 $訊息',
     (秒數, 訊息) => `setTimeout(() => alert(${訊息}), ${秒數} * 1000);`,
     { type: 'control', description: '延遲數秒後顯示訊息', hints: ['秒數', '訊息（可選）'] }
-  );
-  definePattern(
-    '顯示今天是星期幾',
-    () => 'alert("今天是星期" + "日一二三四五六"[new Date().getDay()]);',
-    { type: 'control', description: 'show current weekday' }
-  );
-  definePattern(
-    '顯示現在是幾點幾分',
-    () => 'alert("現在是" + new Date().getHours() + "點" + new Date().getMinutes() + "分");',
-    { type: 'control', description: 'show current time' }
-  );
-  definePattern(
-    '顯示現在時間',
-    () => 'alert(new Date().toLocaleString());',
-    { type: 'time' }
   );
   definePattern(
     '等待 $毫秒 毫秒後 顯示 $訊息',
@@ -555,16 +638,43 @@ module.exports = function registerLogicPatterns(definePattern) {
   );
 };
 
-},{"../semanticHandler-v0.9.4.js":18}],17:[function(require,module,exports){
-module.exports = function registerMediaPatterns(definePattern) {
+},{"../semanticHandler-v0.9.4.js":22}],20:[function(require,module,exports){
+const loopModule = require('../loopModule.js');
+
+module.exports = function registerLoopPatterns(definePattern) {
   definePattern(
-    '播放音效($檔名)',
-    (檔名) => `new Audio(${檔名}).play();`,
+    '重複 $次數 次 $語句',
+    (次數, 語句) => {
+      const { runBlangParser } = require('../blangSyntaxAPI.js');
+      let stmt = 語句;
+      const open = (stmt.match(/\(/g) || []).length;
+      const close = (stmt.match(/\)/g) || []).length;
+      if (open > close) stmt += ')';
+      return loopModule.重複次數執行(次數, runBlangParser([stmt]).trim());
+    },
+    { type: 'control', description: 'repeat an action N times' }
+  );
+};
+
+},{"../blangSyntaxAPI.js":3,"../loopModule.js":9}],21:[function(require,module,exports){
+const { processDisplayArgument } = require('../semanticHandler-v0.9.4.js');
+
+module.exports = function registerMediaPatterns(definePattern) {
+  // 播放音效與暫停影片相關語法
+  definePattern(
+    '暫停影片()',
+    () => 'document.querySelector("#影片播放器")?.pause();',
+    { type: 'media', description: 'pause default video player' }
+  );
+
+  definePattern(
+    '播放音效($路徑)',
+    (路徑) => `new Audio(${processDisplayArgument(路徑)}).play();`,
     { type: 'media', description: 'play audio file' }
   );
 };
 
-},{}],18:[function(require,module,exports){
+},{"../semanticHandler-v0.9.4.js":22}],22:[function(require,module,exports){
 // v0.9.7 - semanticHandler.js（支援物件屬性 + 中文樣式屬性轉換）
 
 const stringModule = require('./stringModule.js');
@@ -606,6 +716,8 @@ const FUNC_MAP = {
   移除最後: 'ArrayModule.移除最後',
   顯示全部: 'ArrayModule.顯示全部',
   顯示第幾項: 'ArrayModule.顯示第幾項',
+  取得項目: 'ArrayModule.取得項目',
+  清空清單: 'ArrayModule.清空清單',
   'AI 回覆': 'DialogModule.AI回覆',
   顯示訊息框: 'DialogModule.顯示訊息框',
   播放音效: 'soundModule.播放音效',
@@ -809,12 +921,9 @@ function handleFunctionCall(funcName, params, indent = 0, declaredVars = new Set
       // 數字
       if (/^[\d.]+$/.test(raw)) return raw;
 
-      // 合法變數僅在宣告集合中
+      // 合法變數：僅當在宣告集合中出現時才視為變數
       if (declaredVars.has(raw)) {
         return raw;
-      }
-      if (/^[a-zA-Z_\u4e00-\u9fa5][\w\u4e00-\u9fa5]*$/.test(raw)) {
-        return `"${raw}"`;
       }
 
       if (/^\d+(\.\d+)?(px|em|rem|%)$/.test(raw)) return `"${raw}"`;
@@ -856,20 +965,29 @@ if (typeof window !== 'undefined') {
 // 這個模組的功能是將中文語句轉換為 JavaScript 語句，
 // 並且支援物件屬性和中文樣式屬性轉換。
 
-},{"./aiModule.js":1,"./arrayModule.js":2,"./colorMap.js":4,"./dialogModule.js":5,"./imageModule.js":6,"./inputModule.js":7,"./logModule.js":8,"./mathModule.js":9,"./mediaModule.js":10,"./objectModule.js":11,"./soundModule.js":19,"./stringModule.js":20,"./styleModule.js":21,"./textModule.js":22,"./timeModule.js":23,"./vocabulary_map.json":24}],19:[function(require,module,exports){
+},{"./aiModule.js":1,"./arrayModule.js":2,"./colorMap.js":4,"./dialogModule.js":5,"./imageModule.js":6,"./inputModule.js":7,"./logModule.js":8,"./mathModule.js":10,"./mediaModule.js":11,"./objectModule.js":12,"./soundModule.js":23,"./stringModule.js":24,"./styleModule.js":25,"./textModule.js":26,"./timeModule.js":27,"./vocabulary_map.json":28}],23:[function(require,module,exports){
 module.exports = {
   播放音效: (src) => `new Audio(${src}).play()`
 };
 
-},{}],20:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 // stringModule.js
 module.exports = {
   轉大寫: (input) => `${input}.toUpperCase()`,
   包含: (str, substr) => `${str}.includes(${substr})`,
-  長度: (input) => `${input}.length`
+  長度: (input) => `${input}.length`,
+
+  去除空白: (input) => `${input}.trim()`
 };
 
-},{}],21:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
+const colorMap = require('./colorMap.js');
+
+const hide = (selector) => {
+  const elExpr = `document.querySelector(${selector})`;
+  return `${elExpr} && (${elExpr}.style.display = "none")`;
+};
+
 module.exports = {
   設定樣式: (selector, styleProp, value) => {
     const propMap = {
@@ -884,31 +1002,40 @@ module.exports = {
     const cleanProp = propMap[styleProp.replace(/['"]/g, '')] || styleProp.replace(/['"]/g, '');
     const cleanValue = value.replace(/^["']|["']$/g, ''); // 🔥 去掉 value 最外層引號
 
-    return `document.querySelector(${selector}).style["${cleanProp}"] = "${cleanValue}"`;
+    const elExpr = `document.querySelector(${selector})`;
+    return `${elExpr} && (${elExpr}.style["${cleanProp}"] = "${cleanValue}")`;
   },
-  隱藏元素: (selector) => {
-    return `document.querySelector(${selector}).style.display = "none"`;
-  },
-  隱藏: (selector) => {
-    return `document.querySelector(${selector}).style.display = "none"`;
-  },
+  隱藏: hide,
+  隱藏元素: hide,
   顯示: (selector) => {
-    return `document.querySelector(${selector}).style.display = "block"`;
+    const elExpr = `document.querySelector(${selector})`;
+    return `${elExpr} && (${elExpr}.style.display = "block")`;
   },
   設定背景色: (selector, color) => {
     const cleanColor = color.replace(/^['"]|['"]$/g, '');
-    return `document.querySelector(${selector}).style.backgroundColor = "${cleanColor}"`;
-  }
+    const elExpr = `document.querySelector(${selector})`;
+    return `${elExpr} && (${elExpr}.style.backgroundColor = "${cleanColor}")`;
+  },
+  切換顏色: (() => {
+    let id = 0;
+    return (selector, c1, c2) => {
+      const varName = `__toggleEl${id++}`;
+      const color1 = colorMap[c1.replace(/^["']|["']$/g, '')] ? `"${colorMap[c1.replace(/^["']|["']$/g, '')]}"` : c1;
+      const color2 = colorMap[c2.replace(/^["']|["']$/g, '')] ? `"${colorMap[c2.replace(/^["']|["']$/g, '')]}"` : c2;
+      return `let ${varName} = document.querySelector(${selector}); if (${varName}) ${varName}.style.color = ${varName}.style.color === ${color1} ? ${color2} : ${color1}`;
+    };
+  })()
 };
 
-},{}],22:[function(require,module,exports){
+},{"./colorMap.js":4}],26:[function(require,module,exports){
 module.exports = {
   設定文字內容: (selector, text) => {
-    return `document.querySelector(${selector}).textContent = ${text}`;
+    const elExpr = `document.querySelector(${selector})`;
+    return `${elExpr} && (${elExpr}.textContent = ${text})`;
   }
 };
 
-},{}],23:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 module.exports = {
   獲取現在時間: () => 'new Date().toLocaleTimeString()',
   顯示現在時間: () => 'alert(new Date().toLocaleString())',
@@ -918,7 +1045,7 @@ module.exports = {
     'alert("現在是" + new Date().getHours() + "點" + new Date().getMinutes() + "分")'
 };
 
-},{}],24:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 module.exports={
     "轉大寫": {
         "module": "stringModule",
@@ -927,6 +1054,10 @@ module.exports={
     "包含": {
         "module": "stringModule",
         "js": "$1.includes($2)"
+    },
+    "去除空白": {
+        "module": "stringModule",
+        "js": "$1.trim()"
     },
     "隨機一個數": {
         "module": "mathModule",
@@ -951,6 +1082,10 @@ module.exports={
     "顯示訊息框": {
         "module": "dialogModule",
         "js": "alert($1)"
+    },
+    "確認": {
+        "module": "dialogModule",
+        "js": "confirm($1)"
     },
     "使用者輸入": {
         "module": "inputModule",
@@ -980,13 +1115,17 @@ module.exports={
         "module": "arrayModule",
         "js": "$1.length === 0"
     },
+    "清單包含": {
+        "module": "arrayModule",
+        "js": "$1.includes($2)"
+    },
     "切換顏色": {
         "module": "styleModule",
-        "js": "$1.style.backgroundColor = ($1.style.backgroundColor === '$2' ? '$3' : '$2')"
+        "js": ""
     },
     "隱藏元素": {
         "module": "styleModule",
-        "js": "styleModule.隱藏元素($1)"
+        "js": "styleModule.隱藏($1)"
     },
     "隱藏": {
         "module": "styleModule",
@@ -1007,6 +1146,10 @@ module.exports={
     "暫停音效": {
         "module": "mediaModule",
         "js": "$1.pause()"
+    },
+    "暫停影片": {
+        "module": "mediaModule",
+        "js": "document.querySelector(\"#影片播放器\")?.pause()"
     },
     "獲取現在時間": {
         "module": "timeModule",
@@ -1050,7 +1193,7 @@ module.exports={
     },
     "說一句話": {
         "module": "logModule",
-        "js": "logModule.說一句話($1)"
+        "js": "logModule.顯示內容($1)"
     },
     "顯示內容": {
         "module": "logModule",
