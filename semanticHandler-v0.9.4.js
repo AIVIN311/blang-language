@@ -42,6 +42,10 @@ const FUNC_MAP = {
   取得項目: 'ArrayModule.取得項目',
   清空清單: 'ArrayModule.清空清單',
   'AI 回覆': 'DialogModule.AI回覆',
+  問AI: 'DialogModule.AI回覆',
+  '問 AI': 'DialogModule.AI回覆',
+  讓AI解釋: 'DialogModule.AI回覆',
+  '讓 AI 解釋': 'DialogModule.AI回覆',
   顯示訊息框: 'DialogModule.顯示訊息框',
   播放音效: 'soundModule.播放音效',
   設定樣式: 'StyleModule.設定樣式'
@@ -211,7 +215,14 @@ function handleFunctionCall(funcName, params, indent = 0, declaredVars = new Set
   const fqName = FUNC_MAP[funcName] || funcName;
 
 
-  if (funcName === 'AI 回覆' || funcName === '呼叫 AI 回覆') {
+  if (
+    funcName === 'AI 回覆' ||
+    funcName === '呼叫 AI 回覆' ||
+    funcName === '問AI' ||
+    funcName === '問 AI' ||
+    funcName === '讓AI解釋' ||
+    funcName === '讓 AI 解釋'
+  ) {
     return `${space}呼叫AI回覆(${processDisplayArgument(params, declaredVars)}); // 🔮 AI`;
   }
 

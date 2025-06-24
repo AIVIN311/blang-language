@@ -8,12 +8,26 @@ function 呼叫AI回覆(msg) {
     console.log('AI 回覆尚未實作:', text);
   }
 }
+
+function 問AI(msg) {
+  return 呼叫AI回覆(msg);
+}
+
+function 讓AI解釋(msg) {
+  return 呼叫AI回覆(msg);
+}
+
 if (typeof window !== 'undefined') {
   window.呼叫AI回覆 = 呼叫AI回覆;
+  window.問AI = 問AI;
+  window.讓AI解釋 = 讓AI解釋;
 } else if (typeof global !== 'undefined') {
   global.呼叫AI回覆 = 呼叫AI回覆;
+  global.問AI = 問AI;
+  global.讓AI解釋 = 讓AI解釋;
 }
-module.exports = { 呼叫AI回覆 };
+
+module.exports = { 呼叫AI回覆, 問AI, 讓AI解釋 };
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],2:[function(require,module,exports){
@@ -253,7 +267,7 @@ if (typeof window !== 'undefined') {
   window.runBlangParser = runBlangParser;
 }
 
-},{"./patterns":18,"./semanticHandler-v0.9.4.js":22,"./vocabulary_map.json":28}],4:[function(require,module,exports){
+},{"./patterns":19,"./semanticHandler-v0.9.4.js":23,"./vocabulary_map.json":29}],4:[function(require,module,exports){
 module.exports = {
   紅色: 'red',
   藍色: 'blue',
@@ -404,7 +418,7 @@ module.exports = function registerArrayPatterns(definePattern) {
   );
 };
 
-},{"../semanticHandler-v0.9.4.js":22}],14:[function(require,module,exports){
+},{"../semanticHandler-v0.9.4.js":23}],14:[function(require,module,exports){
 module.exports = function registerConditionPatterns(definePattern) {
   definePattern(
     '否則如果($條件)：',
@@ -501,7 +515,26 @@ module.exports = function registerDisplayPatterns(definePattern) {
   });
 };
 
-},{"../semanticHandler-v0.9.4.js":22}],17:[function(require,module,exports){
+},{"../semanticHandler-v0.9.4.js":23}],17:[function(require,module,exports){
+const { processDisplayArgument } = require('../semanticHandler-v0.9.4.js');
+
+module.exports = function registerEventPatterns(definePattern) {
+  const handler = (選擇器) => {
+    const sel = processDisplayArgument(選擇器);
+    return `document.querySelector(${sel}).addEventListener("click", () => {`;
+  };
+
+  definePattern('當（$選擇器.被點擊）時：', handler, {
+    type: 'control',
+    description: 'add click event listener'
+  });
+  definePattern('當($選擇器.被點擊)時：', handler, {
+    type: 'control',
+    description: 'add click event listener'
+  });
+};
+
+},{"../semanticHandler-v0.9.4.js":23}],18:[function(require,module,exports){
 const { handleFunctionCall } = require('../semanticHandler-v0.9.4.js');
 
 module.exports = function registerGeneralPatterns(definePattern) {
@@ -515,10 +548,11 @@ module.exports = function registerGeneralPatterns(definePattern) {
   );
 };
 
-},{"../semanticHandler-v0.9.4.js":22}],18:[function(require,module,exports){
+},{"../semanticHandler-v0.9.4.js":23}],19:[function(require,module,exports){
 const arrayPatterns = require('./array');
 const displayPatterns = require('./display');
 const mediaPatterns = require('./media');
+const eventPatterns = require('./event');
 const logicPatterns = require('./logic');
 const confirmPattern = require('./confirm');
 const conditionPattern = require('./condition');
@@ -532,11 +566,12 @@ module.exports = function registerPatterns(definePattern) {
   mediaPatterns(definePattern);
   confirmPattern(definePattern);
   conditionPattern(definePattern);
+  eventPatterns(definePattern);
   loopPatterns(definePattern);
   generalPatterns(definePattern);
 };
 
-},{"./array":13,"./condition":14,"./confirm":15,"./display":16,"./general":17,"./logic":19,"./loop":20,"./media":21}],19:[function(require,module,exports){
+},{"./array":13,"./condition":14,"./confirm":15,"./display":16,"./event":17,"./general":18,"./logic":20,"./loop":21,"./media":22}],20:[function(require,module,exports){
 const { handleFunctionCall } = require('../semanticHandler-v0.9.4.js');
 
 module.exports = function registerLogicPatterns(definePattern) {
@@ -638,7 +673,7 @@ module.exports = function registerLogicPatterns(definePattern) {
   );
 };
 
-},{"../semanticHandler-v0.9.4.js":22}],20:[function(require,module,exports){
+},{"../semanticHandler-v0.9.4.js":23}],21:[function(require,module,exports){
 const loopModule = require('../loopModule.js');
 
 module.exports = function registerLoopPatterns(definePattern) {
@@ -656,7 +691,7 @@ module.exports = function registerLoopPatterns(definePattern) {
   );
 };
 
-},{"../blangSyntaxAPI.js":3,"../loopModule.js":9}],21:[function(require,module,exports){
+},{"../blangSyntaxAPI.js":3,"../loopModule.js":9}],22:[function(require,module,exports){
 const { processDisplayArgument } = require('../semanticHandler-v0.9.4.js');
 
 module.exports = function registerMediaPatterns(definePattern) {
@@ -674,7 +709,7 @@ module.exports = function registerMediaPatterns(definePattern) {
   );
 };
 
-},{"../semanticHandler-v0.9.4.js":22}],22:[function(require,module,exports){
+},{"../semanticHandler-v0.9.4.js":23}],23:[function(require,module,exports){
 // v0.9.7 - semanticHandler.js（支援物件屬性 + 中文樣式屬性轉換）
 
 const stringModule = require('./stringModule.js');
@@ -719,6 +754,10 @@ const FUNC_MAP = {
   取得項目: 'ArrayModule.取得項目',
   清空清單: 'ArrayModule.清空清單',
   'AI 回覆': 'DialogModule.AI回覆',
+  問AI: 'DialogModule.AI回覆',
+  '問 AI': 'DialogModule.AI回覆',
+  讓AI解釋: 'DialogModule.AI回覆',
+  '讓 AI 解釋': 'DialogModule.AI回覆',
   顯示訊息框: 'DialogModule.顯示訊息框',
   播放音效: 'soundModule.播放音效',
   設定樣式: 'StyleModule.設定樣式'
@@ -888,7 +927,14 @@ function handleFunctionCall(funcName, params, indent = 0, declaredVars = new Set
   const fqName = FUNC_MAP[funcName] || funcName;
 
 
-  if (funcName === 'AI 回覆' || funcName === '呼叫 AI 回覆') {
+  if (
+    funcName === 'AI 回覆' ||
+    funcName === '呼叫 AI 回覆' ||
+    funcName === '問AI' ||
+    funcName === '問 AI' ||
+    funcName === '讓AI解釋' ||
+    funcName === '讓 AI 解釋'
+  ) {
     return `${space}呼叫AI回覆(${processDisplayArgument(params, declaredVars)}); // 🔮 AI`;
   }
 
@@ -965,12 +1011,12 @@ if (typeof window !== 'undefined') {
 // 這個模組的功能是將中文語句轉換為 JavaScript 語句，
 // 並且支援物件屬性和中文樣式屬性轉換。
 
-},{"./aiModule.js":1,"./arrayModule.js":2,"./colorMap.js":4,"./dialogModule.js":5,"./imageModule.js":6,"./inputModule.js":7,"./logModule.js":8,"./mathModule.js":10,"./mediaModule.js":11,"./objectModule.js":12,"./soundModule.js":23,"./stringModule.js":24,"./styleModule.js":25,"./textModule.js":26,"./timeModule.js":27,"./vocabulary_map.json":28}],23:[function(require,module,exports){
+},{"./aiModule.js":1,"./arrayModule.js":2,"./colorMap.js":4,"./dialogModule.js":5,"./imageModule.js":6,"./inputModule.js":7,"./logModule.js":8,"./mathModule.js":10,"./mediaModule.js":11,"./objectModule.js":12,"./soundModule.js":24,"./stringModule.js":25,"./styleModule.js":26,"./textModule.js":27,"./timeModule.js":28,"./vocabulary_map.json":29}],24:[function(require,module,exports){
 module.exports = {
   播放音效: (src) => `new Audio(${src}).play()`
 };
 
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 // stringModule.js
 module.exports = {
   轉大寫: (input) => `${input}.toUpperCase()`,
@@ -980,7 +1026,7 @@ module.exports = {
   去除空白: (input) => `${input}.trim()`
 };
 
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 const colorMap = require('./colorMap.js');
 
 const hide = (selector) => {
@@ -1027,7 +1073,7 @@ module.exports = {
   })()
 };
 
-},{"./colorMap.js":4}],26:[function(require,module,exports){
+},{"./colorMap.js":4}],27:[function(require,module,exports){
 module.exports = {
   設定文字內容: (selector, text) => {
     const elExpr = `document.querySelector(${selector})`;
@@ -1035,7 +1081,7 @@ module.exports = {
   }
 };
 
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 module.exports = {
   獲取現在時間: () => 'new Date().toLocaleTimeString()',
   顯示現在時間: () => 'alert(new Date().toLocaleString())',
@@ -1045,7 +1091,7 @@ module.exports = {
     'alert("現在是" + new Date().getHours() + "點" + new Date().getMinutes() + "分")'
 };
 
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 module.exports={
     "轉大寫": {
         "module": "stringModule",
