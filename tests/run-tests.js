@@ -726,6 +726,30 @@ function testWaitSecondsDisplay() {
   }
 }
 
+function testRepeatTimes() {
+  const sample = '重複 5 次 顯示("你好")';
+  const originalDemo = fs.readFileSync('demo.blang', 'utf8');
+  fs.writeFileSync('demo.blang', sample);
+
+  const hasOutput = fs.existsSync('output.js');
+  const originalOut = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
+
+  execSync('node parser_v0.9.4.js');
+  const output = fs.readFileSync('output.js', 'utf8');
+  assert(
+    output.includes('for (let i = 0; i < 5; i++) {') &&
+      output.includes('alert("你好");'),
+    '重複 N 次 should translate to for loop with action'
+  );
+
+  fs.writeFileSync('demo.blang', originalDemo);
+  if (hasOutput) {
+    fs.writeFileSync('output.js', originalOut);
+  } else {
+    fs.unlinkSync('output.js');
+  }
+}
+
 function testDisplayWeekday() {
   const sample = '顯示今天是星期幾';
   const originalDemo = fs.readFileSync('demo.blang', 'utf8');
@@ -998,6 +1022,7 @@ try {
   testPlaySoundParsing();
   testLoopAudioParsing();
   testWaitSecondsDisplay();
+  testRepeatTimes();
   testDisplayWeekday();
   testDisplayHourMinute();
   testDisplayDate();
