@@ -44,6 +44,8 @@ function testParser() {
     output.includes('document.querySelector("#結果區") && (document.querySelector("#結果區").style["backgroundColor"] = "red");'),
     'style line should be parsed with color keyword'
   );
+  assert(output.includes('eventModule.js'), 'output.js should import eventModule.js');
+  assert(!output.includes('addEventListener('), 'click handler should be delegated to eventModule');
   if (hasOutput) {
     fs.writeFileSync('output.js', original);
   } else {
@@ -760,9 +762,11 @@ function testDisplayWeekday() {
 
   execSync('node parser_v0.9.4.js');
   const output = fs.readFileSync('output.js', 'utf8');
+  const logicCode = fs.readFileSync('logicModule.js', 'utf8');
+  assert(output.includes('logicModule'), 'output.js should reference logicModule');
   assert(
-    output.includes('今天是星期'),
-    '顯示今天是星期幾 should produce alert with weekday'
+    logicCode.includes('今天是星期') || logicCode.includes('getDay'),
+    'logicModule should implement weekday display'
   );
 
   fs.writeFileSync('demo.blang', originalDemo);
@@ -783,9 +787,11 @@ function testDisplayHourMinute() {
 
   execSync('node parser_v0.9.4.js');
   const output = fs.readFileSync('output.js', 'utf8');
+  const logicCode = fs.readFileSync('logicModule.js', 'utf8');
+  assert(output.includes('logicModule'), 'output.js should reference logicModule');
   assert(
-    output.includes('現在是'),
-    '顯示現在是幾點幾分 should produce alert with hour and minute'
+    logicCode.includes('getHours') && logicCode.includes('getMinutes'),
+    'logicModule should implement hour and minute display'
   );
 
   fs.writeFileSync('demo.blang', originalDemo);
@@ -806,9 +812,11 @@ function testDisplayDate() {
 
   execSync('node parser_v0.9.4.js');
   const output = fs.readFileSync('output.js', 'utf8');
+  const logicCode = fs.readFileSync('logicModule.js', 'utf8');
+  assert(output.includes('logicModule'), 'output.js should reference logicModule');
   assert(
-    output.includes('toLocaleDateString'),
-    '顯示今天日期 should produce alert with local date string'
+    logicCode.includes('toLocaleDateString'),
+    'logicModule should implement date display'
   );
 
   fs.writeFileSync('demo.blang', originalDemo);
