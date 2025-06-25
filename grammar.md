@@ -149,6 +149,8 @@ blang/
 ├── customBlangPatterns.js  # 擴充語法規則
 ├── colorMap.js             # 中文顏色對照表
 ├── vocabulary_map.json     # 指令對應表
+├── logicModule.js          # 送出按鈕流程
+├── eventModule.js          # 註冊送出事件
 ├── output.js               # 產出結果 JavaScript 執行檔
 ├── index.html              # 執行畫面測試用網頁
 ├── assets/                 # 範例圖片
