@@ -91,6 +91,7 @@ const ignoreList = new Set([
   'window',
   'alert',
   'console',
+  'confirm',
   'setTimeout',
   'setInterval',
   'Math',
