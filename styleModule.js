@@ -6,7 +6,7 @@ const hide = (selector) => {
 };
 
 module.exports = {
-  設定樣式: (selector, styleProp, value) => {
+  setStyle: (selector, styleProp, value) => {
     const propMap = {
       背景色: 'backgroundColor',
       文字顏色: 'color',
@@ -22,18 +22,18 @@ module.exports = {
     const elExpr = `document.querySelector(${selector})`;
     return `${elExpr} && (${elExpr}.style["${cleanProp}"] = "${cleanValue}")`;
   },
-  隱藏: hide,
-  隱藏元素: hide,
-  顯示: (selector) => {
+  hide: hide,
+  hideElement: hide,
+  show: (selector) => {
     const elExpr = `document.querySelector(${selector})`;
     return `${elExpr} && (${elExpr}.style.display = "block")`;
   },
-  設定背景色: (selector, color) => {
+  setBackgroundColor: (selector, color) => {
     const cleanColor = color.replace(/^['"]|['"]$/g, '');
     const elExpr = `document.querySelector(${selector})`;
     return `${elExpr} && (${elExpr}.style.backgroundColor = "${cleanColor}")`;
   },
-  切換顏色: (() => {
+  toggleColor: (() => {
     let id = 0;
     return (selector, c1, c2) => {
       const varName = `__toggleEl${id++}`;
