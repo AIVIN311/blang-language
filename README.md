@@ -17,7 +17,7 @@ cd blang-language
 node parser_v0.9.4.js
 ```
 
-這將把 `demo.blang` 中文語法自動轉譯為 `output.js`，可嵌入 HTML 使用或直接在 Node.js 執行。
+這將把 `demo.blang` 中文語法自動轉譯為 `output.js`，可嵌入 HTML 使用或直接在 Node.js 執行，並在其中引用 `logicModule.js` 與 `eventModule.js` 管理事件邏輯。
 轉譯過程也會移除未被使用的自動補上變數宣告，讓輸出更精簡。
 
 ### 🛠️ 自訂語法
@@ -245,6 +245,8 @@ blang/
 ├── customBlangPatterns.js  # 擴充語法規則
 ├── colorMap.js             # 中文顏色對照表
 ├── vocabulary_map.json     # 指令對應表
+├── logicModule.js          # 送出按鈕邏輯
+├── eventModule.js          # 註冊送出事件
 ├── output.js               # 自動產生的 JS 程式碼
 ├── index.html              # 測試用 HTML 頁面
 ├── assets/                 # 說明用圖片
