@@ -383,7 +383,7 @@ function testSetSelectorContent() {
 
 function testSelectorGuard() {
   const vm = require('vm');
-  const code = styleModule.隱藏('"#missing"');
+  const code = styleModule.hide('"#missing"');
   assert.doesNotThrow(
     () => vm.runInNewContext(code + ';', { document: { querySelector: () => null } }),
     'styleModule functions should guard against missing elements'

@@ -47,8 +47,13 @@ const FUNC_MAP = {
   讓AI解釋: 'DialogModule.AI回覆',
   '讓 AI 解釋': 'DialogModule.AI回覆',
   顯示訊息框: 'DialogModule.顯示訊息框',
-  播放音效: 'soundModule.播放音效',
-  設定樣式: 'StyleModule.設定樣式'
+  播放音效: 'soundModule.playSound',
+  設定樣式: 'StyleModule.setStyle',
+  顯示: 'StyleModule.show',
+  隱藏: 'StyleModule.hide',
+  隱藏元素: 'StyleModule.hide',
+  設定背景色: 'StyleModule.setBackgroundColor',
+  切換顏色: 'StyleModule.toggleColor'
 };
 
 // ✅ 括號、引號、問號的統一處理（全形→半形）
@@ -267,11 +272,13 @@ function handleFunctionCall(funcName, params, indent = 0, declaredVars = new Set
     });
 
     const mod = modules[moduleName];
-    if (mod && typeof mod[funcName] === 'function') {
+    const mapped = FUNC_MAP[funcName];
+    const method = mapped ? mapped.split('.').pop() : funcName;
+    if (mod && typeof mod[method] === 'function') {
       try {
-        return `${space}${mod[funcName](...args)};`;
+        return `${space}${mod[method](...args)};`;
       } catch (e) {
-        console.warn(`⚠️ 模組 ${moduleName}.${funcName} 錯誤`, e);
+        console.warn(`⚠️ 模組 ${moduleName}.${method} 錯誤`, e);
       }
     }
     return `${space}${applyTemplate(jsTemplate, args)};`;
