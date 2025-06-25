@@ -240,10 +240,11 @@ function parseBlang(text) {
   output.push('let 人物 = {}; // ⛳ 自動補上 人物 變數');
   output.push('let 空 = 0; // ⛳ 自動補上未宣告變數');
   output.push('const 輸入框 = document.getElementById("input");');
+  output.push('const { 處理送出流程 } = require("./logicModule.js");');
   output.push('const { 註冊事件處理器 } = require("./eventModule.js");');
-  output.push('window.addEventListener("load", () => {');
+  output.push('window.onload = () => {');
   output.push('  註冊事件處理器();');
-  output.push('});');
+  output.push('};');
 
   for (let i = 0; i < lines.length; i++) {
   const raw = lines[i];
@@ -758,6 +759,25 @@ function parseBlang(text) {
   closeBlocks(0, 0);
   let code = output.join('\n');
   code = removeUnusedDeclarations(code);
+  const linesArr = code.split('\n');
+  let cleaned = [];
+  let pendingClose = false;
+  for (const line of linesArr) {
+    if (line.trim().startsWith('document.getElementById("submit").addEventListener')) {
+      pendingClose = true;
+      continue;
+    }
+    if (line.trim().startsWith('document.querySelector("#測試按鈕").addEventListener')) {
+      pendingClose = true;
+      continue;
+    }
+    if (pendingClose && line.trim() === '});') {
+      pendingClose = false;
+      continue;
+    }
+    cleaned.push(line);
+  }
+  code = cleaned.join('\n');
   if (!code.trim().endsWith('});')) {
     code += '\n});';
   }
