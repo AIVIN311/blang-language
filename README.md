@@ -348,6 +348,17 @@ node scripts/buildSyntaxMap.js
 
 執行後會產生或更新 `syntaxMap.json`，方便在其他工具載入所有語法分類。
 
+目前語法分類範例：
+- `data`：操作 cookie、清單、JSON
+- `control`：if 判斷、事件、延遲執行
+- `string`：文字替換
+- `math`：隨機數、絕對值
+- `array`：清單操作
+- `media`：音效與多媒體
+- ...
+
+分類資料來自 `syntaxMap.json`，由 `scripts/buildSyntaxMap.js` 解析已註冊語法自動產生。
+
 
 當你增修 `customBlangPatterns.js` 或其他語法規則時，再執行此指令以更新 `grammar_auto.md`。
 
