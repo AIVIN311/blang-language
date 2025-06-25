@@ -142,8 +142,6 @@ if (數量 > 2) {
                         alert(名字.trim());
                         for (let i = 0; i < 5; i++) { alert("哈囉"); }
                                                 呼叫AI回覆("月球有空氣嗎?"); // 🔮 AI
-                        document.querySelector("#測試按鈕").addEventListener("click", () => {
-                            alert("已點擊");
                 }
             }
         }
@@ -152,3 +150,7 @@ if (數量 > 2) {
 }
 }
 });
+
+                        document.querySelector("#測試按鈕").addEventListener("click", () => {
+                            alert("已點擊");
+                        });
