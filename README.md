@@ -74,7 +74,7 @@ node parser_v0.9.4.js
   在瀏覽器透過 `Function`，在 Node.js 則使用 `vm.runInNewContext`，
   因此能直接觸發 `alert`、`setTimeout`、播放音效等效果。
 
-> **AI 回覆**：當語句產生 `呼叫AI回覆(...)`、`問AI(...)` 或 `讓 AI 解釋(...)` 等時，
+> **AI 回覆**：當語句產生 `callAI(...)`、`問AI(...)` 或 `讓 AI 解釋(...)` 等時，
 > 系統會呼叫 `aiModule.js` 中的占位函式，僅在畫面或主控台顯示
 > 「AI 回覆尚未實作」及給定訊息。
 
@@ -210,7 +210,7 @@ if (輸入框.value === "") {
 | 顯示現在是幾點幾分               | `alert("現在是" + new Date().getHours() + "點" + new Date().getMinutes() + "分")` |
 | 顯示內容（"這是測試"）           | `console.log("這是測試")` |
 | 去除空白（文字）                 | `文字.trim()` |
-| 問AI（訊息）                     | `呼叫AI回覆(訊息)` |
+| 問AI（訊息）                     | `callAI(訊息)` |
 模組：mediaModule
 
 

@@ -34,8 +34,8 @@ if (輸入框.value === "") {
     document.querySelector('#name_display').textContent = "你的名字是：" + 輸入框.內容;
     document.querySelector('#結果區').textContent = "Blang 語法測試中";
         new Audio("ding.mp3").play();
-        呼叫AI回覆("使用者.問題"); // 🔮 AI
-        呼叫AI回覆("你好"); // 🔮 AI
+        callAI("使用者.問題"); // 🔮 AI
+        callAI("你好"); // 🔮 AI
     if (水果們.length >= 2) alert("你有很多水果！");
     if (水果們.length == 1) alert("剩下最後一個水果");
     let 數量 = 3;
@@ -140,7 +140,7 @@ if (數量 > 2) {
                         alert("清單是空的");
                         alert(名字.trim());
                         for (let i = 0; i < 5; i++) { alert("哈囉"); }
-                                                呼叫AI回覆("月球有空氣嗎?"); // 🔮 AI
+                                                callAI("月球有空氣嗎?"); // 🔮 AI
                 }
             }
         }
