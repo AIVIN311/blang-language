@@ -935,7 +935,7 @@ function handleFunctionCall(funcName, params, indent = 0, declaredVars = new Set
     funcName === '讓AI解釋' ||
     funcName === '讓 AI 解釋'
   ) {
-    return `${space}呼叫AI回覆(${processDisplayArgument(params, declaredVars)}); // 🔮 AI`;
+    return `${space}callAI(${processDisplayArgument(params, declaredVars)}); // 🔮 AI`;
   }
 
   if (vocabularyMap[funcName]) {
