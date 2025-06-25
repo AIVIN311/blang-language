@@ -1,11 +1,31 @@
 const colorMap = require('./colorMap.js');
 
+function setColor(id, colorName) {
+  if (typeof document === 'undefined') return;
+  const el = document.getElementById(id);
+  if (el) el.style.color = colorMap[colorName] || colorName;
+}
+
+function setFontSize(id, size) {
+  if (typeof document === 'undefined') return;
+  const el = document.getElementById(id);
+  if (el) el.style.fontSize = size;
+}
+
+function 設定初始樣式() {
+  setColor('提示文字', '紅色');
+  setFontSize('標題', '24px');
+}
+
 const hide = (selector) => {
   const elExpr = `document.querySelector(${selector})`;
   return `${elExpr} && (${elExpr}.style.display = "none")`;
 };
 
 module.exports = {
+  setColor,
+  setFontSize,
+  設定初始樣式,
   setStyle: (selector, styleProp, value) => {
     const propMap = {
       背景色: 'backgroundColor',
@@ -43,3 +63,7 @@ module.exports = {
     };
   })()
 };
+
+if (typeof window !== 'undefined') {
+  window.styleModule = module.exports;
+}

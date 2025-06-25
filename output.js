@@ -7,6 +7,7 @@ let 你要執行這個程式嗎 = 0; // ⛳ 自動補上未宣告變數
 const 音效播放器 = "#音效播放器"; // ⛳ 自動補上 DOM 選擇器變數
 const 影片播放器 = "#影片播放器"; // ⛳ 自動補上 DOM 選擇器變數
 let 人物 = {}; // ⛳ 自動補上 人物 變數
+styleModule.設定初始樣式();
 document.getElementById("submit").addEventListener("click", () => {
 if (輸入框.value === "") {
     alert("請先輸入內容");
@@ -64,12 +65,12 @@ if (數量 > 2) {
         alert(人物[key]);
                 alert("你好嗎?");
                 document.querySelector("#結果區") && (document.querySelector("#結果區").style["backgroundColor"] = "red");
-                document.querySelector("#歡迎區") && (document.querySelector("#歡迎區").style["fontSize"] = "24px");
+                styleModule.setFontSize("歡迎區", "24px");
         alert("水果數量：" + 水果們.length);
                 水果們.length = 0;
     if (水果們.length === 0) {
         alert("清單是空的");
-                let __toggleEl0 = document.querySelector("#結果區"); if (__toggleEl0) __toggleEl0.style.color = __toggleEl0.style.color === "red" ? "blue" : "red";
+                let __toggleEl0 = document.querySelector("#結果區"); if (__toggleEl0) { styleModule.setColor("結果區", __toggleEl0.style.color === "red" ? "blue" : "red"); }
                 document.querySelector("#歡迎區") && (document.querySelector("#歡迎區").style.display = "none");
                 document.querySelector(影片播放器) && document.querySelector(影片播放器).play();
                 document.querySelector("#影片播放器")?.pause();
