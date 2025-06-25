@@ -1,5 +1,3 @@
-const { 處理送出流程 } = require('./logicModule.js');
-
 function 處理送出事件() {
   document.getElementById('submit').addEventListener('click', () => {
 if (輸入框.value === "") {
@@ -146,8 +144,4 @@ if (數量 > 2) {
   });
 }
 
-function 註冊事件處理器() {
-  處理送出事件();
-}
-
-module.exports = { 註冊事件處理器, 處理送出事件 };
+module.exports = { 處理送出事件 };
