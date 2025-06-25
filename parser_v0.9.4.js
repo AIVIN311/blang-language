@@ -240,6 +240,10 @@ function parseBlang(text) {
   output.push('let 人物 = {}; // ⛳ 自動補上 人物 變數');
   output.push('let 空 = 0; // ⛳ 自動補上未宣告變數');
   output.push('const 輸入框 = document.getElementById("input");');
+  output.push('const { 註冊事件處理器 } = require("./eventModule.js");');
+  output.push('window.addEventListener("load", () => {');
+  output.push('  註冊事件處理器();');
+  output.push('});');
 
   for (let i = 0; i < lines.length; i++) {
   const raw = lines[i];
