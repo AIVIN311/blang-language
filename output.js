@@ -34,8 +34,8 @@ if (輸入框.value === "") {
     document.querySelector('#name_display').textContent = "你的名字是：" + 輸入框.內容;
     document.querySelector('#結果區').textContent = "Blang 語法測試中";
         new Audio("ding.mp3").play();
-        callAI("使用者.問題"); // 🔮 AI
-        callAI("你好"); // 🔮 AI
+        callAI("使用者.問題");
+        callAI("你好");
     if (水果們.length >= 2) alert("你有很多水果！");
     if (水果們.length == 1) alert("剩下最後一個水果");
     let 數量 = 3;
