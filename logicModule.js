@@ -1,4 +1,4 @@
-function 處理送出流程() {
+function 驗證輸入() {
   const 輸入框 = document.getElementById('input');
 if (輸入框.value === "") {
     alert("請先輸入內容");
@@ -169,4 +169,8 @@ function 處理送出流程() {
   進行複雜流程(水果們, 數量);
 }
 
-module.exports = { 處理送出流程 };
+function 啟動程式流程() {
+  處理送出流程();
+}
+
+module.exports = { 處理送出流程, 啟動程式流程 };
