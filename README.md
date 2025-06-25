@@ -340,6 +340,15 @@ node scripts/check-vars.js output.js
 npm run build-grammar-doc
 ```
 
+產生語法映射：
+
+```bash
+node scripts/buildSyntaxMap.js
+```
+
+執行後會產生或更新 `syntaxMap.json`，方便在其他工具載入所有語法分類。
+
+
 當你增修 `customBlangPatterns.js` 或其他語法規則時，再執行此指令以更新 `grammar_auto.md`。
 
 ---
