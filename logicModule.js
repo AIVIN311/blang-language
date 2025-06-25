@@ -1,4 +1,5 @@
 function 處理送出流程() {
+  const 輸入框 = document.getElementById('input');
 if (輸入框.value === "") {
     alert("請先輸入內容");
 } else {
