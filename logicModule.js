@@ -160,7 +160,7 @@ function 進行複雜流程(水果們, 數量) {
   }
 }
 
-function 處理送出流程() {
+function 啟動程式流程() {
   if (!驗證輸入()) return;
   let 水果們 = 初始化水果清單();
   更新基本UI();
@@ -169,8 +169,4 @@ function 處理送出流程() {
   進行複雜流程(水果們, 數量);
 }
 
-function 啟動程式流程() {
-  處理送出流程();
-}
-
-module.exports = { 處理送出流程, 啟動程式流程 };
+module.exports = { 啟動程式流程 };
