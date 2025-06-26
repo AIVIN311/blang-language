@@ -787,18 +787,9 @@ function parseBlang(text) {
 if (isNode) {
   module.exports.parseBlang = parseBlang;
   if (require.main === module) {
-    const skeleton = [
-      "const { 處理送出事件 } = require('./eventModule.js');",
-      "const { 啟動程式流程 } = require('./logicModule.js');",
-      "const { 設定初始樣式 } = require('./styleModule.js');",
-      'function 啟動語法引擎() {',
-      '  設定初始樣式();',
-      '  處理送出事件();',
-      '  啟動程式流程();',
-      '}',
-      '啟動語法引擎();'
-    ].join('\n');
-    fs.writeFileSync('output.js', skeleton);
+    const blang = fs.readFileSync('demo.blang', 'utf8');
+    const code = parseBlang(blang);
+    fs.writeFileSync('output.js', code);
     console.log('✅ 腦語 parser v0.9.4（全檔案變數掃描補宣告）已成功轉譯');
   }
 } else {
