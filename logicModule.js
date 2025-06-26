@@ -69,15 +69,15 @@ function 進行複雜流程(水果們, 數量) {
     alert("他的名字是：" + 人物["名字"]);
     alert(人物[key]);
     alert("你好嗎?");
-    document.querySelector("#結果區") && (document.querySelector("#結果區").style["backgroundColor"] = "red");
-    document.querySelector("#歡迎區") && (document.querySelector("#歡迎區").style["fontSize"] = "24px");
+    styleModule.applyBackgroundColor('#結果區', 'red');
+    styleModule.setFontSize('歡迎區', '24px');
     alert("水果數量：" + 水果們.length);
     水果們.length = 0;
     if (水果們.length === 0) {
       alert("清單是空的");
       let __toggleEl0 = document.querySelector("#結果區");
       if (__toggleEl0) __toggleEl0.style.color = __toggleEl0.style.color === "red" ? "blue" : "red";
-      document.querySelector("#歡迎區") && (document.querySelector("#歡迎區").style.display = "none");
+      styleModule.hideElementDom('#歡迎區');
       document.querySelector(影片播放器) && document.querySelector(影片播放器).play();
       document.querySelector("#影片播放器")?.pause();
       document.querySelector(音效播放器) && document.querySelector(音效播放器).pause();
@@ -91,24 +91,23 @@ function 進行複雜流程(水果們, 數量) {
       document.querySelector("#區塊") && document.querySelector("#區塊").appendChild(img);
       console.log("你好世界");
       new Audio("ding.mp3").play();
-      document.querySelector("#警告區塊") && (document.querySelector("#警告區塊").style.display = "none");
-      document.querySelector("#表單") && (document.querySelector("#表單").style.display = "block");
-      document.querySelector("#頁面") && (document.querySelector("#頁面").style.backgroundColor = "lightblue");
+      styleModule.hideElementDom('#警告區塊');
+      styleModule.showElementDom('#表單');
+      styleModule.applyBackgroundColor('#頁面', 'lightblue');
       document.querySelector("#狀態文字") && (document.querySelector("#狀態文字").textContent = "處理中...");
       alert("今天是星期" + "日一二三四五六"[new Date().getDay()]);
       alert("現在是" + new Date().getHours() + "點" + new Date().getMinutes() + "分");
       alert("你好世界");
       if (1 > 0) { alert("大"); } else { alert("小"); }
       alert("開始測試");
-      document.querySelector("#通知區") && (document.querySelector("#通知區").style.display = "none");
+      styleModule.hideElementDom('#通知區');
       setTimeout(() => {
         alert("完成");
       }, 2000);
       alert(new Date().toLocaleDateString());
       alert(原句.replaceAll("貓", "狗"));
-      const el = document.querySelector("#詳細");
-      el.style.display = el.style.display === 'none' ? 'block' : 'none';
-      document.querySelector("#方塊").style.transition = 'opacity 0.5s';
+      styleModule.toggleDisplay('#詳細');
+      styleModule.setTransition('#方塊', 'opacity 0.5s');
       alert(Math.abs(數量));
       水果們.forEach(item => alert(item));
       document.querySelectorAll('audio').forEach(a => a.pause());
