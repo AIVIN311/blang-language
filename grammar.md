@@ -25,6 +25,7 @@ Blang 是一種中文語場編程方式，用中文邏輯實現智慧語意互�
 |          | 顯示圖片（"圖.jpg" 在 #區塊）          | `const img = document.createElement('img'); img.src = "圖.jpg"; document.querySelector("#區塊").appendChild(img);` |
 | 延遲執行 | 等待（3000 毫秒）後 顯示（...）         | `setTimeout(() => alert(...), 3000)`            |
 |          | 等待 3 秒後：顯示（...）                | `setTimeout(() => alert(...), 3000)`            |
+| 迴圈控制 | 重複執行（$次數）次：                | `for (let i = 0; i < 次數; i++) {` |
 | 迴圈控制 | 重複 3 次 顯示（"嗨"） | `for (let i = 0; i < 3; i++) { alert("嗨"); }` |
 | 清單操作 | 變數 A = 建立清單（）                   | `let A = ArrayModule.建立清單();`               |
 |          | 加入項目（A, "蘋果"）                   | `ArrayModule.加入項目(A, "蘋果");`              |
