@@ -210,6 +210,10 @@ if (輸入框.value === "") {
 | 顯示現在是幾點幾分               | `alert("現在是" + new Date().getHours() + "點" + new Date().getMinutes() + "分")` |
 | 顯示內容（"這是測試"）           | `console.log("這是測試")` |
 | 去除空白（文字）                 | `文字.trim()` |
+| 轉跳網頁（"https://example.com"） | `window.location.href = "https://example.com"` |
+| 顯示清單長度（A）                 | `A.length` |
+| 判斷是否為空（A）                 | `A.length === 0` |
+| 清單包含（A, 值）                 | `A.includes(值)` |
 | 問AI（訊息）                     | `callAI(訊息)` |
 模組：mediaModule
 
