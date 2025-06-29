@@ -752,6 +752,28 @@ function testRepeatTimes() {
   }
 }
 
+function testForEachLoop() {
+  const sample = '對每個 水果 在 水果們 做：\n  顯示(水果)\n  顯示("----")';
+  const originalDemo = fs.readFileSync('demo.blang', 'utf8');
+  fs.writeFileSync('demo.blang', sample);
+
+  const hasOutput = fs.existsSync('output.js');
+  const originalOut = hasOutput ? fs.readFileSync('output.js', 'utf8') : null;
+
+  execSync('node parser_v0.9.4.js');
+  const output = fs.readFileSync('output.js', 'utf8');
+  assert(output.includes('for (let 水果 of 水果們) {'), 'for-each loop should translate to for...of');
+  assert(output.includes('alert(水果);'), 'loop body should include first statement');
+  assert(output.includes('alert("----");'), 'loop body should include second statement');
+
+  fs.writeFileSync('demo.blang', originalDemo);
+  if (hasOutput) {
+    fs.writeFileSync('output.js', originalOut);
+  } else {
+    fs.unlinkSync('output.js');
+  }
+}
+
 function testDisplayWeekday() {
   const sample = '顯示今天是星期幾';
   const originalDemo = fs.readFileSync('demo.blang', 'utf8');
@@ -1064,6 +1086,7 @@ try {
   testLoopAudioParsing();
   testWaitSecondsDisplay();
   testRepeatTimes();
+  testForEachLoop();
   testDisplayWeekday();
   testDisplayHourMinute();
   testDisplayDate();

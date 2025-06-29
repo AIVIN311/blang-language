@@ -13,4 +13,10 @@ module.exports = function registerLoopPatterns(definePattern) {
     },
     { type: 'control', description: 'repeat an action N times' }
   );
+
+  definePattern(
+    '對每個 $項 在 $清單 做：',
+    (項, 清單) => `for (let ${項} of ${清單}) {`,
+    { type: 'control', description: 'iterate over items in a list' }
+  );
 };

@@ -28,6 +28,10 @@ function testSyntaxExamples() {
       phrase: '顯示(輸入框.內容)',
       expected: 'alert(輸入框.內容);'
     }
+    , {
+      phrase: '對每個 數字 在 數列 做：',
+      expected: 'for (let 數字 of 數列) {'
+    }
   ];
 
   cases.forEach(({ phrase, expected }) => {
