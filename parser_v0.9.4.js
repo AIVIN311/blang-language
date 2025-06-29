@@ -786,18 +786,20 @@ function parseBlang(text) {
   code = removeUnusedDeclarations(code);
   const linesArr = code.split('\n');
   let cleaned = [];
-  let pendingClose = false;
+  let skipEventBlock = false;
   for (const line of linesArr) {
-    if (line.trim().startsWith('document.getElementById("submit").addEventListener')) {
-      pendingClose = true;
+    const trimmed = line.trim();
+    if (
+      trimmed.startsWith('document.getElementById("submit").addEventListener') ||
+      trimmed.startsWith('document.querySelector("#測試按鈕").addEventListener')
+    ) {
+      skipEventBlock = true;
       continue;
     }
-    if (line.trim().startsWith('document.querySelector("#測試按鈕").addEventListener')) {
-      pendingClose = true;
-      continue;
-    }
-    if (pendingClose && line.trim() === '});') {
-      pendingClose = false;
+    if (skipEventBlock) {
+      if (trimmed === '});') {
+        skipEventBlock = false;
+      }
       continue;
     }
     cleaned.push(line);
