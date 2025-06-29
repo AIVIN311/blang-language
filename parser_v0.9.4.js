@@ -329,6 +329,17 @@ function parseBlang(text) {
       }
     }
 
+    if (line.match(/^對每個\s+(.+?)\s+在\s+(.+?)\s*做：$/)) {
+      closeBlocks(indent, nextIndent, line);
+      const match = line.match(/^對每個\s+(.+?)\s+在\s+(.+?)\s*做：$/);
+      const item = match[1].trim();
+      const list = match[2].trim();
+      declaredVars.add(item);
+      output.push(' '.repeat(indent) + `for (let ${item} of ${list}) {`);
+      stack.push({ indent, type: 'loop' });
+      continue;
+    }
+
     function handleEvent(line, eventType, domTarget, jsEvent) {
       if (line === `當(${domTarget})時：`) {
         if (registeredEvents.has(eventType)) return true;
@@ -801,18 +812,9 @@ function parseBlang(text) {
 if (isNode) {
   module.exports.parseBlang = parseBlang;
   if (require.main === module) {
-    const skeleton = [
-      "const { 處理送出事件 } = require('./eventModule.js');",
-      "const { 啟動程式流程 } = require('./logicModule.js');",
-      "const { 設定初始樣式 } = require('./styleModule.js');",
-      'function 啟動語法引擎() {',
-      '  設定初始樣式();',
-      '  處理送出事件();',
-      '  啟動程式流程();',
-      '}',
-      '啟動語法引擎();'
-    ].join('\n');
-    fs.writeFileSync('output.js', skeleton);
+    const input = fs.readFileSync('demo.blang', 'utf8');
+    const code = parseBlang(input);
+    fs.writeFileSync('output.js', code);
     console.log('✅ 腦語 parser v0.9.4（全檔案變數掃描補宣告）已成功轉譯');
   }
 } else {
