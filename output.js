@@ -13,6 +13,3 @@ const { 處理送出事件 } = require("./eventModule.js");
 window.onload = () => {
   處理送出事件();
 };
-
-
-});

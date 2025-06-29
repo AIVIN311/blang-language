@@ -804,9 +804,19 @@ function parseBlang(text) {
     }
     cleaned.push(line);
   }
+  const hasEventListener = cleaned.some(l => l.includes('addEventListener'));
   code = cleaned.join('\n');
-  if (!code.trim().endsWith('});')) {
-    code += '\n});';
+  const trimmed = code.trimEnd();
+  if (hasEventListener) {
+    if (!trimmed.endsWith('});')) {
+      code = trimmed + '\n});';
+    } else {
+      code = trimmed;
+    }
+  } else {
+    code = trimmed.endsWith('});')
+      ? trimmed.slice(0, -3).trimEnd()
+      : trimmed;
   }
   return code;
 }
